@@ -16,4 +16,9 @@ class WelcomeController {
     public String welcome() {
         return "Hello and welcome to COMS 3090";
     }
+
+    @GetMapping("/test")
+    public String Testing() {
+        return "This is a warning!";
+    }
 }
