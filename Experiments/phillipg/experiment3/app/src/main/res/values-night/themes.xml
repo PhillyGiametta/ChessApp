@@ -3,5 +3,17 @@
     <style name="Base.Theme.AndroidExample" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/my_red</item>
+        <item name="colorOnPrimary">@color/black</item>
+
+        <item name="buttonStyle">@style/CustomButtonStyle</item>
+    </style>
+
+    <style name="Theme.AndroidExample" parent="Base.Theme.AndroidExample" />
+
+    <style name="CustomButtonStyle" parent="Widget.Material3.Button">
+        <item name="android:background">#D32F2F</item>
+        <item name="android:textColor">#FFFFFF</item>
+
     </style>
 </resources>
