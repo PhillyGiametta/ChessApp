@@ -48,10 +48,10 @@ public class PeopleController {
     // in this case because of @ResponseBody
     // Note: To CREATE we use POST method
     @PostMapping("/people")
-    public  String createPerson(@RequestBody Person person) {
-        System.out.println(person);
-        peopleList.put(person.getFirstName(), person);
-        return "New person "+ person.getFirstName() + " Saved";
+    public  String createPerson(@RequestBody Person person) { //method that creates a person //cant seem to make this work through postman
+        System.out.println(person); //prints person to console
+        peopleList.put(person.getFirstName(), person); // places in the global list/hashmap
+        return "New person "+ person.getFirstName() + " Saved"; //returns the new user
     }
 
     // THIS IS THE READ OPERATION
@@ -60,9 +60,9 @@ public class PeopleController {
     // springboot automatically converts Person to JSON format when we return it
     // in this case because of @ResponseBody
     // Note: To READ we use GET method
-    @GetMapping("/people/{firstName}")
-    public Person getPerson(@PathVariable String firstName) {
-        Person p = peopleList.get(firstName);
+    @GetMapping("/people/{firstName}") //if a person is in the list, this will get them
+    public Person getPerson(@PathVariable String firstName) { //method call
+        Person p = peopleList.get(firstName); //
         return p;
     }
 
@@ -88,6 +88,12 @@ public class PeopleController {
     @DeleteMapping("/people/{firstName}")
     public HashMap<String, Person> deletePerson(@PathVariable String firstName) {
         peopleList.remove(firstName);
+        return peopleList;
+    }
+
+    @DeleteMapping("/people/{lastname}")
+    public HashMap<String, Person> deletePersonLast(@PathVariable String lastName){
+        peopleList.remove(lastName);
         return peopleList;
     }
 }

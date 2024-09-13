@@ -17,6 +17,8 @@ public class Person {
 
     private String telephone;
 
+    private String classification;
+
     public Person(){
         
     }
@@ -60,11 +62,17 @@ public class Person {
         this.telephone = telephone;
     }
 
+    public String getClassification() { return this.classification;}
+
+    public void setClassification(String classification){ this.classification = classification;}
+
+
     @Override
     public String toString() {
         return firstName + " " 
                + lastName + " "
                + address + " "
-               + telephone;
+               + telephone + " "
+                + classification;
     }
 }
