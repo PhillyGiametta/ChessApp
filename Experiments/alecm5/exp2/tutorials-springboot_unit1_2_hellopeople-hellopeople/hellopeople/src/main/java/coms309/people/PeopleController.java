@@ -18,9 +18,10 @@ import java.util.HashMap;
  * @author Vivek Bengre
  */
 
+
+
 @RestController
 public class PeopleController {
-
     // Note that there is only ONE instance of PeopleController in 
     // Springboot system.
     HashMap<String, Person> peopleList = new  HashMap<>();
@@ -38,6 +39,7 @@ public class PeopleController {
     public  HashMap<String,Person> getAllPersons() {
         return peopleList;
     }
+
 
     // THIS IS THE CREATE OPERATION
     // springboot automatically converts JSON input into a person object and 
