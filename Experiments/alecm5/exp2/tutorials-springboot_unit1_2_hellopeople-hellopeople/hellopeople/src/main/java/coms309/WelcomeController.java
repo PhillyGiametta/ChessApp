@@ -14,11 +14,14 @@ class WelcomeController {
 
     @GetMapping("/")
     public String welcome() {
-        return "Hello and welcome to COMS 3090";
-    }
+        return "Hello and welcome to COMS 3090, this was edited!";
+    } //works
 
     @GetMapping("/test")
-    public String Testing() {
+    public String Testing() { //works
         return "This is a warning!";
     }
+
+
+
 }
