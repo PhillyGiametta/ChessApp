@@ -16,7 +16,7 @@ class ExceptionController {
     @GetMapping("error")
     @RequestMapping(method = RequestMethod.GET, path = "/oops")
     public String triggerException() {
-        return("Robert_Was_HERE HELLO");
+        return("Exception triggered :(");
         //throw new RuntimeException("ROBERT_WAS_HERE");
     }
 
