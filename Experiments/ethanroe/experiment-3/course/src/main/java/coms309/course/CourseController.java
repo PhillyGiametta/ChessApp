@@ -44,7 +44,7 @@ public class CourseController {
 	}
 	
 	//Delete Operation
-	@DeleteMapping("/people/{courseName}")
+	@DeleteMapping("/courses/{courseName}")
 	public @ResponseBody HashMap<String, Course> deleteCourse(@PathVariable String courseName){
 		courseList.remove(courseName);
 		return courseList;
