@@ -88,7 +88,7 @@ public class PeopleController {
         peopleList.remove(firstName);
         return peopleList;
     }
-    
+    //Deletes all people entries in hash map
     @DeleteMapping("/people/all")
     public @ResponseBody HashMap<String, Person> deleteAll(){
     	peopleList.clear();
