@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 class WelcomeController {
 
+    @GetMapping("/t")
+    public String newWelcome() { return "Another line when on page"; }
     @GetMapping("/")
     public String welcome() {
         return "Hello and welcome to COMS 3090, this was edited!";
     } //works
+
 
     @GetMapping("/test")
     public String Testing() { //works
