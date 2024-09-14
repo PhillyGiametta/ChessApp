@@ -39,8 +39,8 @@ public class CourseController {
 	//Update Operation
 	@PutMapping("/courses/{courseName}")
 	public @ResponseBody Course updateCourse(@PathVariable String courseName, @RequestBody Course c) {
-		Course course = courseList.replace(courseName, c);
-		return course;
+		courseList.replace(courseName, c);
+		return courseList.get(courseName);
 	}
 	
 	//Delete Operation
