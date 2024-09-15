@@ -17,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
     private Button loginButton;     // define login button variable
     private Button signupButton;    // define signup button variable
 
+    private Button newButton; //make a new button
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.main_login_btn);    // link to login button in the Main activity XML
         signupButton = findViewById(R.id.main_signup_btn);  // link to signup button in the Main activity XML
 
+        newButton = findViewById(R.id.new_button); //gonna make this button do something
         /* extract data passed into this activity from another activity */
         Bundle extras = getIntent().getExtras();
         if(extras == null) {
@@ -59,6 +62,16 @@ public class MainActivity extends AppCompatActivity {
                 /* when signup button is pressed, use intent to switch to Signup Activity */
                 Intent intent = new Intent(MainActivity.this, SignupActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        /* making the button do something */
+        newButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                /* change the text of something idk */
+                messageText.setText("Ooga Booga please work");
             }
         });
     }
