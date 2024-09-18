@@ -25,6 +25,8 @@ import jakarta.persistence.Table;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.springframework.core.style.ToStringCreator;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * Simple JavaBean domain object representing an owner.
@@ -65,6 +67,9 @@ public class Owners {
     public Owners(){
         
     }
+
+
+
 
     public Owners(int id, String firstName, String lastName, String address, String telephone){
         this.id = id;
