@@ -1,9 +1,9 @@
 package com.coms309.Chess.users;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.transaction.annotation.Transactional;
+
+
+
 
 
 /**
@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
  *
  */
 
-@SpringBootApplication
-public interface UserRepository extends JpaRepository {
+public interface UserRepository extends JpaRepository<User, Long> {
     User findById(int id);
 }

@@ -2,6 +2,7 @@ package com.coms309.Chess.users;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.*;
 
 /**
  *
@@ -9,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  */
 
-@Entity
+//@Entity
 public class User {
 
     private String username;

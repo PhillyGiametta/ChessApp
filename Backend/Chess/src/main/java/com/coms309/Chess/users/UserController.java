@@ -1,7 +1,13 @@
 package com.coms309.Chess.users;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.*;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 
 /**
  *
@@ -11,7 +17,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @RestController
 public class UserController {
-    @Autowired
+//    @Autowired
     UserRepository userRepository;
 
     private String success = "{\"message\":\"success\"}";
@@ -30,7 +36,7 @@ public class UserController {
         String password = user.getPassword();
         User tempUser = userRepository.findById(user.getId());
 
-        if(tempUser.getUsername().equals(user.getUsername) && tempUser.getPassword().equals(user.getPassword())){
+        if(tempUser.getUsername().equals(user.getUsername()) && tempUser.getPassword().equals(user.getPassword())){
             return "Successfully logged in!";
         }
         return "Failed to login, username or password incorrect";
@@ -48,8 +54,9 @@ public class UserController {
     @PutMapping("/users/{id}")
     User updateUser(@PathVariable int id, @RequestBody User update){
         User temp = userRepository.findById(id);
-        if(user == null){
-            return failure;
+        if(update == null){
+            System.out.println(failure);
+            return null;
         }
         userRepository.save(update);
         return userRepository.findById(id);
