@@ -1,5 +1,6 @@
 package com.coms309.Chess.users;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @RestController
 public class UserController {
-//    @Autowired
+    @Autowired
     UserRepository userRepository;
 
     private String success = "{\"message\":\"success\"}";
