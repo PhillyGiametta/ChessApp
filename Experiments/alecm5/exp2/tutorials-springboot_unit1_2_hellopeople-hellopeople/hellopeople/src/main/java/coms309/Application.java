@@ -16,9 +16,6 @@ public class Application {
 	
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Application.class, args);
-        PeopleController PC = new PeopleController();
-        Person New1 = new Person("Alec", "Moore", "address", "555");
-        System.out.println(PC.createPerson(New1));
     }
 
 }
