@@ -13,6 +13,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 public class User {
 
+    //CLASS VARIABLES-------------------------------------------
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private int userId;
@@ -49,7 +50,7 @@ public class User {
     } //Likely not used, may be used in case of copying a user, or for testing.
 
 
-
+    //GETTERS AND SETTERS---------------------------------------------------------------
     public int getUserId() {return this.userId; }
     public void setUserId(int uId) {this.userId = uId;}
     public String getUserName() {return this.userName;}
