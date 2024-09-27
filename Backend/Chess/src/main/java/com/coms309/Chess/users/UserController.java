@@ -21,46 +21,58 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
-    private String success = "{\"message\":\"success\"}";
-    private String failure = "{\"message\":\"failure\"}";
-
-    //gets all users
+    //Gets all users
     @GetMapping(path = "/users")
     List<User> getAllUsers(){
         return userRepository.findAll();
     }
 
+    //Get specific user
+    @GetMapping(path = "/users/{id}")
+    User getUserById(@PathVariable int id){
+        return userRepository.findById(id);
+    }
+
     //when user logs in
-    @PostMapping("/login")
+    @PostMapping(path ="/login")
     String userLogin(@RequestBody User user){
+        int id = userRepository.findByUsername(user.getUsername()).getId();
         String username = user.getUsername();
         String password = user.getPassword();
-        User tempUser = userRepository.findById(user.getId());
 
-        if(tempUser.getUsername().equals(user.getUsername()) && tempUser.getPassword().equals(user.getPassword())){
-            return "Successfully logged in!";
+        if(username.equals(userRepository.findById(id).getUsername())
+        && password.equals(userRepository.findById(id).getPassword())){
+            return "Successfully logged in.";
         }
-        return "Failed to login, username or password incorrect";
+        return "Failed to login, username or password incorrect.";
     }
+
     //when user signs up
-    @PostMapping("/signup")
-    String userSignup(@RequestBody User user){
+    @PostMapping(path = "/signup")
+    String createUser(@RequestBody User user){
         if(user == null){
-            return failure;
+            return "Signup failed";
         }
         userRepository.save(user);
-        return success;
+        return "Successfully signed up";
     }
 
-    @PutMapping("/users/{id}")
+    //Update user
+    @PutMapping(path = "/users/{id}")
     User updateUser(@PathVariable int id, @RequestBody User update){
         User temp = userRepository.findById(id);
         if(update == null){
-            System.out.println(failure);
+            System.out.println("failure");
             return null;
         }
         userRepository.save(update);
         return userRepository.findById(id);
+    }
+
+    @DeleteMapping(path = "/users/{id}")
+    String deleteUser(@PathVariable int id){
+        userRepository.deleteById(id);
+        return "deleted user";
     }
 
  }
