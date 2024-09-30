@@ -1,9 +1,6 @@
 package coms309RoundTrip.test.Users;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
@@ -11,12 +8,13 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 
 @Entity
+@Table(name = "user")
 public class User {
 
     //CLASS VARIABLES-------------------------------------------
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private int userId;
+    private int id;
     private String userEmail;
     private String userName;
     private Date userMadeDate;
@@ -51,8 +49,8 @@ public class User {
 
 
     //GETTERS AND SETTERS---------------------------------------------------------------
-    public int getUserId() {return this.userId; }
-    public void setUserId(int uId) {this.userId = uId;}
+    public int getUserId() {return this.id; }
+    public void setUserId(int uId) {this.id = uId;}
     public String getUserName() {return this.userName;}
     public void setUserName(String uName){this.userName = uName;}
     public String getUserEmail(){return this.userEmail;}

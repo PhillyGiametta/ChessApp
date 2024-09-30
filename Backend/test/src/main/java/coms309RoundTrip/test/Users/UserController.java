@@ -41,7 +41,7 @@ public class UserController {
         return userRepository.findByUserName(userName);
     }
 
-    @PutMapping(path = "/users/{userName}")
+    @PutMapping(path = "/users/{userEmail}")
     User updateUser2(@PathVariable String userEmail, @RequestBody User updated){
         User user = userRepository.findByUserEmail(userEmail);
         if(user == null){
@@ -51,7 +51,7 @@ public class UserController {
         return userRepository.findByUserEmail(userEmail);
     }
 
-    @PutMapping(path = "/users/{userName}")
+    @PutMapping(path = "/users/{userId}")
     User updateUser(@PathVariable int id, @RequestBody User updated){
         User user = userRepository.findById(id);
         if(user == null){
