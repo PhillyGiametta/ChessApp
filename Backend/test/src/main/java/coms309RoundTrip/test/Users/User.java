@@ -14,6 +14,7 @@ public class User {
     //CLASS VARIABLES-------------------------------------------
     @Id
     @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id")
     private int id;
     private String userEmail;
     private String userName;
