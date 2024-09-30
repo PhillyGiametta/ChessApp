@@ -33,30 +33,6 @@ public class UserController {
         return userRepository.findById(id);
     }
 
-    //when user logs in
-    @PostMapping(path ="/login")
-    String userLogin(@RequestBody User user){
-        int id = userRepository.findByUsername(user.getUsername()).getId();
-        String username = user.getUsername();
-        String password = user.getPassword();
-
-        if(username.equals(userRepository.findById(id).getUsername())
-        && password.equals(userRepository.findById(id).getPassword())){
-            return "Successfully logged in.";
-        }
-        return "Failed to login, username or password incorrect.";
-    }
-
-    //when user signs up
-    @PostMapping(path = "/signup")
-    String createUser(@RequestBody User user){
-        if(user == null){
-            return "Signup failed";
-        }
-        userRepository.save(user);
-        return "Successfully signed up";
-    }
-
     //Update user
     @PutMapping(path = "/users/{id}")
     User updateUser(@PathVariable int id, @RequestBody User update){
