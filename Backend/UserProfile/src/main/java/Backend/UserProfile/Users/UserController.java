@@ -1,4 +1,5 @@
 package Backend.UserProfile.Users;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -6,9 +7,13 @@ import java.util.List;
 
 @RestController
 public class UserController {
-
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private JpaRepository jpaRepository;
+
+    private String Dsuccess = "{\"User was deleted\": \"successfully\"}";
+    private String Dfail = "{\"User was deleted\": \"Unsuccessfully\"}";
 
     @GetMapping(path = "/users")
     List<User> getAllUser() {return userRepository.findAll();}
@@ -59,6 +64,12 @@ public class UserController {
         }
         userRepository.save(updated);
         return userRepository.findById(id);
+    }
+
+    @DeleteMapping
+    String deleteUser(@PathVariable int id){
+        userRepository.deleteById(id);
+        return Dsuccess;
     }
 
 
