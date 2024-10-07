@@ -17,6 +17,7 @@ public class User {
     private int id;
     private String userEmail;
     private String userName;
+    private String userPassword;
     private Date userMadeDate;
     private Date userLastLoginDate;
     private int userRanking;
@@ -30,18 +31,20 @@ public class User {
     public User(){
         //NULL User
     }
-    public User(String userName, String userEmail){
+    public User(String userName, String userEmail, String userPassword){
         this.userName = userName;
         this.userEmail = userEmail;
+        this.userPassword = userPassword;
         this.userRanking=0; userWins=0; userLosses=0; userWLRatio = 0;
         this.userMadeDate = new Date();
         this.userLastLoginDate = new Date();
         this.activity = UserActivity.ONLINE; //Set User Online since they are freshly made
     }
 
-    public User(String userName, String userEmail, int userRanking, int userWins, int userLosses){
+    public User(String userName, String userEmail,String userPassword, int userRanking, int userWins, int userLosses){
         this.userName = userName;
         this.userEmail = userEmail;
+        this.userPassword = userPassword;
         this.userRanking = userRanking;
         this.userWins = userWins;
         this.userLosses = userLosses;
@@ -59,6 +62,8 @@ public class User {
     public void setUserName(String uName){this.userName = uName;}
     public String getUserEmail(){return this.userEmail;}
     public void setUserEmail(String uEmail){this.userEmail = uEmail;}
+    public String getUserPassword() {return this.userPassword;}
+    public void setUserPassword(String uPassword){this.userPassword = uPassword;}
     public Date getUserMadeDate(){return this.userMadeDate;}
     public void setUserMadeDate(Date uMadeDate){this.userMadeDate = uMadeDate;}
     public Date getUserLastLoginDate(){return this.userLastLoginDate;}

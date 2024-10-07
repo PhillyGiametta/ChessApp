@@ -28,12 +28,12 @@ public class UserController {
     User getUser3(@PathVariable String userEmail) {return userRepository.findByUserEmail(userEmail);}
 
     @PostMapping(path = "/users")
-    void createUser(@RequestBody User user){
+    String createUser(@RequestBody User user){
         if(user == null){
-            System.out.println("User is invalid");
-            return;
+            return "User is invalid";
         }
         userRepository.save(user);
+        return Dsuccess;
     }
 
     @PutMapping(path = "/users/{userName}")

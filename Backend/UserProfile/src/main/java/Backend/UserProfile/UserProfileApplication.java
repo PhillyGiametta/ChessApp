@@ -23,8 +23,8 @@ public class UserProfileApplication {
 	@Bean
 	CommandLineRunner initUser(UserRepository userRepository){
 		return args -> {
-			User user1 = new User("Alec", "alecm5@iastate.edu");
-			User user2 = new User("Guest", "guest@fakeemail.com");
+			User user1 = new User("Alec", "alecm5@iastate.edu", "urmom");
+			User user2 = new User("Guest", "guest@fakeemail.com", "password");
 			userRepository.save(user2);
 			userRepository.save(user1);
 		};
