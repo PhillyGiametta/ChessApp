@@ -8,13 +8,12 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 
 @Entity
-@Table(name = "user")
+@Table(name = "user", schema = "DBChessApp")
 public class User {
 
     //CLASS VARIABLES-------------------------------------------
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "id")
+    @Id @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "user_id", nullable = false)
     private int id;
     private String userEmail;
     private String userName;
@@ -27,6 +26,10 @@ public class User {
     private UserActivity activity;
 
     //CONSTRUCTORS----------------------------------------
+
+    public User(){
+        //NULL User
+    }
     public User(String userName, String userEmail){
         this.userName = userName;
         this.userEmail = userEmail;
