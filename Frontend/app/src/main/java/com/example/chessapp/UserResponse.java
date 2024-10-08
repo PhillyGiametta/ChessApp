@@ -6,14 +6,21 @@ public class UserResponse {
     @SerializedName("key")
     private String key;
 
-    @SerializedName("one")
-    private String one;
+    @SerializedName("username")
+    private String username;
+
+    @SerializedName("email")
+    private String email;
 
     public String getKey() {
         return key;
     }
 
-    public String getOne() {
-        return one;
+    public String getUsername() {
+        return username;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

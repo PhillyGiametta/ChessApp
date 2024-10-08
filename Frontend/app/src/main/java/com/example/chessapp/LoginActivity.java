@@ -1,56 +1,100 @@
 package com.example.chessapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import retrofit2.Call;
+import android.widget.Toast;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText usernameEditText;  // define username edittext variable
-    private EditText passwordEditText;  // define password edittext variable
-    private Button loginButton;         // define login button variable
-    private Button signupButton;        // define signup button variable
+    private EditText usernameEditText;
+    private EditText passwordEditText;
+    private Button loginButton;
+    private Button signupButton;
+    private ApiService apiService;  // Declare ApiService for Retrofit
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);            // link to Login activity XML
+        setContentView(R.layout.activity_login);
 
-        /* initialize UI elements */
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        // Initialize UI elements
         usernameEditText = findViewById(R.id.login_username_edt);
         passwordEditText = findViewById(R.id.login_password_edt);
-        loginButton = findViewById(R.id.login_login_btn);    // link to login button in the Login activity XML
-        signupButton = findViewById(R.id.login_signup_btn);  // link to signup button in the Login activity XML
+        loginButton = findViewById(R.id.login_login_btn);
+        signupButton = findViewById(R.id.login_signup_btn);
 
-        /* click listener on login button pressed */
+        // Initialize Retrofit with the backend API URL and Gson converter
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://coms-3090-050.class.las.iastate.edu:8080/")
+                .addConverterFactory(GsonConverterFactory.create(gson)) // Use lenient Gson
+                .build();
+
+        // Initialize API service
+        apiService = retrofit.create(ApiService.class);
+
+        // Set click listener on login button
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                /* grab strings from user inputs */
+                // Grab strings from user inputs
                 String username = usernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
 
-                /* when login button is pressed, use intent to switch to Login Activity */
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("USERNAME", username);  // key-value to pass to the MainActivity
-                intent.putExtra("PASSWORD", password);  // key-value to pass to the MainActivity
-                startActivity(intent);  // go to MainActivity with the key-value data
+                // Validate input fields are not empty
+                if (username.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(LoginActivity.this, "Please enter both username and password.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                // Create the request body (UserRequest object)
+                UserRequest userRequest = new UserRequest(username, password);
+
+                // API call for login using Retrofit
+                apiService.loginUser(userRequest).enqueue(new Callback<UserResponse>() {
+                    @Override
+                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            // Success: Navigate to the main activity
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.putExtra("USERNAME", username);  // Pass username to MainActivity
+                            startActivity(intent);
+                        } else {
+                            // Handle login failure (e.g., wrong credentials)
+                            Toast.makeText(LoginActivity.this, "Login failed: " + response.message(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserResponse> call, Throwable t) {
+                        // Network error or JSON parsing issue
+                        Toast.makeText(LoginActivity.this, "Network Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
 
-        /* click listener on signup button pressed */
+        // Set click listener on signup button
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                /* when signup button is pressed, use intent to switch to Signup Activity */
+                // Switch to Signup Activity
                 Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
-                startActivity(intent);  // go to com.example.chessapp.MainActivity.SignupActivity
+                startActivity(intent);
             }
         });
     }
