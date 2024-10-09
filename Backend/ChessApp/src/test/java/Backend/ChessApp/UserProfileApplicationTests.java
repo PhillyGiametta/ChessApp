@@ -1,10 +1,10 @@
-package Backend.proj1;
+package Backend.ChessApp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Proj1ApplicationTests {
+class UserProfileApplicationTests {
 
 	@Test
 	void contextLoads() {
