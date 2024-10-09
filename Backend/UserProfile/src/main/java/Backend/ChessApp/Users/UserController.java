@@ -1,4 +1,5 @@
-package Backend.UserProfile.Users;
+package Backend.ChessApp.Users;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ public class UserController {
     private JpaRepository jpaRepository;
 
     private String Dsuccess = "{\"User was deleted\": \"successfully\"}";
+    private String Postsuccess = "{\"User was created\": \"successfully\"}";
     private String Dfail = "{\"User was deleted\": \"Unsuccessfully\"}";
 
     @GetMapping(path = "/users")
@@ -32,8 +34,9 @@ public class UserController {
         if(user == null){
             return "User is invalid";
         }
+        user = new User(user.getUserName(), user.getUserEmail() ,user.getUserPassword());
         userRepository.save(user);
-        return Dsuccess;
+        return Postsuccess;
     }
 
     @PutMapping(path = "/users/{userName}")
@@ -66,9 +69,10 @@ public class UserController {
         return userRepository.findById(id);
     }
 
+    @Transactional
     @DeleteMapping(path = "/users/{userId}")
-    String deleteUser(@PathVariable int id){
-        userRepository.deleteById(id);
+    String deleteUser(@PathVariable int userId){
+        userRepository.deleteById(userId);
         return Dsuccess;
     }
 

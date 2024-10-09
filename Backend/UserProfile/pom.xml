@@ -9,11 +9,11 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>Backend</groupId>
-	<artifactId>UserProfile</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>ChessApp</artifactId>
+	<version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>UserProfile</name>
-	<description>UserProfile backend</description>
+    <name>ChessApp</name>
+	<description>ChessApp backend</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -84,7 +84,7 @@
 						<configuration>
 							<classifier>spring-boot</classifier>
 							<mainClass>
-								UserProfileApplication.java
+								ChessApplication.java
 							</mainClass>
 						</configuration>
 					</execution>

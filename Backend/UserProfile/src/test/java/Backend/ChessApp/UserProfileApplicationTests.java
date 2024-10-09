@@ -1,4 +1,4 @@
-package Backend.UserProfile;
+package Backend.ChessApp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,4 +1,4 @@
-package Backend.UserProfile.Users;
+package Backend.ChessApp.Users;
 
 import jakarta.persistence.*;
 
