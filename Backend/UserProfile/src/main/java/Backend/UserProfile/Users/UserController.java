@@ -66,9 +66,15 @@ public class UserController {
         return userRepository.findById(id);
     }
 
-    @DeleteMapping
+    @DeleteMapping(path = "/users/{userId}")
     String deleteUser(@PathVariable int id){
         userRepository.deleteById(id);
+        return Dsuccess;
+    }
+
+    @DeleteMapping(path = "/users/deleteAllUsers")
+    String deleteAllUsers() {
+        userRepository.deleteAll();
         return Dsuccess;
     }
 
