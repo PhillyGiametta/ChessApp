@@ -19,19 +19,18 @@ public interface ApiService {
     @POST("/login")
     Call<UserResponse> loginUser(@Body UserRequest userRequest);
 
-    // Profile-related Endpoints
-    @GET("/api/profile/{username}")
-    Call<UserResponse> getProfile(@Path("username") String username);
+    @GET("/users/{userName}")
+    Call<UserResponse> getProfile(@Path("userName") String userName);
 
-    @POST("/api/profile")
+    @POST("/users")
     Call<UserResponse> createProfile(@Body UserRequest user);
 
-    @PUT("/api/profile")
-    Call<UserResponse> updateProfile(@Body UserRequest user);
+    @PUT("/users/{userName}")
+    Call<UserResponse> updateProfile(@Path("userName") String userName, @Body UserRequest user);
 
-    @DELETE("/api/profile/{username}")
+    @DELETE("/users/{username}")
     Call<Void> deleteProfile(@Path("username") String username);
 
-    @GET("/api/profiles")
+    @GET("/users")
     Call<List<UserResponse>> listProfiles();
 }
