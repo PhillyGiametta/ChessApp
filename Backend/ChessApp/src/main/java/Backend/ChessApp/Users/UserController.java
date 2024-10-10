@@ -10,8 +10,8 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private JpaRepository jpaRepository;
+  //  @Autowired
+  //  private JpaRepository jpaRepository;
 
     private String Dsuccess = "{\"User was deleted\": \"successfully\"}";
     private String Postsuccess = "{\"User was created\": \"successfully\"}";
