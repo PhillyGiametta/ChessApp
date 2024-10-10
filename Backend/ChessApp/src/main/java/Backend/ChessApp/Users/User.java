@@ -1,8 +1,8 @@
 package Backend.ChessApp.Users;
 
 import jakarta.persistence.*;
-
 import java.util.Date;
+import org.springframework.boot.*;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -12,7 +12,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class User {
 
     //CLASS VARIABLES-------------------------------------------
-    @Id @GeneratedValue(strategy = IDENTITY)
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "user_id", nullable = false)
     private int id;
     private String userEmail;
@@ -57,27 +58,47 @@ public class User {
 
     //GETTERS AND SETTERS---------------------------------------------------------------
     public int getUserId() {return this.id; }
+
     public void setUserId(int uId) {this.id = uId;}
+
     public String getUserName() {return this.userName;}
+
     public void setUserName(String uName){this.userName = uName;}
+
     public String getUserEmail(){return this.userEmail;}
+
     public void setUserEmail(String uEmail){this.userEmail = uEmail;}
+
     public String getUserPassword() {return this.userPassword;}
+
     public void setUserPassword(String uPassword){this.userPassword = uPassword;}
+
     public Date getUserMadeDate(){return this.userMadeDate;}
+
     public void setUserMadeDate(Date uMadeDate){this.userMadeDate = uMadeDate;}
+
     public Date getUserLastLoginDate(){return this.userLastLoginDate;}
+
     public void setUserLastLoginDate(Date uLastLogin) {this.userLastLoginDate = uLastLogin;}
+
     public int getUserRanking(){return this.userRanking;}
-    public void setUserRanking(int userRanking) {
-        this.userRanking = userRanking;
-    }
+
+    public void setUserRanking(int userRanking) {this.userRanking = userRanking;}
+
     public int getUserWins(){return this.userWins;}
+
     public void setUserWins(int uWins){this.userWins = uWins;}
+
     public int getUserLosses(){return this.userLosses;}
+
     public void setUserLosses(int uLoss){this.userLosses = uLoss;}
+
     public double getUserWLRatio(){return this.userWLRatio;}
+
     public void setUserWLRatio(double uWLRatio){this.userWLRatio = uWLRatio;}
+
     public UserActivity getActivity(){return activity;}
+
     public void setActivity(UserActivity uActive){this.activity = uActive;}
+
 }

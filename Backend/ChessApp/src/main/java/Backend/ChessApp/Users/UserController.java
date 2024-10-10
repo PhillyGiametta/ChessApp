@@ -1,33 +1,39 @@
 package Backend.ChessApp.Users;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 public class UserController {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private JpaRepository jpaRepository;
 
     private String Dsuccess = "{\"User was deleted\": \"successfully\"}";
     private String Postsuccess = "{\"User was created\": \"successfully\"}";
     private String Dfail = "{\"User was deleted\": \"Unsuccessfully\"}";
 
+    //Gets all users
     @GetMapping(path = "/users")
-    List<User> getAllUser() {return userRepository.findAll();}
+    List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
 
+    //Get specific user
     @GetMapping(path = "/users/{id}")
-    User getUser1(@PathVariable int id) {return userRepository.findById(id);}
+    User getUserById(@PathVariable int id) {
+        return userRepository.findById(id);
+    }
 
     @GetMapping(path = "users/{userName}")
-    User getUser2(@PathVariable String userName) {return userRepository.findByUserName(userName);}
+    User getUserByUsername(@PathVariable String userName) {
+        return userRepository.findByUserName(userName);
+    }
 
     @GetMapping(path = "users/{userEmail}")
-    User getUser3(@PathVariable String userEmail) {return userRepository.findByUserEmail(userEmail);}
+    User getUserByUserEmail(@PathVariable String userEmail) {
+        return userRepository.findByUserEmail(userEmail);
+    }
 
     @PostMapping(path = "/users")
     String createUser(@RequestBody User user){
@@ -40,7 +46,7 @@ public class UserController {
     }
 
     @PutMapping(path = "/users/{userName}")
-    User updateUser(@PathVariable String userName, @RequestBody User updated){
+    User updateUserByUsername(@PathVariable String userName, @RequestBody User updated){
         User user = userRepository.findByUserName(userName);
         if(user == null){
             return null;
@@ -50,7 +56,7 @@ public class UserController {
     }
 
     @PutMapping(path = "/users/{userEmail}")
-    User updateUser2(@PathVariable String userEmail, @RequestBody User updated){
+    User updateUserByUserEmail(@PathVariable String userEmail, @RequestBody User updated){
         User user = userRepository.findByUserEmail(userEmail);
         if(user == null){
             return null;
@@ -60,13 +66,13 @@ public class UserController {
     }
 
     @PutMapping(path = "/users/{userId}")
-    User updateUser(@PathVariable int id, @RequestBody User updated){
-        User user = userRepository.findById(id);
+    User updateUserByUserId(@PathVariable int userId, @RequestBody User updated){
+        User user = userRepository.findById(userId);
         if(user == null){
             return null;
         }
         userRepository.save(updated);
-        return userRepository.findById(id);
+        return userRepository.findById(userId);
     }
 
     @Transactional
@@ -82,5 +88,4 @@ public class UserController {
         return Dsuccess;
     }
 
-
-}
+ }

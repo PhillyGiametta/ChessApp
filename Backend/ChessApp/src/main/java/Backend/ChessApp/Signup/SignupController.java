@@ -1,7 +1,7 @@
-package com.coms309.Chess.signup;
+package Backend.ChessApp.Signup;
 
-import com.coms309.Chess.users.User;
-import com.coms309.Chess.users.UserRepository;
+import Backend.ChessApp.Users.User;
+import Backend.ChessApp.Users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,8 +18,8 @@ public class SignupController {
         if(user == null){
             return "Signup failed";
         }
-        String name = user.getUsername();
-        if(userRepository.findByUsername(name) != null){
+        String name = user.getUserName();
+        if(userRepository.findByUserName(name) != null){
             return "username already taken, please select a new username";
         }
         userRepository.save(user);
