@@ -39,20 +39,16 @@ public class ProfileActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
-        // Initialize API service
         apiService = retrofit.create(ApiService.class);
-
-        // Fetch the profile details
         loadProfile();
-
-        // Handle profile updates
         updateButton.setOnClickListener(v -> updateProfile());
-
-        // Handle profile deletion
-        deleteButton.setOnClickListener(v -> deleteProfile());
+        deleteButton.setOnClickListener(v -> {
+            Toast.makeText(ProfileActivity.this, "Delete button clicked", Toast.LENGTH_SHORT).show();
+            deleteProfile();
+        });
     }
 
-    // Load profile function
+    // Load profile from the backend
     private void loadProfile() {
         String username = getIntent().getStringExtra("USERNAME");
         apiService.getProfile(username).enqueue(new Callback<UserResponse>() {
@@ -61,7 +57,7 @@ public class ProfileActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     UserResponse user = response.body();
                     usernameEditText.setText(user.getUsername());
-                    emailEditText.setText(user.getEmail()); // Assuming the backend sends email too
+                    emailEditText.setText(user.getEmail());
                 } else {
                     Toast.makeText(ProfileActivity.this, "Error loading profile", Toast.LENGTH_SHORT).show();
                 }
@@ -79,6 +75,7 @@ public class ProfileActivity extends AppCompatActivity {
         String username = usernameEditText.getText().toString();
         String email = emailEditText.getText().toString();
         UserRequest updatedUser = new UserRequest(username, email);
+
         apiService.updateProfile(updatedUser).enqueue(new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
@@ -104,16 +101,21 @@ public class ProfileActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(ProfileActivity.this, "Profile deleted!", Toast.LENGTH_SHORT).show();
-                    finish(); // Close the activity
+                    finish(); // Close the activity after deletion
                 } else {
-                    Toast.makeText(ProfileActivity.this, "Delete failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileActivity.this, "Delete failed: " + response.message(), Toast.LENGTH_SHORT).show();
                 }
+                System.out.println("Response Code: " + response.code());
+                System.out.println("Response Message: " + response.message());
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(ProfileActivity.this, "Network Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileActivity.this, "Network Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                // Log the error for debugging
+                System.out.println("Network Error: " + t.getMessage());
             }
         });
     }
 }
+

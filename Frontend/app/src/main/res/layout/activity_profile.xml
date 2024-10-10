@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,13 +9,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Username"
-        android:enabled="false" />
+        android:enabled="true" />
 
     <EditText
         android:id="@+id/profile_email_edt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email" />
+
+    <Button
+        android:id="@+id/profile_create_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create Profile" />
 
     <Button
         android:id="@+id/profile_update_btn"
@@ -32,5 +37,12 @@
         android:layout_marginTop="16dp"
         android:background="#FF0000"
         android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/profile_list_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="List Profiles"
+        android:layout_marginTop="16dp" />
 
 </LinearLayout>
