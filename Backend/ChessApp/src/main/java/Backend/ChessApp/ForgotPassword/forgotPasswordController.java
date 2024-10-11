@@ -19,34 +19,34 @@ import java.util.UUID;
 
 @Controller
 public class forgotPasswordController {
-    @Autowired
-    private JavaMailSender mailSender;
-
-    @Autowired
-    private PasswordHandler passHand;
-
-    @GetMapping("/forgot_password")
-    public String showForgotPasswordForm() {
-        return "";
-    }
-
-    @PostMapping("/forgot_password")
-    public String processForgotPassword() {
-        return "";
-    }
-
-    public void sendEmail(){
-
-    }
-
-
-    @GetMapping("/reset_password")
-    public String showResetPasswordForm() {
-        return "";
-    }
-
-    @PostMapping("/reset_password")
-    public String processResetPassword() {
-        return "";
-    }
+//    @Autowired
+//    private JavaMailSender mailSender;
+//
+//    @Autowired
+//    private PasswordHandler passHand;
+//
+//    @GetMapping("/forgot_password")
+//    public String showForgotPasswordForm() {
+//        return "";
+//    }
+//
+//    @PostMapping("/forgot_password")
+//    public String processForgotPassword() {
+//        return "";
+//    }
+//
+//    public void sendEmail(){
+//
+//    }
+//
+//
+//    @GetMapping("/reset_password")
+//    public String showResetPasswordForm() {
+//        return "";
+//    }
+//
+//    @PostMapping("/reset_password")
+//    public String processResetPassword() {
+//        return "";
+//    }
 }
