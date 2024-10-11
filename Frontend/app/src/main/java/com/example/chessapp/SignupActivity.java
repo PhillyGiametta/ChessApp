@@ -103,7 +103,6 @@ public class SignupActivity extends AppCompatActivity {
                             startActivity(intent);
 
                         } else {
-                            // Handle error response
                             Toast.makeText(SignupActivity.this, "Signup failed: " + response.message(), Toast.LENGTH_LONG).show();
                         }
                     }
