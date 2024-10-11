@@ -1,6 +1,8 @@
 package Backend.ChessApp.Users;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 import org.springframework.boot.*;
 
@@ -27,6 +29,7 @@ public class User {
     private double userWLRatio;
     private UserActivity activity;
     private String passwordResetToken;
+    private LocalDateTime passwordResetTokenCreationDate;
 
     //CONSTRUCTORS----------------------------------------
 
@@ -105,5 +108,9 @@ public class User {
     public String getPasswordResetToken(){return passwordResetToken;}
 
     public void setPasswordResetToken(String token){this.passwordResetToken = token;}
+
+    public LocalDateTime getPasswordResetTokenCreationDate(){return this.passwordResetTokenCreationDate;}
+
+    public void setPasswordResetTokenCreationDate(LocalDateTime tokenCreationDate){this.passwordResetTokenCreationDate = tokenCreationDate;}
 
 }
