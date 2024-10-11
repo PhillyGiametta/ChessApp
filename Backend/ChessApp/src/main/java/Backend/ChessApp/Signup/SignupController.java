@@ -22,6 +22,7 @@ public class SignupController {
         if(userRepository.findByUserName(name) != null){
             return "username already taken, please select a new username";
         }
+        user = new User(user.getUserName(), user.getUserEmail() ,user.getUserPassword());
         userRepository.save(user);
         return "Successfully signed up";
     }
