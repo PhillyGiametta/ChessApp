@@ -26,6 +26,7 @@ public class User {
     private int userLosses;
     private double userWLRatio;
     private UserActivity activity;
+    private String passwordResetToken;
 
     //CONSTRUCTORS----------------------------------------
 

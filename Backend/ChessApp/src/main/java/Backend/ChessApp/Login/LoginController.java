@@ -1,7 +1,6 @@
-package com.coms309.Chess.login;
+package Backend.ChessApp.Login;
 
-import com.coms309.Chess.users.User;
-import com.coms309.Chess.users.UserRepository;
+import Backend.ChessApp.Users.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,12 +15,12 @@ public class LoginController {
     @PostMapping(path ="/login")
     String userLogin(@RequestBody User user){
 
-        int id = userRepository.findByUsername(user.getUsername()).getId();
-        String username = user.getUsername();
-        String password = user.getPassword();
+        int id = userRepository.findByUserName(user.getUserName()).getUserId();
+        String username = user.getUserName();
+        String password = user.getUserPassword();
 
-        if(username.equals(userRepository.findById(id).getUsername())
-                && password.equals(userRepository.findById(id).getPassword())){
+        if(username.equals(userRepository.findById(id).getUserName())
+                && password.equals(userRepository.findById(id).getUserPassword())){
             return "Successfully logged in.";
         }
         return "Failed to login, username or password incorrect.";
