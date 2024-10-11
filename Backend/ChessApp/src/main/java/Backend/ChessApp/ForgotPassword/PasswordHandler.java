@@ -2,8 +2,12 @@ package Backend.ChessApp.ForgotPassword;
 
 import Backend.ChessApp.Users.User;
 import Backend.ChessApp.Users.UserRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+@Service
+@Transactional
 public class PasswordHandler {
 
     UserRepository userRepo;
@@ -18,27 +22,23 @@ public class PasswordHandler {
         private String token;
         private String newPassword;
     }
-//    public void updateResetPasswordToken(String token, String userEmail)  {
-//        User user = userRepo.findByUserEmail(userEmail);
-//        if (user != null) {
-//            user.setResetPasswordToken(token);
-//            userRepo.save(user);
-//        } else {
-//            throw new CustomerNotFoundException("Could not find any user with the email " + email);
-//        }
-//    }
-//
-//    public Customer getByResetPasswordToken(String token) {
-//        return userRepo.findByResetPasswordToken(token);
-//    }
-//
-//    public void updatePassword(User user, String newPassword) {
-//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//        String encodedPassword = passwordEncoder.encode(newPassword);
-//        user.setPassword(encodedPassword);
-//
-//        user.setResetPasswordToken(null);
-//        userRepo.save(user);
-//    }
+    public void updateResetPasswordToken(String token, String userEmail)  {
+        User user = userRepo.findByUserEmail(userEmail);
+        if (user == null) {
+            return;
+        }
+        user.setPasswordResetToken(token);
+        userRepo.save(user);
+    }
+
+    public User getByResetPasswordToken(String token) {
+        return userRepo.findByPasswordResetToken(token);
+    }
+
+    public void updatePassword(User user, String newPassword) {
+        user.setUserPassword(newPassword);
+        user.setPasswordResetToken(null);
+        userRepo.save(user);
+    }
 
 }
