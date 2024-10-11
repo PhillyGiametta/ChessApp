@@ -1,9 +1,7 @@
 package Backend.ChessApp.Users;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -19,7 +17,9 @@ public class UserController {
 
     //Gets all users
     @GetMapping(path = "/users")
-    List<User> getAllUser() {return userRepository.findAll();}
+    List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
 
     //Get specific user
     @GetMapping(path = "/users/{id}")

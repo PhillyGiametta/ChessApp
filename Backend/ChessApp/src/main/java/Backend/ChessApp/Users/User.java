@@ -2,6 +2,7 @@ package Backend.ChessApp.Users;
 
 import jakarta.persistence.*;
 import java.util.Date;
+import org.springframework.boot.*;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
