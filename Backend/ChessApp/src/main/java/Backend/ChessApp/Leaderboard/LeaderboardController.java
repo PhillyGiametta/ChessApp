@@ -1,5 +1,8 @@
 package Backend.ChessApp.Leaderboard;
 
+import Backend.ChessApp.Users.User;
+import Backend.ChessApp.Users.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +28,7 @@ public class LeaderboardController {
 
     //Create
     @PostMapping(path = "/leaderboard")
-    public Leaderboard createLeaderboardEntry(Leaderboard leaderboard){
+    public Leaderboard createLeaderboardEntry(@RequestBody Leaderboard leaderboard){
         if(leaderboard == null){
             return null;
         }
@@ -39,8 +42,9 @@ public class LeaderboardController {
         if(leaderboard == null){
             return null;
         }
-        leaderboardRepository.save(update);
-        return leaderboardRepository.findById(id);
+        leaderboard.setRating(update.getRating());
+        leaderboard.setRankPosition(update.getRankPosition());
+        return leaderboardRepository.save(leaderboard);
     }
 
     //Delete
