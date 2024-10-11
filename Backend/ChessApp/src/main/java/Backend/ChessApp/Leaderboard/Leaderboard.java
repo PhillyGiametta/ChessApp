@@ -12,13 +12,54 @@ public class Leaderboard {
     //CLASS VARIABLES-------------------------------------------
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private int leaderboardId;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "leaderboard_id", nullable = false)
+    private int id;
 
     private int rankPosition;
     private int rating;
-    private
+
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    public Leaderboard(){
+
+    }
+    public Leaderboard(int rankPosition, int rating) {
+        this.rankPosition = rankPosition;
+        this.rating = rating;
+    }
+
+    public int getId() {
+        return id;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getRankPosition() {
+        return rankPosition;
+    }
+
+    public void setRankPosition(int rankPosition) {
+        this.rankPosition = rankPosition;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
 }
