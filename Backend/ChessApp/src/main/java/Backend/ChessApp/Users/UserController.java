@@ -47,33 +47,37 @@ public class UserController {
         return Postsuccess;
     }
 
-    @PutMapping(path = "/users/{userName}")
-    User updateUserByUsername(@PathVariable String userName, @RequestBody User updated){
+    @PutMapping(path = "/users/userName/{userName}")
+    User updateUserByUsername(@PathVariable String userName, @RequestParam(value = "userPassword") String password){
         User user = userRepository.findByUserName(userName);
         if(user == null){
             return null;
         }
-        userRepository.save(updated);
+        user.setUserPassword(password);
+        userRepository.save(user);
         return userRepository.findByUserName(userName);
     }
 
-    @PutMapping(path = "/users/{userEmail}")
-    User updateUserByUserEmail(@PathVariable String userEmail, @RequestBody User updated){
+    @PutMapping(path = "/users/userEmail/{userEmail}")
+    User updateUserByUserEmail(@PathVariable String userEmail, @RequestParam(value = "userPassword") String password){
         User user = userRepository.findByUserEmail(userEmail);
         if(user == null){
             return null;
         }
-        userRepository.save(updated);
+        user.setUserPassword(password);
+        userRepository.save(user);
         return userRepository.findByUserEmail(userEmail);
     }
 
+
     @PutMapping(path = "/users/{userId}")
-    User updateUserByUserId(@PathVariable int userId, @RequestBody User updated){
+    User updateUserByUserId(@PathVariable int userId, @RequestParam(value = "userPassword") String password){
         User user = userRepository.findById(userId);
         if(user == null){
             return null;
         }
-        userRepository.save(updated);
+        user.setUserPassword(password);
+        userRepository.save(user);
         return userRepository.findById(userId);
     }
 
