@@ -25,12 +25,12 @@ public class UserController {
         return userRepository.findById(id);
     }
 
-    @GetMapping(path = "users/{userName}")
+    @GetMapping(path = "/users/{userName}")
     User getUserByUsername(@PathVariable String userName) {
         return userRepository.findByUserName(userName);
     }
 
-    @GetMapping(path = "users/{userEmail}")
+    @GetMapping(path = "/users/{userEmail}")
     User getUserByUserEmail(@PathVariable String userEmail) {
         return userRepository.findByUserEmail(userEmail);
     }
