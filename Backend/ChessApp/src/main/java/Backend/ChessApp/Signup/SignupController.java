@@ -1,7 +1,6 @@
 package Backend.ChessApp.Signup;
 
-import Backend.ChessApp.Users.User;
-import Backend.ChessApp.Users.UserRepository;
+import Backend.ChessApp.Users.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
