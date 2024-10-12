@@ -1,19 +1,25 @@
 package com.example.chessapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import retrofit2.Call;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -48,54 +54,59 @@ public class LoginActivity extends AppCompatActivity {
         apiService = retrofit.create(ApiService.class);
 
         // Set click listener on login button
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Grab strings from user inputs
-                String username = usernameEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
+        loginButton.setOnClickListener(v -> {
+            // Grab strings from user inputs
+            String username = usernameEditText.getText().toString();
+            String password = passwordEditText.getText().toString();
 
-                // Validate input fields are not empty
-                if (username.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(LoginActivity.this, "Please enter both username and password.", Toast.LENGTH_LONG).show();
-                    return;
+            // Validate input fields are not empty
+            if (username.isEmpty() || password.isEmpty()) {
+                Toast.makeText(LoginActivity.this, "Please enter both username and password.", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            // Create the request body (UserRequest object)
+            UserRequest userRequest = new UserRequest(username, password);
+            Log.d("LoginActivity", "Sending JSON: " + new Gson().toJson(userRequest));
+
+            // API call for login using Retrofit
+            apiService.loginUser(userRequest).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        try {
+                            String responseMessage = response.body().string();
+                            Toast.makeText(LoginActivity.this, responseMessage, Toast.LENGTH_LONG).show();
+
+                            // Navigate to the next activity if signup is successful
+                            if (responseMessage.equals("signup successful")) {
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(LoginActivity.this, "Error reading response", Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Signup failed: " + response.message(), Toast.LENGTH_LONG).show();
+                        Log.e("SignupError", "Response failure: " + response.message());
+                    }
                 }
 
-                // Create the request body (UserRequest object)
-                UserRequest userRequest = new UserRequest(username, password);
-
-                // API call for login using Retrofit
-                apiService.loginUser(userRequest).enqueue(new Callback<UserResponse>() {
-                    @Override
-                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            // Success: Navigate to the main activity
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            intent.putExtra("USERNAME", username);  // Pass username to MainActivity
-                            startActivity(intent);
-                        } else {
-                            // Handle login failure (e.g., wrong credentials)
-                            Toast.makeText(LoginActivity.this, "Login failed: " + response.message(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<UserResponse> call, Throwable t) {
-                        // Network error or JSON parsing issue
-                        Toast.makeText(LoginActivity.this, "Network Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    // Network error or JSON parsing issue
+                    Toast.makeText(LoginActivity.this, "Network Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                    Log.e("NetworkError", "Error during login", t);
+                }
+            });
         });
 
         // Set click listener on signup button
-        signupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Switch to Signup Activity
-                Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
-                startActivity(intent);
-            }
+        signupButton.setOnClickListener(v -> {
+            // Switch to Signup Activity
+            Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+            startActivity(intent);
         });
     }
 }

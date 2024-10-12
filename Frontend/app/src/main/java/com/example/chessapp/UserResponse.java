@@ -7,21 +7,21 @@ public class UserResponse {
     @SerializedName("id")
     private int id;
 
-    @SerializedName("username")
-    private String username;
+    @SerializedName("userName")
+    private String userName;
 
-    @SerializedName("email")
-    private String email;
+    @SerializedName("userEmail")
+    private String userEmail;
 
     public int getId() {
         return id; // Return user ID
     }
 
     public String getUsername() {
-        return username;
+        return userName;
     }
 
     public String getEmail() {
-        return email;
+        return userEmail;
     }
 }

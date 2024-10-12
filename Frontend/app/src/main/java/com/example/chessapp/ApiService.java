@@ -1,6 +1,8 @@
 package com.example.chessapp;
 
 import java.util.List;
+
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -13,10 +15,11 @@ public interface ApiService {
 
     // Sign Up and Login
     @POST("/signup")
-    Call<UserResponse> signupUser(@Body UserRequest userRequest);
+    Call<ResponseBody> signupUser(@Body UserRequest userRequest);
+
 
     @POST("/login")
-    Call<UserResponse> loginUser(@Body UserRequest userRequest);
+    Call<ResponseBody> loginUser(@Body UserRequest userRequest);
 
     @GET("/users/username/{userName}")
     Call<UserResponse> getProfile(@Path("userName") String userName);

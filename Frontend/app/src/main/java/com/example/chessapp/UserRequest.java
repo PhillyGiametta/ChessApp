@@ -10,20 +10,20 @@ public class UserRequest {
     @SerializedName("userEmail")
     private String userEmail;
 
-    @SerializedName("password")
-    private String password;
+    @SerializedName("userPassword")
+    private String userPassword;
 
     // Constructor for username, userEmail, and password
     public UserRequest(String username, String email, String password) {
         this.userName = username;
         this.userEmail = email;
-        this.password = password;
+        this.userPassword = password;
     }
 
     // Overloaded constructor for username and password only (for login)
     public UserRequest(String username, String password) {
         this.userName = username;
-        this.password = password;
+        this.userPassword = password;
     }
 
     // Getters if needed
@@ -35,7 +35,7 @@ public class UserRequest {
         return userEmail;
     }
 
-    public String getPassword() {
-        return password;
+    public String userPassword() {
+        return userPassword;
     }
 }
