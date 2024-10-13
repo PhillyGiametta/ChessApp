@@ -39,42 +39,51 @@ public class UserController {
 
     @PostMapping(path = "/users")
     String createUser(@RequestBody User user){
-        if(user == null){
+        if(user == null || user.getUserName() == null || user.getUserPassword() == null || user.getUserEmail() == null)
             return "User is invalid";
-        }
+        else if(userRepository.existsByUserEmail(user.getUserEmail()))
+            return "Email already in use";
+        else if (userRepository.existsByUserName(user.getUserName()))
+            return "Username already in use";
+
         user = new User(user.getUserName(), user.getUserEmail() ,user.getUserPassword());
         userRepository.save(user);
         return Postsuccess;
     }
+    @PostMapping(path = "/users/CopyUser")
 
-    @PutMapping(path = "/users/{userName}")
-    User updateUserByUsername(@PathVariable String userName, @RequestBody User updated){
-        User user = userRepository.findByUserName(userName);
-        if(user == null){
-            return null;
-        }
-        userRepository.save(updated);
-        return userRepository.findByUserName(userName);
-    }
-
-    @PutMapping(path = "/users/{userEmail}")
-    User updateUserByUserEmail(@PathVariable String userEmail, @RequestBody User updated){
+    @PutMapping(path = "/users/changePasswordFromEmail/{userEmail}")
+    User updateUserByUsername(@PathVariable String userEmail, @RequestParam(value = "userPassword") String password){
         User user = userRepository.findByUserEmail(userEmail);
         if(user == null){
             return null;
         }
-        userRepository.save(updated);
-        return userRepository.findByUserEmail(userEmail);
+        user.setUserPassword(password);
+        userRepository.save(user);
+        return user;
     }
 
-    @PutMapping(path = "/users/{userId}")
-    User updateUserByUserId(@PathVariable int userId, @RequestBody User updated){
+    @PutMapping(path = "/users/changeUserName/{userEmail}")
+    User updateUserByUserEmail(@PathVariable String userEmail, @RequestParam(value = "userName") String userName){
+        User user = userRepository.findByUserEmail(userEmail);
+        if(user == null){
+            return null;
+        }
+        user.setUserName(userName);
+        userRepository.save(user);
+        return user;
+    }
+
+
+    @PutMapping(path = "/users/changePassword/{userId}")
+    User updateUserByUserId(@PathVariable int userId, @RequestParam(value = "userPassword") String password){
         User user = userRepository.findById(userId);
         if(user == null){
             return null;
         }
-        userRepository.save(updated);
-        return userRepository.findById(userId);
+        user.setUserPassword(password);
+        userRepository.save(user);
+        return user;
     }
 
     @Transactional

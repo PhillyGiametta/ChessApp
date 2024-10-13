@@ -14,10 +14,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
@@ -32,30 +29,46 @@ public class forgotPasswordController {
     @Autowired
     private PasswordHandler passHand;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/forgot_password")
     public String showForgotPasswordForm() {
         return "form_password_reset";
     }
 
-    @PostMapping("/forgot_password")
-    public String processForgotPassword(HttpServletRequest request, Model model) {
-        String email = request.getParameter("email");
-        String token = RandomString.make(30);
+//    @PostMapping("/forgot_password")
+//    public String processForgotPassword(HttpServletRequest request, Model model) {
+//        String email = request.getParameter("email");
+//        String token = RandomString.make(30);
+//
+//        try {
+//            passHand.updateResetPasswordToken(token, email);
+//            String resetPasswordLink = EmailUtil.getSiteURL(request) + "/reset_password?token=" + token;
+//            sendEmail(email, resetPasswordLink);
+//            model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
+//
+//        } catch (UserNotFoundException ex) {
+//            model.addAttribute("error", ex.getMessage());
+//        } catch (UnsupportedEncodingException | MessagingException e) {
+//            model.addAttribute("error", "Error while sending email");
+//        }
+//
+//        return "forgot_password_form";
+//    }
+@PostMapping("/forgot_password")
+public String forgotPassword(@RequestParam String email) {
 
-        try {
-            passHand.updateResetPasswordToken(token, email);
-            String resetPasswordLink = EmailUtil.getSiteURL(request) + "/reset_password?token=" + token;
-            sendEmail(email, resetPasswordLink);
-            model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
+    String response = userService.forgotPassword(email);
 
-        } catch (UserNotFoundException ex) {
-            model.addAttribute("error", ex.getMessage());
-        } catch (UnsupportedEncodingException | MessagingException e) {
-            model.addAttribute("error", "Error while sending email");
-        }
-
-        return "forgot_password_form";
+    if (!response.startsWith("Invalid")) {
+        response = "http://localhost:8080/reset-password?token=" + response;
     }
+    return response;
+}
 
 
     @GetMapping("/reset_password")
@@ -89,6 +102,13 @@ public class forgotPasswordController {
         }
 
         return "message";
+    }
+
+    @PutMapping("/reset-password")
+    public String resetPassword(@RequestParam String token,
+                                @RequestParam String password) {
+
+        return userService.resetPassword(token, password);
     }
 
     public void sendEmail(String recipientEmail, String link)
