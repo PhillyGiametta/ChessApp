@@ -8,6 +8,8 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
+  //  @Autowired
+  //  private JpaRepository jpaRepository;
 
     private String Dsuccess = "{\"User was deleted\": \"successfully\"}";
     private String Postsuccess = "{\"User was created\": \"successfully\"}";
@@ -25,12 +27,12 @@ public class UserController {
         return userRepository.findById(id);
     }
 
-    @GetMapping(path = "/users/{userName}")
+    @GetMapping(path = "users/userName/{userName}")
     User getUserByUsername(@PathVariable String userName) {
         return userRepository.findByUserName(userName);
     }
 
-    @GetMapping(path = "/users/{userEmail}")
+    @GetMapping(path = "users/userEmail/{userEmail}")
     User getUserByUserEmail(@PathVariable String userEmail) {
         return userRepository.findByUserEmail(userEmail);
     }

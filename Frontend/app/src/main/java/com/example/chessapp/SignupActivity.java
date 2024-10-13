@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +13,9 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -87,31 +91,38 @@ public class SignupActivity extends AppCompatActivity {
 
                 // Create the request body (UserRequest object)
                 UserRequest userRequest = new UserRequest(username, password);
+                Log.d("LoginActivity", "Sending JSON: " + new Gson().toJson(userRequest));
 
                 // API call for signup using Retrofit
-                apiService.signupUser(userRequest).enqueue(new Callback<UserResponse>() {
+                apiService.signupUser(userRequest).enqueue(new Callback<ResponseBody>() {
                     @Override
-                    public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            UserResponse userResponse = response.body();
+                            try {
+                                String responseMessage = response.body().string();
+                                Toast.makeText(SignupActivity.this, responseMessage, Toast.LENGTH_LONG).show();
 
-                            // Display success message
-                            Toast.makeText(SignupActivity.this, "Signup successful! Welcome, " + username, Toast.LENGTH_LONG).show();
-
-                            // Navigate to the next activity after signup
-                            Intent intent = new Intent(SignupActivity.this, MainActivity.class);
-                            startActivity(intent);
-
+                                // Navigate to the next activity if signup is successful
+                                if (responseMessage.equals("signup successful")) {
+                                    Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                Toast.makeText(SignupActivity.this, "Error reading response", Toast.LENGTH_LONG).show();
+                            }
                         } else {
-                            // Handle error response
                             Toast.makeText(SignupActivity.this, "Signup failed: " + response.message(), Toast.LENGTH_LONG).show();
+                            Log.e("SignupError", "Response failure: " + response.message());
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<UserResponse> call, Throwable t) {
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
                         // Handle network or parsing failure
                         Toast.makeText(SignupActivity.this, "Network Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.e("NetworkError", t.toString());
+                        t.printStackTrace(); // Optional: prints the stack trace for more details
                     }
                 });
             }

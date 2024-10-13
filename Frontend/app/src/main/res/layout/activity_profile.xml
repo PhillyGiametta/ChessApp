@@ -1,9 +1,11 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- Username EditText -->
     <EditText
         android:id="@+id/profile_username_edt"
         android:layout_width="match_parent"
@@ -11,24 +13,36 @@
         android:hint="Username"
         android:enabled="true" />
 
+    <!-- Email EditText -->
     <EditText
         android:id="@+id/profile_email_edt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email" />
 
+    <!-- Password EditText -->
+    <EditText
+        android:id="@+id/profile_password_edt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:inputType="textPassword" />
+
+    <!-- Create Button -->
     <Button
         android:id="@+id/profile_create_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Create Profile" />
 
+    <!-- Update Button -->
     <Button
         android:id="@+id/profile_update_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Update Profile" />
 
+    <!-- Delete Button -->
     <Button
         android:id="@+id/profile_delete_btn"
         android:layout_width="match_parent"
@@ -38,6 +52,7 @@
         android:background="#FF0000"
         android:textColor="#FFFFFF" />
 
+    <!-- List Button -->
     <Button
         android:id="@+id/profile_list_btn"
         android:layout_width="match_parent"

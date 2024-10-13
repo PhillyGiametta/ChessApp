@@ -26,6 +26,7 @@ public class User {
     private int userLosses;
     private double userWLRatio;
     private UserActivity activity;
+    private String passwordResetToken;
 
     //CONSTRUCTORS----------------------------------------
 
@@ -100,5 +101,9 @@ public class User {
     public UserActivity getActivity(){return activity;}
 
     public void setActivity(UserActivity uActive){this.activity = uActive;}
+
+    public String getPasswordResetToken(){return passwordResetToken;}
+
+    public void setPasswordResetToken(String token){this.passwordResetToken = token;}
 
 }
