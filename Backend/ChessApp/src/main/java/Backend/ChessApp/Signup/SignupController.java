@@ -1,5 +1,8 @@
 package Backend.ChessApp.Signup;
 
+import Backend.ChessApp.Leaderboard.LeaderboardService;
+import Backend.ChessApp.Leaderboard.LeaderboardEntry;
+import Backend.ChessApp.Leaderboard.LeaderboardRepository;
 import Backend.ChessApp.Users.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,7 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SignupController {
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private LeaderboardRepository leaderboardRepository;
+
+    @Autowired
+    private LeaderboardService leaderboardService;
 
     //when user signs up
     @PostMapping(path = "/signup")
@@ -23,6 +32,10 @@ public class SignupController {
         }
         user = new User(user.getUserName(), user.getUserEmail() ,user.getUserPassword());
         userRepository.save(user);
+
+        LeaderboardEntry leaderboardEntry = new LeaderboardEntry(user);
+        leaderboardRepository.save(leaderboardEntry);
+        leaderboardService.updateRankings();
         return "Successfully signed up";
     }
 

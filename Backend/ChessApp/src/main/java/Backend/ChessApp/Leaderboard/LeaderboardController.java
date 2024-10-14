@@ -2,7 +2,6 @@ package Backend.ChessApp.Leaderboard;
 
 import Backend.ChessApp.Users.User;
 import Backend.ChessApp.Users.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,46 +10,82 @@ import java.util.List;
 @RestController
 public class LeaderboardController {
 
+
+
     @Autowired
     private LeaderboardRepository leaderboardRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private LeaderboardService leaderboardService;
     //List
     @GetMapping(path = "/leaderboard")
-    public List<Leaderboard> getLeaderboard() {
-        return leaderboardRepository.findAll();
+    public List<LeaderboardEntry> getLeaderboard() {
+        return leaderboardRepository.findAllByOrderByRankPositionAsc();
     }
 
     //Get
     @GetMapping(path = "/leaderboard/{id}")
-    public Leaderboard getLeaderboard(@PathVariable int id) {
+    public LeaderboardEntry getLeaderboard(@PathVariable int id) {
         return leaderboardRepository.findById(id);
     }
 
     //Create
     @PostMapping(path = "/leaderboard")
-    public Leaderboard createLeaderboardEntry(@RequestBody Leaderboard leaderboard){
-        if(leaderboard == null){
+    public LeaderboardEntry createLeaderboardEntry(@RequestBody LeaderboardEntry leaderboardEntry){
+        if(leaderboardEntry == null){
             return null;
         }
-        return leaderboardRepository.save(leaderboard);
+
+        User user = userRepository.findById(leaderboardEntry.getUser().getUserId());
+        if(user == null){
+            return null;
+        }
+        leaderboardEntry.setUser(user);
+        leaderboardRepository.save(leaderboardEntry);
+        leaderboardService.updateRankings();
+        return leaderboardEntry;
+    }
+
+    //Create
+    @PostMapping(path = "/leaderboard/{id}")
+    public LeaderboardEntry createLeaderboardEntry(@RequestBody LeaderboardEntry leaderboardEntry, @PathVariable int id){
+        if(leaderboardEntry == null){
+            return null;
+        }
+
+        User user = userRepository.findById(id);
+        if(user == null){
+            return null;
+        }
+        leaderboardEntry.setUser(user);
+
+        leaderboardRepository.save(leaderboardEntry);
+        leaderboardService.updateRankings();
+        return leaderboardEntry;
     }
 
     //Update
     @PutMapping(path = "/leaderboard/{id}")
-    public Leaderboard updateLeaderboardEntry(@PathVariable int id, @RequestBody Leaderboard update){
-        Leaderboard leaderboard = leaderboardRepository.findById(id);
+    public LeaderboardEntry updateLeaderboardEntry(@PathVariable int id, @RequestBody LeaderboardEntry update){
+        LeaderboardEntry leaderboard = leaderboardRepository.findById(id);
         if(leaderboard == null){
             return null;
         }
         leaderboard.setRating(update.getRating());
         leaderboard.setRankPosition(update.getRankPosition());
-        return leaderboardRepository.save(leaderboard);
+        leaderboardRepository.save(leaderboard);
+        leaderboardService.updateRankings();
+        return leaderboard;
     }
 
     //Delete
     @DeleteMapping(path = "/leaderboard/{id}")
     public String deleteLeaderboardEntry(@PathVariable int id){
         leaderboardRepository.deleteById(id);
+        leaderboardService.updateRankings();
         return "deleted entry";
     }
 }
