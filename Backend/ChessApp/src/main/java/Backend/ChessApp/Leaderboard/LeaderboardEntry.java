@@ -25,9 +25,8 @@ public class LeaderboardEntry {
     public LeaderboardEntry(){
 
     }
-    public LeaderboardEntry(int rankPosition, int rating) {
-        this.rankPosition = rankPosition;
-        this.rating = rating;
+    public LeaderboardEntry(User user) {
+        this.user = user;
     }
 
     public int getId() {
@@ -54,12 +53,12 @@ public class LeaderboardEntry {
         this.rating = rating;
     }
 
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
 }
