@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface LeaderboardRepository extends JpaRepository<Leaderboard, Integer> {
-    Leaderboard findById(int id);
+public interface LeaderboardRepository extends JpaRepository<LeaderboardEntry, Integer> {
+    LeaderboardEntry findById(int id);
 
 //    List<Leaderboard> findAllByRankPosition();
 }
