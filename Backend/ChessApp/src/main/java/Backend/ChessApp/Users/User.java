@@ -29,9 +29,6 @@ public class User {
     private UserActivity activity;
     private String passwordResetToken;
 
-//    @OneToOne(mappedBy = "user")
-//    private LeaderboardEntry leaderboardEntry;
-
     //CONSTRUCTORS----------------------------------------
 
     public User(){
