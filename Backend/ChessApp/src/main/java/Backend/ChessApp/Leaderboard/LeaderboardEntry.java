@@ -14,7 +14,9 @@ public class LeaderboardEntry {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "leaderboard_entry_id", nullable = false)
     private int id;
-
+    private int wins;
+    private int losses;
+    private double winLossRatio;
     private int rankPosition;
     private int rating;
 
@@ -27,6 +29,19 @@ public class LeaderboardEntry {
     }
     public LeaderboardEntry(User user) {
         this.user = user;
+        rankPosition = 0;
+        rating = 0;
+        wins = 0;
+        losses = 0;
+        winLossRatio = 0;
+    }
+
+    public void calculateWinLossRatio(){
+        if(losses == 0){
+            winLossRatio = wins;
+        }else{
+            winLossRatio = (double) (wins / losses);
+        }
     }
 
     public int getId() {
@@ -59,6 +74,30 @@ public class LeaderboardEntry {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public int getUserWins() {
+        return wins;
+    }
+
+    public void setUserWins(int wins) {
+        this.wins = wins;
+    }
+
+    public int getUserLosses() {
+        return losses;
+    }
+
+    public void setUserLosses(int losses) {
+        this.losses = losses;
+    }
+
+    public double getUserWLRatio() {
+        return winLossRatio;
+    }
+
+    public void setUserWLRatio(double winLossRatio) {
+        this.winLossRatio = winLossRatio;
     }
 
 }
