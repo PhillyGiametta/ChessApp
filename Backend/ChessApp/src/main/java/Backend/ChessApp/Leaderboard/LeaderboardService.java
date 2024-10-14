@@ -3,17 +3,16 @@ package Backend.ChessApp.Leaderboard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 @Service
-public class LeaderBoardService {
+public class LeaderboardService {
 
     @Autowired
     private LeaderboardRepository leaderboardRepository;
 
-    public LeaderBoardService() {}
+    public LeaderboardService() {}
 
     public List<LeaderboardEntry> updateRankings(){
         List<LeaderboardEntry> leaderboardEntries = leaderboardRepository.findAll();

@@ -1,6 +1,6 @@
 package Backend.ChessApp.Signup;
 
-import Backend.ChessApp.Leaderboard.LeaderBoardService;
+import Backend.ChessApp.Leaderboard.LeaderboardService;
 import Backend.ChessApp.Leaderboard.LeaderboardEntry;
 import Backend.ChessApp.Leaderboard.LeaderboardRepository;
 import Backend.ChessApp.Users.*;
@@ -18,7 +18,7 @@ public class SignupController {
     private LeaderboardRepository leaderboardRepository;
 
     @Autowired
-    private LeaderBoardService leaderBoardService;
+    private LeaderboardService leaderboardService;
 
     //when user signs up
     @PostMapping(path = "/signup")
@@ -35,7 +35,7 @@ public class SignupController {
 
         LeaderboardEntry leaderboardEntry = new LeaderboardEntry(user);
         leaderboardRepository.save(leaderboardEntry);
-        leaderBoardService.updateRankings();
+        leaderboardService.updateRankings();
         return "Successfully signed up";
     }
 

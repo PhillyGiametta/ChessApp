@@ -2,7 +2,6 @@ package Backend.ChessApp.Leaderboard;
 
 import Backend.ChessApp.Users.User;
 import Backend.ChessApp.Users.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +19,7 @@ public class LeaderboardController {
     private UserRepository userRepository;
 
     @Autowired
-    private LeaderBoardService leaderBoardService;
+    private LeaderboardService leaderboardService;
     //List
     @GetMapping(path = "/leaderboard")
     public List<LeaderboardEntry> getLeaderboard() {
@@ -46,7 +45,7 @@ public class LeaderboardController {
         }
         leaderboardEntry.setUser(user);
         leaderboardRepository.save(leaderboardEntry);
-        leaderBoardService.updateRankings();
+        leaderboardService.updateRankings();
         return leaderboardEntry;
     }
 
@@ -64,7 +63,7 @@ public class LeaderboardController {
         leaderboardEntry.setUser(user);
 
         leaderboardRepository.save(leaderboardEntry);
-        leaderBoardService.updateRankings();
+        leaderboardService.updateRankings();
         return leaderboardEntry;
     }
 
@@ -78,7 +77,7 @@ public class LeaderboardController {
         leaderboard.setRating(update.getRating());
         leaderboard.setRankPosition(update.getRankPosition());
         leaderboardRepository.save(leaderboard);
-        leaderBoardService.updateRankings();
+        leaderboardService.updateRankings();
         return leaderboard;
     }
 
@@ -86,7 +85,7 @@ public class LeaderboardController {
     @DeleteMapping(path = "/leaderboard/{id}")
     public String deleteLeaderboardEntry(@PathVariable int id){
         leaderboardRepository.deleteById(id);
-        leaderBoardService.updateRankings();
+        leaderboardService.updateRankings();
         return "deleted entry";
     }
 }
