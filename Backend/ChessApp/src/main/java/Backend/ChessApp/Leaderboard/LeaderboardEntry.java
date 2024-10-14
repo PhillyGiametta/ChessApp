@@ -10,8 +10,6 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Table(name = "leaderboard", schema = "DBChessApp")
 public class LeaderboardEntry {
 
-    //CLASS VARIABLES-------------------------------------------
-
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "leaderboard_entry_id", nullable = false)
@@ -29,6 +27,7 @@ public class LeaderboardEntry {
     public LeaderboardEntry(){
 
     }
+
     public LeaderboardEntry(User user) {
         this.user = user;
         rankPosition = 0;
