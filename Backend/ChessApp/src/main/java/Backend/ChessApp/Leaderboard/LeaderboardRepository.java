@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface LeaderboardRepository extends JpaRepository<LeaderboardEntry, Integer> {
     LeaderboardEntry findById(int id);
-
-//    List<Leaderboard> findAllByRankPosition();
+    List<LeaderboardEntry> findAllByOrderByRankPositionAsc();
 }

@@ -2,6 +2,7 @@ package Backend.ChessApp.Leaderboard;
 
 import Backend.ChessApp.Users.User;
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -10,6 +11,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class LeaderboardEntry {
 
     //CLASS VARIABLES-------------------------------------------
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "leaderboard_entry_id", nullable = false)

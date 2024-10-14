@@ -9,8 +9,11 @@ import java.util.List;
 
 @Service
 public class LeaderBoardService {
+
     @Autowired
     private LeaderboardRepository leaderboardRepository;
+
+    public LeaderBoardService() {}
 
     public List<LeaderboardEntry> updateRankings(){
         List<LeaderboardEntry> leaderboardEntries = leaderboardRepository.findAll();
@@ -31,6 +34,6 @@ class SortById implements Comparator<LeaderboardEntry>{
 
     @Override
     public int compare(LeaderboardEntry a, LeaderboardEntry b) {
-        return a.getRating() - b.getRating();
+        return Integer.compare(b.getRating(), a.getRating());
     }
 }

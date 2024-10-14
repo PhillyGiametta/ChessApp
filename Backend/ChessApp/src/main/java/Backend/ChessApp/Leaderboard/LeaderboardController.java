@@ -11,16 +11,20 @@ import java.util.List;
 @RestController
 public class LeaderboardController {
 
+
+
     @Autowired
     private LeaderboardRepository leaderboardRepository;
 
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private LeaderBoardService leaderBoardService;
     //List
     @GetMapping(path = "/leaderboard")
     public List<LeaderboardEntry> getLeaderboard() {
-        return leaderboardRepository.findAll();
+        return leaderboardRepository.findAllByOrderByRankPositionAsc();
     }
 
     //Get
@@ -41,7 +45,9 @@ public class LeaderboardController {
             return null;
         }
         leaderboardEntry.setUser(user);
-        return leaderboardRepository.save(leaderboardEntry);
+        leaderboardRepository.save(leaderboardEntry);
+        leaderBoardService.updateRankings();
+        return leaderboardEntry;
     }
 
     //Create
@@ -56,7 +62,10 @@ public class LeaderboardController {
             return null;
         }
         leaderboardEntry.setUser(user);
-        return leaderboardRepository.save(leaderboardEntry);
+
+        leaderboardRepository.save(leaderboardEntry);
+        leaderBoardService.updateRankings();
+        return leaderboardEntry;
     }
 
     //Update
@@ -68,13 +77,16 @@ public class LeaderboardController {
         }
         leaderboard.setRating(update.getRating());
         leaderboard.setRankPosition(update.getRankPosition());
-        return leaderboardRepository.save(leaderboard);
+        leaderboardRepository.save(leaderboard);
+        leaderBoardService.updateRankings();
+        return leaderboard;
     }
 
     //Delete
     @DeleteMapping(path = "/leaderboard/{id}")
     public String deleteLeaderboardEntry(@PathVariable int id){
         leaderboardRepository.deleteById(id);
+        leaderBoardService.updateRankings();
         return "deleted entry";
     }
 }
