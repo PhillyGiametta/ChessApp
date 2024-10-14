@@ -14,31 +14,55 @@ public class LeaderboardController {
     @Autowired
     private LeaderboardRepository leaderboardRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     //List
     @GetMapping(path = "/leaderboard")
-    public List<Leaderboard> getLeaderboard() {
+    public List<LeaderboardEntry> getLeaderboard() {
         return leaderboardRepository.findAll();
     }
 
     //Get
     @GetMapping(path = "/leaderboard/{id}")
-    public Leaderboard getLeaderboard(@PathVariable int id) {
+    public LeaderboardEntry getLeaderboard(@PathVariable int id) {
         return leaderboardRepository.findById(id);
     }
 
     //Create
     @PostMapping(path = "/leaderboard")
-    public Leaderboard createLeaderboardEntry(@RequestBody Leaderboard leaderboard){
-        if(leaderboard == null){
+    public LeaderboardEntry createLeaderboardEntry(@RequestBody LeaderboardEntry leaderboardEntry){
+        if(leaderboardEntry == null){
             return null;
         }
-        return leaderboardRepository.save(leaderboard);
+
+        User user = userRepository.findById(leaderboardEntry.getUser().getUserId());
+        if(user == null){
+            return null;
+        }
+        leaderboardEntry.setUser(user);
+        return leaderboardRepository.save(leaderboardEntry);
+    }
+
+    //Create
+    @PostMapping(path = "/leaderboard/{id}")
+    public LeaderboardEntry createLeaderboardEntry(@RequestBody LeaderboardEntry leaderboardEntry, @PathVariable int id){
+        if(leaderboardEntry == null){
+            return null;
+        }
+
+        User user = userRepository.findById(id);
+        if(user == null){
+            return null;
+        }
+        leaderboardEntry.setUser(user);
+        return leaderboardRepository.save(leaderboardEntry);
     }
 
     //Update
     @PutMapping(path = "/leaderboard/{id}")
-    public Leaderboard updateLeaderboardEntry(@PathVariable int id, @RequestBody Leaderboard update){
-        Leaderboard leaderboard = leaderboardRepository.findById(id);
+    public LeaderboardEntry updateLeaderboardEntry(@PathVariable int id, @RequestBody LeaderboardEntry update){
+        LeaderboardEntry leaderboard = leaderboardRepository.findById(id);
         if(leaderboard == null){
             return null;
         }
