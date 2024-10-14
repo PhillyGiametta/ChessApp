@@ -6,21 +6,21 @@ import jakarta.persistence.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-//@Table(name = "leaderboard", schema = "DBChessApp")
+@Table(name = "leaderboard", schema = "DBChessApp")
 public class Leaderboard {
 
     //CLASS VARIABLES-------------------------------------------
     @Id
     @GeneratedValue(strategy = IDENTITY)
-//    @Column(name = "leaderboard_id")
+    @Column(name = "leaderboard_id")
     private int id;
 
     private int rankPosition;
     private int rating;
 
-//    @OneToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Leaderboard(){
 

@@ -1,5 +1,6 @@
 package Backend.ChessApp.Users;
 
+import Backend.ChessApp.Leaderboard.Leaderboard;
 import jakarta.persistence.*;
 import java.util.Date;
 import org.springframework.boot.*;
@@ -27,6 +28,10 @@ public class User {
     private double userWLRatio;
     private UserActivity activity;
     private String passwordResetToken;
+
+    @OneToOne
+    @JoinColumn(name = "leaderboard_id")
+    private Leaderboard leaderboard;
 
     //CONSTRUCTORS----------------------------------------
 
