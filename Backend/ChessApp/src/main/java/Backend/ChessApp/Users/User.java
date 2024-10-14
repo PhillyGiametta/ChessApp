@@ -1,6 +1,6 @@
 package Backend.ChessApp.Users;
 
-import Backend.ChessApp.Leaderboard.Leaderboard;
+import Backend.ChessApp.Leaderboard.LeaderboardEntry;
 import jakarta.persistence.*;
 import java.util.Date;
 import org.springframework.boot.*;
@@ -29,9 +29,8 @@ public class User {
     private UserActivity activity;
     private String passwordResetToken;
 
-    @OneToOne
-    @JoinColumn(name = "leaderboard_id")
-    private Leaderboard leaderboard;
+//    @OneToOne(mappedBy = "user")
+//    private LeaderboardEntry leaderboardEntry;
 
     //CONSTRUCTORS----------------------------------------
 
