@@ -12,12 +12,12 @@ public class ResetToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int userId;
+    private int user_id;
 
     private String token;
 
     @OneToOne(targetEntity=User.class, fetch =FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "userId")
+    @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
     private Date expiryDate;
@@ -39,7 +39,7 @@ public class ResetToken {
 
 
     public int getId() {
-        return userId;
+        return user_id;
     }
     public String getToken() {
         return token;
