@@ -13,6 +13,9 @@ public class UserResponse {
     @SerializedName("userEmail")
     private String userEmail;
 
+    @SerializedName("userPassword")
+    private String userPassword;
+
     public int getId() {
         return id; // Return user ID
     }
@@ -23,5 +26,13 @@ public class UserResponse {
 
     public String getEmail() {
         return userEmail;
+    }
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 }

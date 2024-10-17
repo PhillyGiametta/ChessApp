@@ -62,12 +62,12 @@ public class ProfileActivity extends AppCompatActivity {
         listButton.setOnClickListener(v -> listProfiles());
 
         // Load profile if username is passed
-        loadProfile();
+        //loadProfile();
     }
 
     // Load profile from the backend if username is passed
     private void loadProfile() {
-        String username = getIntent().getStringExtra("USERNAME");
+        String username = "JohnDoe";
         if (username != null) {
             apiService.getProfile(username).enqueue(new Callback<UserResponse>() {
                 @Override
