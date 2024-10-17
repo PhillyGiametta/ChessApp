@@ -21,7 +21,7 @@ public interface ApiService {
     @POST("/login")
     Call<ResponseBody> loginUser(@Body UserRequest userRequest);
 
-    @GET("/users/username/{userName}")
+    @GET("/users/userName/{userName}")
     Call<UserResponse> getProfile(@Path("userName") String userName);
 
     @POST("/users")

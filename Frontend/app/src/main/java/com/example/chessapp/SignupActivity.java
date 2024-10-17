@@ -50,7 +50,7 @@ public class SignupActivity extends AppCompatActivity {
 
         // Initialize Retrofit with the backend API URL and Gson converter
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://coms-3090-050.class.las.iastate.edu:8080/")
+                .baseUrl("http://coms-3090-050.class.las.iastate.edu:8080")
                 .addConverterFactory(GsonConverterFactory.create(gson)) // Use lenient Gson
                 .build();
 
