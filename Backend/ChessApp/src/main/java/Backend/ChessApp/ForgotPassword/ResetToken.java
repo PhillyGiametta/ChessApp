@@ -2,6 +2,9 @@ package Backend.ChessApp.ForgotPassword;
 import Backend.ChessApp.Users.*;
 
 import jakarta.persistence.*;
+import net.bytebuddy.utility.RandomString;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -24,9 +27,11 @@ public class ResetToken {
 
     public ResetToken(User user, String token){
         this.user = user;
-        this.token = token;
+        this.token = token; this.expiryDate = calculateExpiryDate(EXPIRATION);
     }
-    private Date calculateExpiryDate(final int expiryTimeInMinutes) {
+
+    @Contract("_ -> new")
+    private @NotNull Date calculateExpiryDate(final int expiryTimeInMinutes) {
         final Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(new Date().getTime());
         cal.add(Calendar.MINUTE, expiryTimeInMinutes);
@@ -36,6 +41,11 @@ public class ResetToken {
         this.token = token;
         this.expiryDate = calculateExpiryDate(EXPIRATION);
     }
+
+    public String createToken(){
+          return RandomString.make(6);
+    }
+
 
 
     public int getId() {
