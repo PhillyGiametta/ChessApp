@@ -49,7 +49,17 @@ public class forgotPasswordController {
         User user = userRepository.findById(userId);
         ResetToken resetToken = new ResetToken(user, rt);
         rtr.save(resetToken);
+    }
 
+    @PutMapping("/resetPassword/{userId}")
+    User resetPassword(@PathVariable int userId){
+        User user = userRepository.findById((userId));
+        ResetToken reset;
+        rtr.findByUser(user);
+        if(user.getPasswordResetToken() == null){
+            return null;
+        }
+        return user;
     }
 
 
