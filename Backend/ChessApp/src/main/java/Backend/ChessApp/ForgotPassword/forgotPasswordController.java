@@ -40,35 +40,35 @@ public class forgotPasswordController {
         return "form_password_reset";
     }
 
-//    @PostMapping("/forgot_password")
-//    public String processForgotPassword(HttpServletRequest request, Model model) {
-//        String email = request.getParameter("email");
-//        String token = RandomString.make(30);
-//
-//        try {
-//            passHand.updateResetPasswordToken(token, email);
-//            String resetPasswordLink = EmailUtil.getSiteURL(request) + "/reset_password?token=" + token;
-//            sendEmail(email, resetPasswordLink);
-//            model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
-//
-//        } catch (UserNotFoundException ex) {
-//            model.addAttribute("error", ex.getMessage());
-//        } catch (UnsupportedEncodingException | MessagingException e) {
-//            model.addAttribute("error", "Error while sending email");
-//        }
-//
-//        return "forgot_password_form";
-//    }
-@PostMapping("/forgot_password")
-public String forgotPassword(@RequestParam String email) {
+    @PostMapping("/forgot_password")
+    public String processForgotPassword(HttpServletRequest request, Model model) {
+        String email = request.getParameter("email");
+        String token = RandomString.make(30);
 
-    String response = userService.forgotPassword(email);
+        try {
+            passHand.updateResetPasswordToken(token, email);
+            String resetPasswordLink = EmailUtil.getSiteURL(request) + "/reset_password?token=" + token;
+            sendEmail(email, resetPasswordLink);
+            model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
 
-    if (!response.startsWith("Invalid")) {
-        response = "http://localhost:8080/reset-password?token=" + response;
+        } catch (UserNotFoundException ex) {
+            model.addAttribute("error", ex.getMessage());
+        } catch (UnsupportedEncodingException | MessagingException e) {
+            model.addAttribute("error", "Error while sending email");
+        }
+
+        return "forgot_password_form";
     }
-    return response;
-}
+    @PostMapping("/forgot_password")
+    public String forgotPassword(@RequestParam String email) {
+
+        String response = userService.forgotPassword(email);
+
+        if (!response.startsWith("Invalid")) {
+            response = "http://localhost:8080/reset-password?token=" + response;
+        }
+        return response;
+    }
 
 
     @GetMapping("/reset_password")

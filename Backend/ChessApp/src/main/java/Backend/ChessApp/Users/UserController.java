@@ -11,9 +11,9 @@ public class UserController {
   //  @Autowired
   //  private JpaRepository jpaRepository;
 
-    private String Dsuccess = "{\"User was deleted\": \"successfully\"}";
-    private String Postsuccess = "{\"User was created\": \"successfully\"}";
-    private String Dfail = "{\"User was deleted\": \"Unsuccessfully\"}";
+    private final String Dsuccess = "{\"User was deleted\": \"successfully\"}";
+    private final String Postsuccess = "{\"User was created\": \"successfully\"}";
+    private final String Dfail = "{\"User was deleted\": \"Unsuccessfully\"}";
 
     //Gets all users
     @GetMapping(path = "/users")
@@ -74,7 +74,6 @@ public class UserController {
         return user;
     }
 
-
     @PutMapping(path = "/users/changePassword/{userId}")
     User updateUserByUserId(@PathVariable int userId, @RequestParam(value = "userPassword") String password){
         User user = userRepository.findById(userId);
@@ -84,6 +83,17 @@ public class UserController {
         user.setUserPassword(password);
         userRepository.save(user);
         return user;
+    }
+
+    @PutMapping(path = "/users/changeUserName/{userId}")
+    User updateUserName(@PathVariable int userId, @RequestParam(value = "userName") String userName){
+        User update = userRepository.findById(userId);
+        if(update == null){
+            return null;
+        }
+        update.setUserName(userName);
+        userRepository.save(update);
+        return update;
     }
 
     @Transactional
