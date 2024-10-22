@@ -1,15 +1,24 @@
 package Backend.ChessApp.Users;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository {
+
+    List<User> findAll();
+
     User findById(int id);
-    void deleteById(int id);
-    User findByUserName(String userName);
+
     User findByUserEmail(String userEmail);
-    boolean existsByUserName(String userName);
+
+    User findByUserName(String userName);
+
+    void save(User user);
+
+    void deleteById(int id);
+
+    void deleteAll();
+
     boolean existsByUserEmail(String userEmail);
-    User findByPasswordResetToken(String token);
+
+    boolean existsByUserName(String userName);
 }
-
-
