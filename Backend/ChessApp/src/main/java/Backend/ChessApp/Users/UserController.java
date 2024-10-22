@@ -8,8 +8,8 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
-  //  @Autowired
-  //  private JpaRepository jpaRepository;
+    //  @Autowired
+    //  private JpaRepository jpaRepository;
 
     private String Dsuccess = "{\"User was deleted\": \"successfully\"}";
     private String Postsuccess = "{\"User was created\": \"successfully\"}";
@@ -88,10 +88,31 @@ public class UserController {
 
     @Transactional
     @DeleteMapping(path = "/users/{userId}")
-    String deleteUser(@PathVariable int userId){
+    public String deleteUser(@PathVariable int userId){
         userRepository.deleteById(userId);
         return Dsuccess;
     }
+
+
+    @PutMapping("/users/{userName}")
+    public User updateProfile(@PathVariable String userName, @RequestBody User userDetails) {
+        User user = userRepository.findByUserName(userName);
+
+        if (user == null) {
+            throw new RuntimeException("User not found with username: " + userName);
+        }
+
+        // Update user details
+        user.setUserName(userDetails.getUserName());
+        user.setUserEmail(userDetails.getUserEmail());
+        user.setUserPassword(userDetails.getUserPassword());
+
+        // Save the updated user
+        userRepository.save(user);
+
+        return user;
+    }
+
 
     @DeleteMapping(path = "/users/deleteAllUsers")
     String deleteAllUsers() {
@@ -99,4 +120,4 @@ public class UserController {
         return Dsuccess;
     }
 
- }
+}
