@@ -35,17 +35,11 @@ public class User {
 
     //CLASS VARIABLES-------------------------------------------
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "user_id", nullable = false)
     private int id;
-
-    @Column(name = "user_name")
-    private String userName;
-
-    @Column(name = "user_email")
     private String userEmail;
-
-    @Column(name = "user_password")
+    private String userName;
     private String userPassword;
     private Date userMadeDate;
     private Date userLastLoginDate;
@@ -71,7 +65,6 @@ public class User {
 
     //CONSTRUCTORS----------------------------------------
 
-
     public User(){
         //NULL User
     }
@@ -86,9 +79,6 @@ public class User {
 
     public User(String userName, String userEmail,String userPassword, int userRanking, int userWins, int userLosses){
         this.userName = userName;
-
-
-
         this.userEmail = userEmail;
         this.userPassword = userPassword;
         this.userMadeDate = new Date();

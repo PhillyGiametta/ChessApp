@@ -103,6 +103,27 @@ public class UserController {
         return Dsuccess;
     }
 
+
+    @PutMapping("/users/{userName}")
+    public User updateProfile(@PathVariable String userName, @RequestBody User userDetails) {
+        User user = userRepository.findByUserName(userName);
+
+        if (user == null) {
+            throw new RuntimeException("User not found with username: " + userName);
+        }
+
+        // Update user details
+        user.setUserName(userDetails.getUserName());
+        user.setUserEmail(userDetails.getUserEmail());
+        user.setUserPassword(userDetails.getUserPassword());
+
+        // Save the updated user
+        userRepository.save(user);
+
+        return user;
+    }
+
+
     @Transactional
     @DeleteMapping(path = "/users/deleteByUsername/{userName}")
     String deleteUserByUsername(@PathVariable String userName){
