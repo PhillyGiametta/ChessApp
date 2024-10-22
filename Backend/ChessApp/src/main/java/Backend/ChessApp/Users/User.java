@@ -27,11 +27,17 @@ public class User {
 
     //CLASS VARIABLES-------------------------------------------
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "user_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
-    private String userEmail;
+
+    @Column(name = "user_name")
     private String userName;
+
+    @Column(name = "user_email")
+    private String userEmail;
+
+    @Column(name = "user_password")
     private String userPassword;
     private Date userMadeDate;
     private Date userLastLoginDate;
@@ -57,16 +63,22 @@ public class User {
 
     //CONSTRUCTORS----------------------------------------
 
-    public User(){
-        //NULL User
+
+    public User() {
     }
-    public User(String userName, String userEmail, String userPassword){
+
+    public User(String userName, String userEmail, String userPassword) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
-        this.userMadeDate = new Date();
-        this.userLastLoginDate = new Date();
-        this.activity = UserActivity.ONLINE; //Set User Online since they are freshly made
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     public User(String userName, String userEmail,String userPassword, int userRanking, int userWins, int userLosses){
@@ -116,7 +128,4 @@ public class User {
 
     public void setPasswordResetTokenCreationDate(LocalDateTime tokenCreationDate){this.passwordResetTokenCreationDate = tokenCreationDate;}
 
-    public Group getGroup(){return group;}
-
-    public void setGroup(Group group){this.group = group;}
 }
