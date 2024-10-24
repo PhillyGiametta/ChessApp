@@ -103,6 +103,29 @@ public class UserController {
         return Dsuccess;
     }
 
+    @Transactional
+    @DeleteMapping(path = "/users/deleteByUsername/{userName}")
+    String deleteUserByUsername(@PathVariable String userName){
+        User user;
+        user = userRepository.findByUserName(userName);
+        if(user == null){
+            return Dfail;
+        }
+        userRepository.deleteById(user.getUserId());
+        return Dsuccess;
+    }
+    @Transactional
+    @DeleteMapping(path = "/users/deleteByEmail/{userEmail}")
+    String deleteUserByEmail(@PathVariable String userEmail){
+        User user;
+        user = userRepository.findByUserEmail(userEmail);
+        if(user == null){
+            return Dfail;
+        }
+        userRepository.deleteById(user.getUserId());
+        return Dsuccess;
+    }
+
     @DeleteMapping(path = "/users/deleteAllUsers")
     String deleteAllUsers() {
         userRepository.deleteAll();
