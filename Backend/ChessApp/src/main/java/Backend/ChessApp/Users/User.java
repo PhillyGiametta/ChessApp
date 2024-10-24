@@ -1,5 +1,6 @@
 package Backend.ChessApp.Users;
 
+import Backend.ChessApp.Leaderboard.LeaderboardEntry;
 import Backend.ChessApp.Group.Group;
 import Backend.ChessApp.AdminControl.Admin;
 import Backend.ChessApp.Game.ChessGame;
@@ -17,6 +18,13 @@ import java.util.List;
 import org.apache.catalina.Group;
 import org.springframework.boot.*;
 import org.springframework.context.aot.AbstractAotProcessor;
+
+import static jakarta.persistence.GenerationType.IDENTITY;
+
+
+import java.time.LocalDateTime;
+import java.util.Date;
+import org.springframework.boot.*;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -64,25 +72,23 @@ public class User {
     //CONSTRUCTORS----------------------------------------
 
 
-    public User() {
+    public User(){
+        //NULL User
     }
-
-    public User(String userName, String userEmail, String userPassword) {
+    public User(String userName, String userEmail, String userPassword){
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getUserName() {
-        return userName;
+        this.userMadeDate = new Date();
+        this.userLastLoginDate = new Date();
+        this.activity = UserActivity.ONLINE; //Set User Online since they are freshly made
     }
 
     public User(String userName, String userEmail,String userPassword, int userRanking, int userWins, int userLosses){
         this.userName = userName;
+
+
+
         this.userEmail = userEmail;
         this.userPassword = userPassword;
         this.userMadeDate = new Date();
