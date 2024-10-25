@@ -33,7 +33,7 @@ import org.springframework.stereotype.Component;
 @ServerEndpoint("/chat/{username}")
 @Component
 public class ChatServer {
-
+    int connectedUsers = 0;
     // Store all socket session and their corresponding username
     // Two maps for the ease of retrieval by key
     private static Map < Session, String > sessionUsernameMap = new Hashtable < > ();
@@ -67,13 +67,14 @@ public class ChatServer {
             // map current username with session
             usernameSessionMap.put(username, session);
 
+            connectedUsers = sessionUsernameMap.size();
             // send to the user joining in
             sendMessageToPArticularUser(username, "Welcome to the chat server, "+username);
 
             // send to everyone in the chat
             broadcast("User: " + username + " has Joined the Chat");
 
-            broadcast("Connected users: " + sessionUsernameMap.size());
+            broadcast("Connected users: " + connectedUsers);
         }
     }
 
@@ -131,8 +132,12 @@ public class ChatServer {
         sessionUsernameMap.remove(session);
         usernameSessionMap.remove(username);
 
+        connectedUsers = sessionUsernameMap.size();
+
         // send the message to chat
         broadcast(username + " disconnected");
+
+        broadcast("Connected users: " + connectedUsers);
     }
 
     /**
