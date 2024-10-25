@@ -1,6 +1,8 @@
 package com.example.demo.websocket;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -70,7 +72,7 @@ public class ChatServer1 {
             sendMessageToPArticularUser(username, "Welcome to the chat server, "+username);
 
             // send to everyone in the chat
-            broadcast("User: " + username + " has Joined the Chat");
+            broadcast("User: " + username + " has Joined the Chat(1)");
         }
     }
 
@@ -89,6 +91,8 @@ public class ChatServer1 {
         // server side log
         logger.info("[onMessage] " + username + ": " + message);
 
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
         // Direct message to a user using the format "@username <message>"
         if (message.startsWith("@")) {
 
@@ -106,7 +110,7 @@ public class ChatServer1 {
             sendMessageToPArticularUser(username, "[DM from " + username + "]: " + actualMessage);
         }
         else { // Message to whole chat
-            broadcast(username + ": " + message);
+            broadcast("[" + timestamp + "] " + username + ": " + message);
         }
     }
 

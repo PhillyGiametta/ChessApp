@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -65,7 +67,7 @@ public class ChatServer2 {
             sendMessageToPArticularUser(username, "Welcome to the chat server, "+username);
 
             // send to everyone in the chat
-            broadcast("User: " + username + " has Joined the Chat");
+            broadcast("User: " + username + " has Joined the Chat(2)");
         }
     }
 
@@ -84,6 +86,8 @@ public class ChatServer2 {
         // server side log
         logger.info("[onMessage] " + username + ": " + message);
 
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
         // Direct message to a user using the format "@username <message>"
         if (message.startsWith("@")) {
 
@@ -101,7 +105,7 @@ public class ChatServer2 {
             sendMessageToPArticularUser(username, "[DM from " + username + "]: " + actualMessage);
         }
         else { // Message to whole chat
-            broadcast(username + ": " + message);
+            broadcast("[" + timestamp + "] " + username + ": " + message);
         }
     }
 
