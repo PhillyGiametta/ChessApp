@@ -60,6 +60,7 @@ public class ChatServer {
             session.close();
         }
         else {
+
             // map current session with username
             sessionUsernameMap.put(session, username);
 
@@ -71,6 +72,8 @@ public class ChatServer {
 
             // send to everyone in the chat
             broadcast("User: " + username + " has Joined the Chat");
+
+            broadcast("Connected users: " + sessionUsernameMap.size());
         }
     }
 
