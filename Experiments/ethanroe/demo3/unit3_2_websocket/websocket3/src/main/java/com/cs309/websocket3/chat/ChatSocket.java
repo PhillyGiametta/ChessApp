@@ -78,7 +78,10 @@ public class ChatSocket {
 			sendMessageToPArticularUser(destUsername, "[DM] " + username + ": " + message);
 			sendMessageToPArticularUser(username, "[DM] " + username + ": " + message);
 
-		} 
+		}
+		else if(message.equals("/users")){
+			sendMessageToPArticularUser(username,"Active users: " + String.join(", ", usernameSessionMap.keySet()));
+		}
     else { // broadcast
 			broadcast(username + ": " + message);
 		}
