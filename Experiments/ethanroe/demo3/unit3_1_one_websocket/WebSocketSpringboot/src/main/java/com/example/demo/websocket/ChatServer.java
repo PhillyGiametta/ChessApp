@@ -1,6 +1,7 @@
 package com.example.demo.websocket;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -41,6 +42,8 @@ public class ChatServer {
 
     // server side logger
     private final Logger logger = LoggerFactory.getLogger(ChatServer.class);
+
+    private static ArrayList<String> mutedUsers = new ArrayList<>();
 
     /**
      * This method is called when a new WebSocket connection is established.
@@ -108,9 +111,22 @@ public class ChatServer {
             String actualMessage = actualMessageBuilder.toString();
             sendMessageToPArticularUser(destUserName, "[DM from " + username + "]: " + actualMessage);
             sendMessageToPArticularUser(username, "[DM from " + username + "]: " + actualMessage);
+        }else if (message.startsWith("/")){
+            logger.info("Command detected: " + message);
+            String[] split = message.split("\\s+");
+            if(split[0].equals("/mute")){
+                muteUser(split[1]);
+                sendMessageToPArticularUser(username, "Muted user: " + split[1]);
+                logger.info("Muted user: " + split[1]);
+            }
         }
         else { // Message to whole chat
-            broadcast(username + ": " + message);
+            if(mutedUsers.contains(username)){
+                sendMessageToPArticularUser(username, "You've been muted");
+            }else{
+                broadcast(username + ": " + message);
+            }
+
         }
     }
 
@@ -183,5 +199,9 @@ public class ChatServer {
                 logger.info("[Broadcast Exception] " + e.getMessage());
             }
         });
+    }
+
+    private void muteUser(String username){
+        mutedUsers.add(username);
     }
 }
