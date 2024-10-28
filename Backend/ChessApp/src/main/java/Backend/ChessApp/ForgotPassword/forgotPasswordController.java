@@ -39,10 +39,7 @@ public class forgotPasswordController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/forgotPassword/{resetToken}")
-    User forgotPassword(@PathVariable String resetToken){
-        return passHand.getByResetPasswordToken(resetToken);
-    }
+
     @PostMapping("/forgotPassword/{userId}")
     void tokenCreator(@PathVariable int userId){
         String rt = RandomString.make(30);

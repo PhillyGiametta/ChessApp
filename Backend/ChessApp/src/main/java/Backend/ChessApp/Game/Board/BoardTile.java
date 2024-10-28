@@ -27,8 +27,20 @@ public class BoardTile {
      * checks current tile to see if it has piece on it
      */
     public boolean isFilled(){
-        return pieceType != null;
+        return pieceType != PieceType.OPEN;
+    }
+    /**
+     * Set the board tile piece will handle main updates to individual tile
+     */
+    public void setTile(PieceType pieceType) {
+        this.pieceType = pieceType;
+    }
+    public PieceType getTile(){
+        return this.pieceType;
     }
 
-
+    @Override
+    public String toString() {
+        return String.valueOf(this.pieceType.getSymbol());
+    }
 }
