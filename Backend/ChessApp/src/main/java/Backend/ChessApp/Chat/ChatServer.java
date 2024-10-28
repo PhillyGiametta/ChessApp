@@ -2,14 +2,18 @@ package Backend.ChessApp.Chat;
 
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
+import jakarta.websocket.server.ServerEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
 
+@ServerEndpoint("/chat/{username}")
+@Component
 public class ChatServer {
 
     private static Map<Session, String > sessionUsernameMap = new Hashtable< >();
