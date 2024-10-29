@@ -1,10 +1,15 @@
 package Backend.ChessApp.Game.Pieces;
 
+import Backend.ChessApp.Game.Board.BoardTile;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
 public abstract class PieceLogic {
 
-    PieceType pieceType;
+    public PieceType pieceType;
     String[] possibleMoves;
-    int color;
+    int color; //0 is white, 1 is black, -1 is colorless for emptyspace
     /**
      * Sets the piece type for the individual pieces may need more later.
      * @param pieceType
@@ -15,6 +20,7 @@ public abstract class PieceLogic {
     }
 
 
+
     /**
      * This returns a list of possible moves for selected piece.
      * Used as a setter and getter for the possible moves
@@ -22,6 +28,14 @@ public abstract class PieceLogic {
      * @return possibleMoves
      */
     public String[] possibleMoves(){
+
+        return possibleMoves;
+    }
+
+    public Collection<BoardTile> getPossibleMoves(){
+        Collection<BoardTile> possibleMoves = new ArrayList<>();
+
+
 
         return possibleMoves;
     }

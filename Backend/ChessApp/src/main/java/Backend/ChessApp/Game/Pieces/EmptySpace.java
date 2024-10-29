@@ -1,17 +1,21 @@
 package Backend.ChessApp.Game.Pieces;
 
-public class Pawn extends PieceLogic{
+public class EmptySpace extends PieceLogic{
+
     /**
      * Sets the piece type for the individual pieces may need more later.
      *
      * @param pieceType
+     * @param color
      */
-    public Pawn(PieceType pieceType,int color) {
-        super(pieceType,color);
+    public EmptySpace(PieceType pieceType, int color) {
+        super(pieceType, color);
     }
+
+
 
     @Override
     public void move() {
-        
+
     }
 }

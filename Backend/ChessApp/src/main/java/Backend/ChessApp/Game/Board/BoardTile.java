@@ -1,6 +1,7 @@
 package Backend.ChessApp.Game.Board;
 
 
+import Backend.ChessApp.Game.Pieces.PieceLogic;
 import Backend.ChessApp.Game.Pieces.PieceType;
 
 /**
@@ -13,12 +14,13 @@ public class BoardTile {
     /**
      * What piece is on the tile, updates according to board. null means empty, otherwise specify piece
      */
-    private PieceType pieceType = null;
+
+    private PieceLogic pieceLogic;
     private char col;
     private int row;
 
-    public BoardTile(PieceType pieceType, char col, int row){
-        this.pieceType = pieceType;
+    public BoardTile(PieceLogic pieceLogic, char col, int row){
+        this.pieceLogic = pieceLogic;
         this.col = col;
         this.row = row;
     }
@@ -27,20 +29,20 @@ public class BoardTile {
      * checks current tile to see if it has piece on it
      */
     public boolean isFilled(){
-        return pieceType != PieceType.OPEN;
+        return pieceLogic.pieceType != PieceType.OPEN;
     }
     /**
      * Set the board tile piece will handle main updates to individual tile
      */
-    public void setTile(PieceType pieceType) {
-        this.pieceType = pieceType;
+    public void setTile(PieceLogic pieceLogic) {
+        this.pieceLogic = pieceLogic;
     }
-    public PieceType getTile(){
-        return this.pieceType;
+    public PieceLogic getTile(){
+        return this.pieceLogic;
     }
 
     @Override
     public String toString() {
-        return String.valueOf(this.pieceType.getSymbol());
+        return String.valueOf(this.pieceLogic.pieceType.getSymbol());
     }
 }

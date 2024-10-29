@@ -1,7 +1,6 @@
 package Backend.ChessApp.Game.Board;
 
-import Backend.ChessApp.Game.Pieces.PieceLogic;
-import Backend.ChessApp.Game.Pieces.PieceType;
+import Backend.ChessApp.Game.Pieces.*;
 
 public class Board {
 
@@ -31,20 +30,38 @@ public class Board {
         for(int i = 0; i < 8; i++, row--){
             col = 'A';
             for(int j = 0; j < 8; j++, col++){
-                board[i][j] = new BoardTile(PieceType.OPEN, col,row);
+                board[i][j] = new BoardTile(new EmptySpace(PieceType.OPEN, -1), col,row);
                 if(row == 7 || row == 2)
-                    board[i][j].setTile(PieceType.PAWN);
+                    if(row == 2)
+                        board[i][j].setTile(new Pawn(PieceType.PAWN, 0));
+                    else
+                        board[i][j].setTile(new Pawn(PieceType.PAWN, 1));
                 if(row == 8 || row == 1){
                     if(col == 'A' || col == 'H')
-                        board[i][j].setTile(PieceType.ROOK);
+                        if(row == 8)
+                            board[i][j].setTile(new Rook(PieceType.ROOK, 1));
+                        else
+                            board[i][j].setTile(new Rook(PieceType.ROOK, 0));
                     else if(col == 'B' || col == 'G')
-                        board[i][j].setTile(PieceType.KNIGHT);
+                        if(row == 8)
+                            board[i][j].setTile(new Rook(PieceType.KNIGHT, 1));
+                        else
+                            board[i][j].setTile(new Rook(PieceType.KNIGHT, 0));
                     else if(col == 'C' || col == 'F')
-                        board[i][j].setTile(PieceType.BISHOP);
+                        if(row == 8)
+                            board[i][j].setTile(new Rook(PieceType.BISHOP, 1));
+                        else
+                            board[i][j].setTile(new Rook(PieceType.BISHOP, 0));
                     else if(col == 'D')
-                        board[i][j].setTile(PieceType.KING);
+                        if(row == 8)
+                            board[i][j].setTile(new Rook(PieceType.KING, 1));
+                        else
+                            board[i][j].setTile(new Rook(PieceType.KING, 0));
                     else if(col == 'E')
-                        board[i][j].setTile(PieceType.QUEEN);
+                        if(row == 8)
+                            board[i][j].setTile(new Rook(PieceType.QUEEN, 1));
+                        else
+                            board[i][j].setTile(new Rook(PieceType.QUEEN, 0));
                 }
 
             }
