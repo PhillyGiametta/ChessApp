@@ -1,7 +1,6 @@
 package com.example.chessapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     private Button loginButton;     // define login button variable
     private Button signupButton;    // define signup button variable
     private Button profileButton;   // define profile button variable
+    private Button chatButton;      // define chat button variable
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.main_login_btn);    // link to login button in the Main activity XML
         signupButton = findViewById(R.id.main_signup_btn);  // link to signup button in the Main activity XML
         profileButton = findViewById(R.id.main_profile_btn); // link to profile button in the Main activity XML
+        chatButton = findViewById(R.id.chat_button);        // link to chat button in the Main activity XML
 
         /* extract data passed into this activity from another activity */
         Bundle extras = getIntent().getExtras();
@@ -67,6 +68,17 @@ public class MainActivity extends AppCompatActivity {
                 /* when profile button is pressed, use intent to switch to Profile Activity */
                 Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                 intent.putExtra("USERNAME", usernameText.getText().toString()); // Pass username to profile screen
+                startActivity(intent);
+            }
+        });
+
+        /* click listener on chat button pressed */
+        chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /* when chat button is pressed, use intent to switch to Chat Activity */
+                Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+                intent.putExtra("USERNAME", usernameText.getText().toString()); // Pass username to ChatActivity
                 startActivity(intent);
             }
         });

@@ -69,4 +69,17 @@
         android:background="@color/my_red"
         android:backgroundTint="#D32F2F" />
 
+    <!-- Chat Button -->
+    <Button
+        android:id="@+id/chat_button"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="Open Chat"
+        android:textSize="20sp"
+        android:textColor="#FF000000"
+        android:background="#D32F2F"
+        android:backgroundTint="#D32F2F" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>
