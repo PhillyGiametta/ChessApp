@@ -12,6 +12,7 @@ public class Board {
     PieceLogic selectedPiece;
     BoardTile[][] board;
 
+
     /**
      * Creates a new fresh board. With initialized pieces.
      */
@@ -30,7 +31,7 @@ public class Board {
         for(int i = 0; i < 8; i++, row--){
             col = 'A';
             for(int j = 0; j < 8; j++, col++){
-                board[i][j] = new BoardTile(new EmptySpace(PieceType.OPEN, -1), col,row);
+                board[i][j] = new BoardTile(new EmptySpace(PieceType.OPEN, -1), col,row, this);
                 if(row == 7 || row == 2)
                     if(row == 2)
                         board[i][j].setTile(new Pawn(PieceType.PAWN, 0));
@@ -78,6 +79,9 @@ public class Board {
             consolePrint += "\n"; // New line at the end of each row
         }
         return consolePrint;
+    }
+    public BoardTile getTile(int row, char col){
+        return board[row][col];
     }
 
     @Override

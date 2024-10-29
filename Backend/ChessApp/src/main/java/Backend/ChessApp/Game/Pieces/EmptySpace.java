@@ -1,5 +1,10 @@
 package Backend.ChessApp.Game.Pieces;
 
+import Backend.ChessApp.Game.Board.BoardTile;
+
+import java.util.Collection;
+import java.util.List;
+
 public class EmptySpace extends PieceLogic{
 
     /**
@@ -12,6 +17,10 @@ public class EmptySpace extends PieceLogic{
         super(pieceType, color);
     }
 
+    @Override
+    public Collection<BoardTile> setPossibleMoves() {
+        return List.of();
+    }
 
 
     @Override
