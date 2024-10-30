@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
        should link to the user, the game, the frontend, and perhaps admin/spectator in future
 
  */
-
+//No entity this is temporary should be in memory only
 public class SettingGameStates {
         short timeController; //in minutes
         int incrementTimer; //in seconds

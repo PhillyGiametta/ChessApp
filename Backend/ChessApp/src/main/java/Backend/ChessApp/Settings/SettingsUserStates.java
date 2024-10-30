@@ -6,27 +6,32 @@ package Backend.ChessApp.Settings;
         and how they interact with the app
  */
 
+import Backend.ChessApp.Users.User;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "user", schema = "DBChessApp")
 public class SettingsUserStates {
-        short boardTheme;
-        short pieceTheme;
-        boolean appTheme; //dark->true or light->false
-        boolean sounds;
-        boolean moveHighlighting;
+    short boardTheme;
+    short pieceTheme;
+    boolean appTheme; //dark->true or light->false
+    boolean sounds;
+    boolean moveHighlighting;
 
-        public SettingsUserStates(short boardTheme, short pieceTheme, boolean appTheme, boolean sounds, boolean moveHighlighting) {
-            this.appTheme = appTheme;
-            this.boardTheme = boardTheme;
-            this.pieceTheme = pieceTheme;
-            this.sounds = sounds;
-            this.moveHighlighting = moveHighlighting;
-        }
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-
-
-
-
-
-
+    public SettingsUserStates(short boardTheme, short pieceTheme, boolean appTheme, boolean sounds, boolean moveHighlighting) {
+        this.appTheme = appTheme;
+        this.boardTheme = boardTheme;
+        this.pieceTheme = pieceTheme;
+        this.sounds = sounds;
+        this.moveHighlighting = moveHighlighting;
+    }
 
 
     public short getBoardTheme() {
@@ -60,6 +65,7 @@ public class SettingsUserStates {
     public void setMoveHighlighting(boolean moveHighlighting) {
         this.moveHighlighting = moveHighlighting;
     }
+
     public void setPieceTheme(short pieceTheme) {
         this.pieceTheme = pieceTheme;
     }
