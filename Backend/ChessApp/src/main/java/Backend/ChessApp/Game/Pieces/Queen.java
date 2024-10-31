@@ -35,11 +35,9 @@ public class Queen extends PieceLogic{
                 possibleMoves.add(candidate);
             }
         }
+        this.possibleMoves = possibleMoves;
         return possibleMoves;
     }
 
-    @Override
-    public void move() {
 
-    }
 }

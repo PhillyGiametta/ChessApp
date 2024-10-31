@@ -29,11 +29,8 @@ public class Pawn extends PieceLogic{
                 possibleMoves.add(candidate);
             }
         }
+        this.possibleMoves = possibleMoves;
         return possibleMoves;
     }
 
-    @Override
-    public void move() {
-
-    }
 }

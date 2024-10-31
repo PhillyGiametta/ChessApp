@@ -16,11 +16,11 @@ public class BoardTile {
      */
 
     private PieceLogic pieceLogic;
-    private char col;
+    private int col;
     private int row;
-    private Board board;
+    private final Board board;
 
-    public BoardTile(PieceLogic pieceLogic, char col, int row, Board board){
+    public BoardTile(PieceLogic pieceLogic, int col, int row, Board board){
         this.pieceLogic = pieceLogic;
         this.col = col;
         this.row = row;
@@ -38,9 +38,9 @@ public class BoardTile {
      */
     public BoardTile neighbour(int rowOffset, int colOffset) {
         int newRow = this.row + rowOffset;
-        char newCol = (char)(this.col + colOffset);
+        int newCol = (this.col + colOffset);
 
-        if (newRow >= 0 && newRow < 8 && newCol >= 'A' && newCol <= 'H') {
+        if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 7) {
             return this.board.getTile(newRow, newCol); // Retrieve tile from the board
         } else {
             return null; // Out of bounds
@@ -56,12 +56,15 @@ public class BoardTile {
         return this.pieceLogic;
     }
     public void setCol(char col){this.col = col;}
-    public char getCol(){return this.col;}
+    public int getCol(){return this.col;}
     public void setRow(int row){this.row = row;}
     public int getRow(){return row;}
 
     @Override
     public String toString() {
-        return String.valueOf(this.pieceLogic.getPieceType().getSymbol() + this.pieceLogic.getColor());
+        String s = "";
+        s += String.valueOf(this.pieceLogic.getPieceType().getSymbol());
+        s += this.getTile().getColor();
+        return s;
     }
 }

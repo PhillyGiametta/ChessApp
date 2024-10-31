@@ -10,6 +10,7 @@ public abstract class PieceLogic {
     protected PieceType pieceType;
     protected BoardTile boardTile;
     protected Collection<BoardTile> possibleMoves;
+    protected boolean kingInCheck = false;
     protected int color; //0 is white, 1 is black, -1 is colorless for emptyspace
     /**
      * Sets the piece type for the individual pieces may need more later.
@@ -43,10 +44,16 @@ public abstract class PieceLogic {
     public abstract Collection<BoardTile> setPossibleMoves();
 
     /**
-     * This is a move token, will be different for every type of piece
+     * This is a move token, will be different for every type of piece if(this.getPossibleMoves() )
      * may only be allowed to move based on possible moves
      */
-    public abstract void move();
+    public void move(BoardTile newBoardTile) {
+        if(possibleMoves.contains(newBoardTile)){
+            BoardTile current = this.getBoardTile();
+            newBoardTile.setTile(this);
+            current.setTile(new EmptySpace(PieceType.OPEN, -1));
+        }
+    }
 
     /**
      * Sees if king is checked (threatened of capture)
@@ -54,7 +61,7 @@ public abstract class PieceLogic {
      * @return
      */
     public boolean kingIsChecked(){
-        return false;
+        return kingInCheck;
     }
 
     public void setColor(int color){this.color = color;}
@@ -63,6 +70,12 @@ public abstract class PieceLogic {
     public void setPieceType(PieceType pieceType) {this.pieceType = pieceType;}
     public void setBoardTile(BoardTile bT) {this.boardTile = bT;}
     public BoardTile getBoardTile(){return boardTile;}
+    public String printPossibleMoves(){
+        String s = "";
+        for(BoardTile b: possibleMoves)
+            s+=b.toString();
+        return s;
+    }
     //King will need check and checkmate logic.
 
 }

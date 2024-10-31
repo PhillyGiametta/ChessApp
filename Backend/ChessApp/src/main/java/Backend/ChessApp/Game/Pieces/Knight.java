@@ -31,15 +31,12 @@ public class Knight extends PieceLogic{
         };
         for (int[] o : offsets) {
             BoardTile candidate = this.getBoardTile().neighbour(o[0], o[1]);
-            if (candidate != null && (candidate.getTile() == null || candidate.getTile().color != color)) {
+            if (candidate != null && (candidate.getTile() == null || candidate.getTile().color != this.getColor())) {
                 possibleMoves.add(candidate);
             }
         }
+        this.possibleMoves = possibleMoves;
         return possibleMoves;
     }
 
-    @Override
-    public void move() {
-
-    }
 }

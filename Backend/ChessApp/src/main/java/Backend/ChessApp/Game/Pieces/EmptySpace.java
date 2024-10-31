@@ -22,9 +22,4 @@ public class EmptySpace extends PieceLogic{
         return List.of();
     }
 
-
-    @Override
-    public void move() {
-
-    }
 }

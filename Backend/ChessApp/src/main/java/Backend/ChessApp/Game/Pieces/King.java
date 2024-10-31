@@ -32,23 +32,15 @@ public class King extends PieceLogic{
                 possibleMoves.add(candidate);
             }
         }
+        this.possibleMoves = possibleMoves;
         return possibleMoves;
     }
 
-    @Override
-    public void move() {
+    public void setCheckStatus(Collection<BoardTile> otherMoves){
+        //if this is in path of any pieces possible moves set true
 
+        //else set false;
     }
 
-    public boolean isChecked(){
-        //Lock other pieces that do not have some form
-        return false;
-    }
 
-    public boolean isCheckmated(){
-        //initiate some form of finishing the game, and lock pieces
-        //or let them move the pieces to see who will clear the board
-
-        return false;
-    }
 }
