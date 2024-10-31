@@ -1,6 +1,7 @@
 package Backend.ChessApp.Users;
 
 import Backend.ChessApp.Leaderboard.LeaderboardEntry;
+import Backend.ChessApp.Settings.SettingsUserStates;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -27,6 +28,9 @@ public class User {
     private UserActivity activity;
     private String passwordResetToken;
     private LocalDateTime passwordResetTokenCreationDate;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private SettingsUserStates settings;
 
     //CONSTRUCTORS----------------------------------------
 

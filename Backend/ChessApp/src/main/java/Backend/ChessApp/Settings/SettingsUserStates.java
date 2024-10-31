@@ -13,7 +13,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "user", schema = "DBChessApp")
+@Table(name = "user_settings", schema = "DBChessApp")
 public class SettingsUserStates {
     short boardTheme;
     short pieceTheme;
@@ -22,7 +22,7 @@ public class SettingsUserStates {
     boolean moveHighlighting;
 
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
     public SettingsUserStates(User user){
