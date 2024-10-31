@@ -12,71 +12,101 @@ import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
+
 import org.slf4j.Logger;
 
 /*
        This is a controller allowing settings to sync to the user, game, and other variables. This will handle mostly the game settings,
        User Settings will be handled in either seperate class, or rather using http requests since they do not need to be live updating
  */
+
 @ServerEndpoint("/settings/{userName}")
 @Controller
 public class SettingsController {
-    UserRepository userRepository;
+
+    private final UserRepository userRepository;
     private final Logger logger = LoggerFactory.getLogger(SettingsController.class);
-    private static Map <Session, User> sessionUserMap = new Hashtable<>();
-    private static Map <User, Session> userSessionMap = new Hashtable<>();
-    private static Map <ChessGame, Session> chessGameSessionMap = new Hashtable<>();
-    private static Map <Session, ChessGame> sessionChessGameMap = new Hashtable<>();
+
+    private static Map<Session, User> sessionUserMap = new Hashtable<>();
+    private static Map<User, Session> userSessionMap = new Hashtable<>();
+    private static Map<ChessGame, SettingGameStates> chessGameSettingsMap = new Hashtable<>();
+
+    public SettingsController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @OnOpen
     public void onOpen(Session session, @PathParam("userName") String userName) {
-        User user = userRepository.findByUserName(userName); // Assuming User has a constructor with userName
+        User user = userRepository.findByUserName(userName);
         sessionUserMap.put(session, user);
         userSessionMap.put(user, session);
 
-        try {
-            session.getBasicRemote().sendText("Welcome, " + userName + "!");
-        } catch (IOException e) {
-            logger.info("IOException");
-        }
+        // Initialize settings if the game doesn't have any
+        ChessGame game = getGameForUser(user);
+        chessGameSettingsMap.putIfAbsent(game, new SettingGameStates((short) 5, 0, true, false, 30));
+
+        sendSettings(session, chessGameSettingsMap.get(game));
     }
 
     @OnMessage
-    public void onMessage(Session session, String message) throws IOException {
+    public void onMessage(Session session, String message) {
         User user = sessionUserMap.get(session);
         if (user != null) {
-            // Here, parse the message and handle settings or game updates
-            System.out.println("Received message from " + user.getUserName() + ": " + message);
+            ChessGame game = getGameForUser(user);
+            SettingGameStates settings = chessGameSettingsMap.get(game);
 
-            // Example: Broadcast message to other users
-            for (Session s : sessionUserMap.keySet()) {
-                if (!s.equals(session)) { // avoid sending back to the sender
-                    s.getBasicRemote().sendText(user.getUserName() + " says: " + message);
-                }
-            }
+            // Update settings based on the parsed message content (consider using JSON for structure)
+            updateSettings(settings, message);
+
+            // Broadcast updated settings to all game participants
+            broadcastSettings(game, settings);
         }
     }
 
+
     @OnClose
-    public void onClose(Session session) throws IOException {
+    public void onClose(Session session) {
         User user = sessionUserMap.get(session);
         if (user != null) {
-            sessionUserMap.remove(session);
-            userSessionMap.remove(user);
-
-            ChessGame game = sessionChessGameMap.get(session);
-            if (game != null) {
-                chessGameSessionMap.remove(game);
-                sessionChessGameMap.remove(session);
-            }
-            System.out.println("Session closed for user: " + user.getUserName());
+            removeUserFromGame(session, user);
         }
     }
 
     @OnError
     public void onError(Session session, Throwable throwable) {
-        System.err.println("WebSocket error for session: " + session.getId());
-        logger.info("ERROR: websocket failed");
+        logger.error("WebSocket error for session: " + session.getId(), throwable);
+    }
+
+    private void sendSettings(Session session, SettingGameStates settings) {
+        try {
+            String settingsMessage = "Settings: " + settings.toString(); // Format this as needed
+            session.getBasicRemote().sendText(settingsMessage);
+        } catch (IOException e) {
+            logger.warn("Failed to send settings", e);
+        }
+    }
+
+    private void broadcastSettings(ChessGame game, SettingGameStates settings) {
+        for (Session s : chessGameSettingsMap.get(game)) {
+            sendSettings(s, settings);
+        }
+    }
+
+    private void updateSettings(SettingGameStates settings, String message) {
+        // Logic to parse and update settings based on the received message content
+        // Example: update settings fields based on parsed values from message
+    }
+
+
+    private void sendWelcomeMessage(Session session, String userName) {
+        try {
+            session.getBasicRemote().sendText("Welcome, " + userName + "!");
+        } catch (IOException e) {
+            logger.warn("Failed to send welcome message", e);
+        }
     }
 }
+
+

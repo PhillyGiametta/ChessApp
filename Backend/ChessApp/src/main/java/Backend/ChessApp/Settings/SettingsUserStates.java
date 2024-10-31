@@ -25,6 +25,15 @@ public class SettingsUserStates {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    public SettingsUserStates(User user){
+        this.user = user;
+        this.appTheme = false; //light default
+        this.boardTheme = 0;
+        this.pieceTheme = 0;
+        this.sounds = true;
+        this.moveHighlighting = true;
+    }
+
     public SettingsUserStates(short boardTheme, short pieceTheme, boolean appTheme, boolean sounds, boolean moveHighlighting) {
         this.appTheme = appTheme;
         this.boardTheme = boardTheme;
