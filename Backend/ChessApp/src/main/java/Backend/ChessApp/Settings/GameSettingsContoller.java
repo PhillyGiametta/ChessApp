@@ -24,10 +24,10 @@ import org.slf4j.Logger;
 
 @ServerEndpoint("/settings/{userName}")
 @Controller
-public class SettingsController {
+public class GameSettingsContoller {
 
     private final UserRepository userRepository;
-    private final Logger logger = LoggerFactory.getLogger(SettingsController.class);
+    private final Logger logger = LoggerFactory.getLogger(GameSettingsContoller.class);
     private final ChessGame chessGame = new ChessGame();
 
     private static Map<Session, User> sessionUserMap = new Hashtable<>();
@@ -36,7 +36,7 @@ public class SettingsController {
     private static Map<User, ChessGame> userGameMap = new Hashtable<>();
     private static Map<ChessGame, List<Session>> chessGameSessionMap = new Hashtable<>();
 
-    public SettingsController(UserRepository userRepository) {
+    public GameSettingsContoller(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

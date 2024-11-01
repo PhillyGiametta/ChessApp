@@ -7,10 +7,7 @@ package Backend.ChessApp.Settings;
  */
 
 import Backend.ChessApp.Users.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "user_settings", schema = "DBChessApp")
@@ -21,7 +18,12 @@ public class SettingsUserStates {
     boolean sounds;
     boolean moveHighlighting;
 
+    @Id
+    @Column(name="user_id")
+    private int settings_id;
+
     @OneToOne
+    @MapsId
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 

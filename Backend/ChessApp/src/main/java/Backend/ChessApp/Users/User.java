@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 import org.springframework.boot.*;
+import org.springframework.context.aot.AbstractAotProcessor;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -29,7 +30,8 @@ public class User {
     private String passwordResetToken;
     private LocalDateTime passwordResetTokenCreationDate;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private SettingsUserStates settings;
 
     //CONSTRUCTORS----------------------------------------
