@@ -24,16 +24,19 @@ import org.slf4j.Logger;
 
 @ServerEndpoint("/settings/{userName}")
 @Controller
-public class SettingsController {
+public class GameSettingsContoller {
 
     private final UserRepository userRepository;
-    private final Logger logger = LoggerFactory.getLogger(SettingsController.class);
+    private final Logger logger = LoggerFactory.getLogger(GameSettingsContoller.class);
+    private final ChessGame chessGame = new ChessGame();
 
     private static Map<Session, User> sessionUserMap = new Hashtable<>();
     private static Map<User, Session> userSessionMap = new Hashtable<>();
     private static Map<ChessGame, SettingGameStates> chessGameSettingsMap = new Hashtable<>();
+    private static Map<User, ChessGame> userGameMap = new Hashtable<>();
+    private static Map<ChessGame, List<Session>> chessGameSessionMap = new Hashtable<>();
 
-    public SettingsController(UserRepository userRepository) {
+    public GameSettingsContoller(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -42,6 +45,7 @@ public class SettingsController {
         User user = userRepository.findByUserName(userName);
         sessionUserMap.put(session, user);
         userSessionMap.put(user, session);
+        userGameMap.put(user, chessGame);
 
         // Initialize settings if the game doesn't have any
         ChessGame game = getGameForUser(user);
@@ -88,15 +92,31 @@ public class SettingsController {
         }
     }
 
+    private void removeUserFromGame(Session session, User user){
+        userSessionMap.remove(user);
+        sessionUserMap.remove(session);
+
+
+    }
+
+
     private void broadcastSettings(ChessGame game, SettingGameStates settings) {
-        for (Session s : chessGameSettingsMap.get(game)) {
-            sendSettings(s, settings);
+        List<Session> sessions = chessGameSessionMap.get(game);
+        if (sessions != null) {
+            for (Session s : sessions) {
+                sendSettings(s, settings);
+            }
         }
     }
+
 
     private void updateSettings(SettingGameStates settings, String message) {
         // Logic to parse and update settings based on the received message content
         // Example: update settings fields based on parsed values from message
+    }
+
+    private ChessGame getGameForUser(User user) {
+        return userGameMap.get(user);
     }
 
 

@@ -25,6 +25,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import java.time.LocalDateTime;
 import java.util.Date;
 import org.springframework.boot.*;
+import org.springframework.context.aot.AbstractAotProcessor;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
