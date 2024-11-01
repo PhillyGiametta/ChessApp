@@ -11,6 +11,7 @@ public class Board {
     int selectedRow;
     PieceLogic selectedPiece;
     BoardTile[][] board;
+    boolean flipped = false;
 
 
     /**
@@ -20,7 +21,8 @@ public class Board {
         BoardBuilder();
     }
     public Board(Board flipper){
-        flipBoard(flipper.board);
+        this.board = flipBoard(flipper.getBoard());
+        flipped = true;
     }
 
     /**
@@ -126,12 +128,32 @@ public class Board {
         return consolePrint;
     }
 
+    private String printFlippedBoard(BoardTile[][] board) {
+        selectedRow = 1;
+        String consolePrint = "";
+        for (BoardTile[] boardTiles : board) {
+            for (BoardTile boardTile : boardTiles) {
+
+                consolePrint += (boardTile + "\t");
+            }
+            consolePrint += ("\t" + selectedRow++);
+            consolePrint += "\n"; // New line at the end of each row
+        }
+        for(selectedColumn = 'H'; selectedColumn >= 'A'; selectedColumn--){
+            consolePrint += (selectedColumn + "\t");
+        }
+
+        return consolePrint;
+    }
+
     public BoardTile getTile(int row, int col) {
         return board[row][col];
     }
 
     @Override
     public String toString() {
+        if(flipped)
+            return printFlippedBoard(this.board);
         return printBoard(this.board);
     }
 

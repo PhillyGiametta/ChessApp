@@ -1,11 +1,13 @@
 package Backend.ChessApp.Users;
 
 import Backend.ChessApp.Leaderboard.LeaderboardEntry;
+import Backend.ChessApp.Settings.SettingsUserStates;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 import org.springframework.boot.*;
+import org.springframework.context.aot.AbstractAotProcessor;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -27,6 +29,10 @@ public class User {
     private UserActivity activity;
     private String passwordResetToken;
     private LocalDateTime passwordResetTokenCreationDate;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private SettingsUserStates settings;
 
     //CONSTRUCTORS----------------------------------------
 
