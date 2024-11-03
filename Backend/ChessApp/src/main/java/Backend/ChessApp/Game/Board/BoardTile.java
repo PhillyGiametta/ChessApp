@@ -38,9 +38,9 @@ public class BoardTile {
      */
     public BoardTile neighbour(int rowOffset, int colOffset) {
         int newRow = this.row + rowOffset;
-        int newCol = (this.col + colOffset);
+        int newCol = this.col + colOffset;
 
-        if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 7) {
+        if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
             return this.board.getTile(newRow, newCol); // Retrieve tile from the board
         } else {
             return null; // Out of bounds

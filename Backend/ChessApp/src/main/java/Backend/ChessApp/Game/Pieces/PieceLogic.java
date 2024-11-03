@@ -9,7 +9,7 @@ public abstract class PieceLogic {
 
     protected PieceType pieceType;
     protected BoardTile boardTile;
-    protected Collection<BoardTile> possibleMoves;
+    protected Collection<BoardTile> possibleMoves = new ArrayList<>();
     protected boolean kingInCheck = false;
     protected int color; //0 is white, 1 is black, -1 is colorless for emptyspace
     /**
@@ -51,6 +51,7 @@ public abstract class PieceLogic {
         if(possibleMoves.contains(newBoardTile)){
             BoardTile current = this.getBoardTile();
             newBoardTile.setTile(this);
+            boardTile = newBoardTile;
             current.setTile(new EmptySpace(PieceType.OPEN, -1));
         }
     }

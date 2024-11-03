@@ -15,21 +15,26 @@ public class Pawn extends PieceLogic{
     public Pawn(PieceType pieceType,int color) {
         super(pieceType,color);
     }
-
+    private boolean firstMove = true;
     @Override
     public Collection<BoardTile> setPossibleMoves() {
-        List<BoardTile> possibleMoves = new ArrayList<BoardTile>();
-        int[][] offsets = {
-                {1,0},{1,1},{1,-1}
-        };
+        possibleMoves.clear(); //in case they are kept from the previous move
+        int[][]offsets;
+        if(firstMove){
+            offsets = new int[][]{{1, 0}, {1, 1}, {1, -1}, {2, 0}};
+            firstMove = false;
+        }
+        else {
+            offsets = new int[][]{{1, 0}, {1, 1}, {1, -1}};
+        }
         for (int[] o : offsets) {
+            if(color == 0)
+                 o[0] *= -1;
             BoardTile candidate = this.getBoardTile().neighbour(o[0], o[1]);
-            if (candidate != null && (candidate.getTile() == null || candidate.getTile().color != color)
-                    && (o[1] != 0 && candidate.getTile().color == oppositeColor(candidate.getTile().color))) {
+            if (candidate != null && (candidate.getTile().getPieceType() == PieceType.OPEN || (candidate.getTile().color != color && o[1] != 0))) {
                 possibleMoves.add(candidate);
             }
         }
-        this.possibleMoves = possibleMoves;
         return possibleMoves;
     }
 
