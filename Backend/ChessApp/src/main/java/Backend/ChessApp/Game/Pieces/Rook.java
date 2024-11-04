@@ -1,38 +1,45 @@
 package Backend.ChessApp.Game.Pieces;
 
-import Backend.ChessApp.Game.Board.BoardTile;
+import Backend.ChessApp.Game.Board.Position;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Rook extends PieceLogic{
-    /**
-     * Sets the piece type for the individual pieces may need more later.
-     *
-     * @param pieceType
-     */
-    public Rook(PieceType pieceType, int color) {
-        super(pieceType, color);
+public class Rook extends Piece {
+    public Rook(PieceColor color, Position position) {
+        super(color, position);
     }
 
     @Override
-    public Collection<BoardTile> setPossibleMoves() {
-        List<BoardTile> possibleMoves = new ArrayList<BoardTile>();
-        int[][] offsets = {
-                {-1, 0},{-2,0},{-3,0},{-4,0},{-5,0},{-6,0},{-7,0},
-                {0, 1},{0,2},{0,3},{0,4},{0,5},{0,6},{0,7},
-                {1, 0},{2,0},{3,0},{4,0},{5,0},{6,0},{7,0},
-                {0, -1},{0,-2},{0,-3},{0,-4},{0,-5},{0,-6},{0,-7},
-        };
-        for (int[] o : offsets) {
-            BoardTile candidate = this.getBoardTile().neighbour(o[0], o[1]);
-            if (candidate != null && (candidate.getTile() == null || candidate.getTile().color != color)) {
-                possibleMoves.add(candidate);
+    public boolean isValidMove(Position newPosition, Piece[][] board) {
+        if (position.getRow() == newPosition.getRow()) {
+            int columnStart = Math.min(position.getColumn(), newPosition.getColumn()) + 1;
+            int columnEnd = Math.max(position.getColumn(), newPosition.getColumn());
+            for (int column = columnStart; column < columnEnd; column++) {
+                if (board[position.getRow()][column] != null) {
+                    return false;
+                }
             }
+        } else if (position.getColumn() == newPosition.getColumn()) {
+            int rowStart = Math.min(position.getRow(), newPosition.getRow()) + 1;
+            int rowEnd = Math.max(position.getRow(), newPosition.getRow());
+            for (int row = rowStart; row < rowEnd; row++) {
+                if (board[row][position.getColumn()] != null) {
+                    return false;
+                }
+            }
+        } else {
+            return false;
         }
-        this.possibleMoves = possibleMoves;
-        return possibleMoves;
-    }
 
+        Piece destinationPiece = board[newPosition.getRow()][newPosition.getColumn()];
+        if (destinationPiece == null) {
+            return true;
+        } else if (destinationPiece.getColor() != this.getColor()) {
+            return true;
+        }
+
+        return false;
+    }
 }

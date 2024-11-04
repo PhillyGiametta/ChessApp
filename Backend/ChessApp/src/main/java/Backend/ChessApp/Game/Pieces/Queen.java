@@ -1,43 +1,48 @@
 package Backend.ChessApp.Game.Pieces;
 
-import Backend.ChessApp.Game.Board.BoardTile;
+import Backend.ChessApp.Game.Board.Position;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Queen extends PieceLogic{
-    /**
-     * Sets the piece type for the individual pieces may need more later.
-     *
-     * @param pieceType
-     */
-    public Queen(PieceType pieceType, int color) {
-        super(pieceType,color);
+public class Queen extends Piece {
+    public Queen(PieceColor color, Position position) {
+        super(color, position);
     }
 
     @Override
-    public Collection<BoardTile> setPossibleMoves() {
-        List<BoardTile> possibleMoves = new ArrayList<BoardTile>();
-        int[][] offsets = {
-                {-1, -1},{-2,-2},{-3,-3},{-4,-4},{-5,-5},{-6,-6},{-7,-7},
-                {1, 1},{2,2},{3,3},{4,4},{5,5},{6,6},{7,7},
-                {1, -1},{2,-2},{3,-3},{4,-4},{5,-5},{6,-6},{7,-7},
-                {-1,1},{-2,2},{-3,3},{-4,4},{-5,5},{-6,6},{-7,7}, //diagonal
-                {-1, 0},{-2,0},{-3,0},{-4,0},{-5,0},{-6,0},{-7,0},
-                {0, 1},{0,2},{0,3},{0,4},{0,5},{0,6},{0,7},
-                {1, 0},{2,0},{3,0},{4,0},{5,0},{6,0},{7,0},
-                {0, -1},{0,-2},{0,-3},{0,-4},{0,-5},{0,-6},{0,-7}, //straight
-        };
-        for (int[] o : offsets) {
-            BoardTile candidate = this.getBoardTile().neighbour(o[0], o[1]);
-            if (candidate != null && (candidate.getTile() == null || candidate.getTile().color != color)) {
-                possibleMoves.add(candidate);
-            }
+    public boolean isValidMove(Position newPosition, Piece[][] board) {
+        if (newPosition.equals(this.position)) {
+            return false;
         }
-        this.possibleMoves = possibleMoves;
-        return possibleMoves;
+
+        int rowDiff = Math.abs(newPosition.getRow() - this.position.getRow());
+        int colDiff = Math.abs(newPosition.getColumn() - this.position.getColumn());
+
+        boolean straightLine = this.position.getRow() == newPosition.getRow()
+                || this.position.getColumn() == newPosition.getColumn();
+
+        boolean diagonal = rowDiff == colDiff;
+
+        if (!straightLine && !diagonal) {
+            return false;
+        }
+
+        int rowDirection = Integer.compare(newPosition.getRow(), this.position.getRow());
+        int colDirection = Integer.compare(newPosition.getColumn(), this.position.getColumn());
+
+        int currentRow = this.position.getRow() + rowDirection;
+        int currentCol = this.position.getColumn() + colDirection;
+        while (currentRow != newPosition.getRow() || currentCol != newPosition.getColumn()) {
+            if (board[currentRow][currentCol] != null) {
+                return false;
+            }
+            currentRow += rowDirection;
+            currentCol += colDirection;
+        }
+
+        Piece destinationPiece = board[newPosition.getRow()][newPosition.getColumn()];
+        return destinationPiece == null || destinationPiece.getColor() != this.getColor();
     }
-
-
 }

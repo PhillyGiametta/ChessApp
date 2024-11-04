@@ -1,38 +1,42 @@
 package Backend.ChessApp.Game.Pieces;
 
-import Backend.ChessApp.Game.Board.BoardTile;
+import Backend.ChessApp.Game.Board.Position;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Bishop extends PieceLogic{
-    /**
-     * Sets the piece type for the individual pieces may need more later.
-     *
-     * @param pieceType
-     */
-    public Bishop(PieceType pieceType,int color) {
-        super(pieceType,color);
+public class Bishop extends Piece {
+    public Bishop(PieceColor color, Position position) {
+        super(color, position);
     }
 
     @Override
-    public Collection<BoardTile> setPossibleMoves() {
-        List<BoardTile> possibleMoves = new ArrayList<BoardTile>();
-        int[][] offsets = {
-                {-1, -1},{-2,-2},{-3,-3},{-4,-4},{-5,-5},{-6,-6},{-7,-7},
-                {1, 1},{2,2},{3,3},{4,4},{5,5},{6,6},{7,7},
-                {1, -1},{2,-2},{3,-3},{4,-4},{5,-5},{6,-6},{7,-7},
-                {-1,1},{-2,2},{-3,3},{-4,4},{-5,5},{-6,6},{-7,7},
-        };
-        for (int[] o : offsets) {
-            BoardTile candidate = this.getBoardTile().neighbour(o[0], o[1]);
-            if (candidate != null && (candidate.getTile() == null || candidate.getTile().color != color)) {
-                possibleMoves.add(candidate);
+    public boolean isValidMove(Position newPosition, Piece[][] board) {
+        int rowDiff = Math.abs(position.getRow() - newPosition.getRow());
+        int colDiff = Math.abs(position.getColumn() - newPosition.getColumn());
+
+        if (rowDiff != colDiff) {
+            return false;
+        }
+
+        int rowStep = newPosition.getRow() > position.getRow() ? 1 : -1;
+        int colStep = newPosition.getColumn() > position.getColumn() ? 1 : -1;
+        int steps = rowDiff - 1;
+
+        for (int i = 1; i <= steps; i++) {
+            if (board[position.getRow() + i * rowStep][position.getColumn() + i * colStep] != null) {
+                return false;
             }
         }
-        this.possibleMoves = possibleMoves;
-        return possibleMoves;
-    }
 
+        Piece destinationPiece = board[newPosition.getRow()][newPosition.getColumn()];
+        if (destinationPiece == null) {
+            return true;
+        } else if (destinationPiece.getColor() != this.getColor()) {
+            return true;
+        }
+
+        return false;
+    }
 }

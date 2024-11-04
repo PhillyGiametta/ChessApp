@@ -1,46 +1,28 @@
 package Backend.ChessApp.Game.Pieces;
 
-import Backend.ChessApp.Game.Board.BoardTile;
+import Backend.ChessApp.Game.Board.Position;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class King extends PieceLogic{
-
-    boolean checked;
-    boolean checkmated;
-    /**
-     * Sets the piece type for the individual pieces may need more later.
-     *
-     * @param pieceType
-     */
-    public King(PieceType pieceType,int color) {
-        super(pieceType,color);
+public class King extends Piece {
+    public King(PieceColor color, Position position) {
+        super(color, position);
     }
 
     @Override
-    public Collection<BoardTile> setPossibleMoves() {
-        List<BoardTile> possibleMoves = new ArrayList<BoardTile>();
-        int[][] offsets = {
-                {1,0},{1,1},{1,-1},{-1,0},{-1,-1},{-1,1},{0,1},{0,-1}
-        };
-        for (int[] o : offsets) {
-            BoardTile candidate = this.getBoardTile().neighbour(o[0], o[1]);
-            if (candidate != null && (candidate.getTile() == null || candidate.getTile().color != color)
-                    && (!candidate.getTile().kingIsChecked())) {
-                possibleMoves.add(candidate);
-            }
+    public boolean isValidMove(Position newPosition, Piece[][] board) {
+        int rowDiff = Math.abs(position.getRow() - newPosition.getRow());
+        int colDiff = Math.abs(position.getColumn() - newPosition.getColumn());
+
+        boolean isOneSquareMove = rowDiff <= 1 && colDiff <= 1 && !(rowDiff == 0 && colDiff == 0);
+
+        if (!isOneSquareMove) {
+            return false;
         }
-        this.possibleMoves = possibleMoves;
-        return possibleMoves;
+
+        Piece destinationPiece = board[newPosition.getRow()][newPosition.getColumn()];
+        return destinationPiece == null || destinationPiece.getColor() != this.getColor();
     }
-
-    public void setCheckStatus(Collection<BoardTile> otherMoves){
-        //if this is in path of any pieces possible moves set true
-
-        //else set false;
-    }
-
-
 }

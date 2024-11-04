@@ -1,41 +1,41 @@
 package Backend.ChessApp.Game.Pieces;
 
-import Backend.ChessApp.Game.Board.BoardTile;
+import Backend.ChessApp.Game.Board.Position;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Pawn extends PieceLogic{
-    /**
-     * Sets the piece type for the individual pieces may need more later.
-     *
-     * @param pieceType
-     */
-    public Pawn(PieceType pieceType,int color) {
-        super(pieceType,color);
-    }
-    private boolean firstMove = true;
-    @Override
-    public Collection<BoardTile> setPossibleMoves() {
-        possibleMoves.clear(); //in case they are kept from the previous move
-        int[][]offsets;
-        if(firstMove){
-            offsets = new int[][]{{1, 0}, {1, 1}, {1, -1}, {2, 0}};
-            firstMove = false;
-        }
-        else {
-            offsets = new int[][]{{1, 0}, {1, 1}, {1, -1}};
-        }
-        for (int[] o : offsets) {
-            if(color == 0)
-                 o[0] *= -1;
-            BoardTile candidate = this.getBoardTile().neighbour(o[0], o[1]);
-            if (candidate != null && (candidate.getTile().getPieceType() == PieceType.OPEN || (candidate.getTile().color != color && o[1] != 0))) {
-                possibleMoves.add(candidate);
-            }
-        }
-        return possibleMoves;
+public class Pawn extends Piece {
+    public Pawn(PieceColor color, Position position) {
+        super(color, position);
     }
 
+    @Override
+    public boolean isValidMove(Position newPosition, Piece[][] board) {
+        int forwardDirection = color == PieceColor.WHITE ? -1 : 1;
+        int rowDiff = (newPosition.getRow() - position.getRow()) * forwardDirection;
+        int colDiff = newPosition.getColumn() - position.getColumn();
+
+        if (colDiff == 0 && rowDiff == 1 && board[newPosition.getRow()][newPosition.getColumn()] == null) {
+            return true;
+        }
+
+        boolean isStartingPosition = (color == PieceColor.WHITE && position.getRow() == 6) ||
+                (color == PieceColor.BLACK && position.getRow() == 1);
+        if (colDiff == 0 && rowDiff == 2 && isStartingPosition
+                && board[newPosition.getRow()][newPosition.getColumn()] == null) {
+            int middleRow = position.getRow() + forwardDirection;
+            if (board[middleRow][position.getColumn()] == null) {
+                return true;
+            }
+        }
+
+        if (Math.abs(colDiff) == 1 && rowDiff == 1 && board[newPosition.getRow()][newPosition.getColumn()] != null &&
+                board[newPosition.getRow()][newPosition.getColumn()].color != this.color) {
+            return true;
+        }
+
+        return false;
+    }
 }
