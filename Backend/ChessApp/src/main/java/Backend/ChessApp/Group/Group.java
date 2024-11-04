@@ -1,7 +1,10 @@
 package Backend.ChessApp.Group;
 
 import Backend.ChessApp.Users.User;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +21,8 @@ public class Group {
     private String groupName;
     private boolean isFull;
 
-    @OneToMany(mappedBy = "group", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "group",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<User> users = new ArrayList<>();
 
     public Group(){
@@ -44,6 +48,11 @@ public class Group {
         return isFull;
     }
 
+    public boolean isEmpty(){
+        return users.isEmpty();
+    }
+
+    @Transactional
     public boolean addUser(User user){
         if(isFull){
             return false;
@@ -58,6 +67,7 @@ public class Group {
         return true;
     }
 
+    @Transactional
     public void removeUser(User user){
         users.remove(user);
         user.setGroup(null);
