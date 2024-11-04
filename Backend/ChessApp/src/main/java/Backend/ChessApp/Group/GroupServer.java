@@ -1,16 +1,14 @@
 package Backend.ChessApp.Group;
 
 import Backend.ChessApp.Users.User;
-import Backend.ChessApp.Users.UserService;
+import Backend.ChessApp.Users.UserRepository;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
@@ -26,34 +24,52 @@ public class GroupServer {
     // server side logger
     private final Logger logger = LoggerFactory.getLogger(GroupServer.class);
 
-    @Autowired
-    private GroupService groupService;
+    private static UserRepository userRepository;
+
+    private static GroupRepository groupRepository;
 
     @Autowired
-    private UserService userService;
+    public void setUserRepository(UserRepository repo) {
+        userRepository = repo;
+    }
+
+    @Autowired
+    public void setGroupRepository(GroupRepository repo) {
+        groupRepository = repo;
+    }
 
     @OnOpen
     public void onOpen(Session session, @PathParam("groupName") String groupName, @PathParam("username") String username) throws IOException {
         // server side log
         logger.info("[onOpen] User {} joined group {}", username, groupName);
 
-        User user = userService.findByUsername(username);
+        User user = userRepository.findByUserName(username);
         if(user == null){
             session.close();
             return;
         }
 
 
-        int groupId = groupService.getGroupByName(groupName).getGroupId();
-        Group group = groupService.addUserToGroup(groupId, user);
+        Group group = groupRepository.findBygroupName(groupName);
+        logger.info("group = " + group.getGroupName());
 
         //init group if it doesnt exist
         groupSessions.computeIfAbsent(groupName, k -> new Hashtable<>());
 
-        //add user to group
-        groupSessions.get(groupName).put(session, username);
-        sessionUsernameMap.put(session, username);
-        usernameSessionMap.put(username, session);
+        if(group.addUser(user)){
+            //add user to group
+            groupSessions.get(groupName).put(session, username);
+            sessionUsernameMap.put(session, username);
+            usernameSessionMap.put(username, session);
+
+            //update repos
+            groupRepository.save(group);
+            userRepository.save(user);
+        }else{
+            session.close();
+            return;
+        }
+
 
         //Notify chat
         broadcastToGroup(groupName,username + " has joined.");
@@ -80,15 +96,19 @@ public class GroupServer {
         // server side log
         logger.info("[onClose] " + username);
 
-        User user = userService.findByUsername(username);
+        Group group = groupRepository.findBygroupName(groupName);
+        User user = userRepository.findByUserName(username);
 
-        int groupId = groupService.getGroupByName(groupName).getGroupId();
-        groupService.removeUserFromGroup(groupId, user);
+        group.removeUser(user);
 
         // remove user from mappings
         groupSessions.get(groupName).remove(session);
         sessionUsernameMap.remove(session);
         usernameSessionMap.remove(username);
+
+        //update repos
+        groupRepository.save(group);
+        userRepository.save(user);
 
         session.close();
         broadcastToGroup(groupName, "User " + username + " has left the group.");

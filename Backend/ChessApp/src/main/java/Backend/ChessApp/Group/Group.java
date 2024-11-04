@@ -2,7 +2,6 @@ package Backend.ChessApp.Group;
 
 import Backend.ChessApp.Users.User;
 import jakarta.persistence.*;
-
 import static jakarta.persistence.GenerationType.IDENTITY;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +14,12 @@ public class Group {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "group_id", nullable = false)
     private int id;
+
     private String groupName;
     private boolean isFull;
 
-    @OneToMany
-    @JoinTable(name = "group_user",
-            joinColumns = @JoinColumn(name = "group_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    List<User> users;
+    @OneToMany(mappedBy = "group", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<User> users = new ArrayList<>();
 
     public Group(){
         //NULL Group
@@ -32,6 +28,7 @@ public class Group {
     //Constructor
     public Group(String groupName){
         this.groupName = groupName;
+        this.users = new ArrayList<>();
     }
 
     //Getters and Setters
@@ -53,14 +50,17 @@ public class Group {
         }
 
         users.add(user);
+        user.setGroup(this);
         if(users.size() >= 4){
             isFull = true;
         }
+        System.out.println("users.size = " + users.size());
         return true;
     }
 
     public void removeUser(User user){
         users.remove(user);
+        user.setGroup(null);
         isFull = false;
     }
 

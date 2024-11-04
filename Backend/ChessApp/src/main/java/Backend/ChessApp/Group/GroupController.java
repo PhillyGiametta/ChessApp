@@ -2,7 +2,6 @@ package Backend.ChessApp.Group;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -19,7 +18,7 @@ public class GroupController {
     //Get specific group
     @GetMapping(path = "/groups/{id}")
     Group getGroupById(@PathVariable int id) {
-        return groupRepository.findById(id).get();
+        return groupRepository.findById(id);
     }
 
     //Create
