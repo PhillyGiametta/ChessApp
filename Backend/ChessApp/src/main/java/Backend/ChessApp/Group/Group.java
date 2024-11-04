@@ -13,4 +13,15 @@ public class Group {
         this.GroupId = GroupId;
     }
 
+    public boolean addUser(User user){
+        if(full){
+            return false;
+        }
+
+        users.add(user);
+        if(users.size() >= 4){
+            full = true;
+        }
+        return true;
+    }
 }
