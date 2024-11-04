@@ -29,4 +29,17 @@ public class Group {
         users.remove(user);
         full = false;
     }
+
+    public boolean isFull(){
+        return full;
+    }
+
+    public ArrayList<User> getUsers(){
+        return users;
+    }
+
+    public int getGroupId(){
+        return GroupId;
+    }
+
 }
