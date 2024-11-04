@@ -8,6 +8,7 @@ import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
@@ -22,12 +23,14 @@ import org.slf4j.Logger;
        This is a controller allowing settings to sync to the user, game, and other variables. This will handle mostly the game settings,
        User Settings will be handled in either separate class, or rather using http requests since they do not need to be live updating
  */
-
-@ServerEndpoint("/settings/{userName}")
 @Controller
+@ServerEndpoint("/settings/{userName}")
 public class GameSettingsController {
-
+    @Autowired
     private final UserRepository userRepository;
+    @Autowired
+    private SettingsRepo settingsRepo;
+
     private final Logger logger = LoggerFactory.getLogger(GameSettingsController.class);
 
     // Session and User mappings

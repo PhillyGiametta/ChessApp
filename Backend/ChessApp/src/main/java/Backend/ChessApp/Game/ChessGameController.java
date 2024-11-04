@@ -1,6 +1,6 @@
 package Backend.ChessApp.Game;
 
-import Backend.ChessApp.Settings.GameSettingsContoller;
+import Backend.ChessApp.Settings.GameSettingsController;
 import Backend.ChessApp.Settings.SettingGameStates;
 import Backend.ChessApp.Settings.SettingsRepo;
 import Backend.ChessApp.Users.User;
