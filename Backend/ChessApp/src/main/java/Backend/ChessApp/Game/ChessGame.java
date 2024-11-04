@@ -6,12 +6,16 @@ import Backend.ChessApp.Game.Pieces.King;
 import Backend.ChessApp.Game.Pieces.PieceColor;
 import Backend.ChessApp.Game.Pieces.Piece;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.ArrayList;
 
 public class ChessGame {
     private ChessBoard board;
     private boolean whiteTurn = true; // White starts the game
+    private Duration GAMETIME;
+    private Timer whiteTimer;
+    private Timer blackTimer;
 
     public ChessGame() {
         this.board = new ChessBoard();
