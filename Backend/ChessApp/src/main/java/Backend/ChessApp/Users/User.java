@@ -5,6 +5,8 @@ import Backend.ChessApp.AdminControl.Admin;
 import Backend.ChessApp.Game.ChessGame;
 import Backend.ChessApp.Leaderboard.LeaderboardEntry;
 import Backend.ChessApp.Settings.SettingsUserStates;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -48,6 +50,7 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "group_id")
+    @JsonBackReference
     private Group group;
 
     //CONSTRUCTORS----------------------------------------
