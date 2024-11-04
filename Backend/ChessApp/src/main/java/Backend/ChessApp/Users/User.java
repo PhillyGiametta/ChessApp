@@ -8,6 +8,9 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+
+import org.apache.catalina.Group;
 import org.springframework.boot.*;
 import org.springframework.context.aot.AbstractAotProcessor;
 
@@ -42,6 +45,9 @@ public class User {
     @ManyToOne
     private ChessGame chessGame;
 
+
+    @ManyToOne
+    private Group group;
 
     //CONSTRUCTORS----------------------------------------
 
@@ -104,4 +110,7 @@ public class User {
 
     public void setPasswordResetTokenCreationDate(LocalDateTime tokenCreationDate){this.passwordResetTokenCreationDate = tokenCreationDate;}
 
+    public Group getGroup(){return group;}
+
+    public void setGroup(Group group){this.group = group;}
 }
