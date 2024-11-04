@@ -24,8 +24,7 @@ public class GroupController {
 
     //Create
     @PostMapping(path = "/groups")
-    public Group createGroup(@RequestBody String groupName) {
-        Group group = new Group(groupName);
+    public Group createGroup(@RequestBody Group group) {
         return groupRepository.save(group);
     }
 

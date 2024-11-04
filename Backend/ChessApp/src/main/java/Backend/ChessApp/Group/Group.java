@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "group", schema = "DBChessApp")
+@Table(name = "groups", schema = "DBChessApp")
 public class Group {
 
     @Id
@@ -19,7 +19,10 @@ public class Group {
     private boolean isFull;
 
     @OneToMany
-    @JoinTable
+    @JoinTable(name = "group_user",
+            joinColumns = @JoinColumn(name = "group_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
     List<User> users;
 
     public Group(){
