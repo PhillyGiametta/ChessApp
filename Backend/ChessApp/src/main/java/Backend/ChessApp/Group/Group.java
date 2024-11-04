@@ -15,7 +15,7 @@ public class Group {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "group_id", nullable = false)
     private int id;
-    private String name;
+    private String groupName;
     private boolean isFull;
 
     @OneToMany
@@ -27,8 +27,8 @@ public class Group {
     }
 
     //Constructor
-    public Group(String name){
-        this.name = name;
+    public Group(String groupName){
+        this.groupName = groupName;
     }
 
     //Getters and Setters
@@ -63,5 +63,9 @@ public class Group {
 
     public List<User> getUsers(){
         return users;
+    }
+
+    public String getGroupName(){
+        return groupName;
     }
 }
