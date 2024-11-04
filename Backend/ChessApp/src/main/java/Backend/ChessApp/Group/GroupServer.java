@@ -1,19 +1,24 @@
 package Backend.ChessApp.Group;
 
+import Backend.ChessApp.Users.User;
+import Backend.ChessApp.Users.UserService;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
 
 @ServerEndpoint("/group/{groupName}/{username}")
-@Component
+@Controller
 public class GroupServer {
+
     private static Map<String, Map<Session, String>> groupSessions = new Hashtable<>();
     private static Map<Session, String > sessionUsernameMap = new Hashtable< >();
     private static Map <String, Session > usernameSessionMap = new Hashtable < > ();
@@ -21,11 +26,26 @@ public class GroupServer {
     // server side logger
     private final Logger logger = LoggerFactory.getLogger(GroupServer.class);
 
+    @Autowired
+    private GroupService groupService;
+
+    @Autowired
+    private UserService userService;
+
     @OnOpen
     public void onOpen(Session session, @PathParam("groupName") String groupName, @PathParam("username") String username) throws IOException {
-
         // server side log
         logger.info("[onOpen] User {} joined group {}", username, groupName);
+
+        User user = userService.findByUsername(username);
+        if(user == null){
+            session.close();
+            return;
+        }
+
+
+        int groupId = groupService.getGroupByName(groupName).getGroupId();
+        Group group = groupService.addUserToGroup(groupId, user);
 
         //init group if it doesnt exist
         groupSessions.computeIfAbsent(groupName, k -> new Hashtable<>());
@@ -43,7 +63,6 @@ public class GroupServer {
 
     @OnMessage
     public void onMessage(Session session, String message, @PathParam("groupName") String groupName) throws IOException {
-
         // get the username by session
         String username = sessionUsernameMap.get(session);
 
@@ -55,21 +74,24 @@ public class GroupServer {
 
     @OnClose
     public void onClose(Session session, @PathParam("groupName") String groupName) throws IOException {
-
         // get the username from session-username mapping
         String username = sessionUsernameMap.get(session);
 
         // server side log
         logger.info("[onClose] " + username);
 
-        if(groupSessions.containsKey(groupName)){
-            groupSessions.get(groupName).remove(session);
-            broadcastToGroup(groupName, "User " + username + " has left the group.");
-        }
+        User user = userService.findByUsername(username);
+
+        int groupId = groupService.getGroupByName(groupName).getGroupId();
+        groupService.removeUserFromGroup(groupId, user);
 
         // remove user from mappings
+        groupSessions.get(groupName).remove(session);
         sessionUsernameMap.remove(session);
         usernameSessionMap.remove(username);
+
+        session.close();
+        broadcastToGroup(groupName, "User " + username + " has left the group.");
     }
 
     @OnError
