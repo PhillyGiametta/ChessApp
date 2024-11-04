@@ -24,4 +24,9 @@ public class Group {
         }
         return true;
     }
+
+    public void removeUser(User user){
+        users.remove(user);
+        full = false;
+    }
 }
