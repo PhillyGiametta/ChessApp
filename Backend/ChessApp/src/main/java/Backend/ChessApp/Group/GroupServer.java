@@ -2,6 +2,7 @@ package Backend.ChessApp.Group;
 
 import Backend.ChessApp.Users.User;
 import Backend.ChessApp.Users.UserRepository;
+import jakarta.transaction.Transactional;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import java.io.IOException;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 @ServerEndpoint("/group/{groupName}/{username}")
@@ -27,6 +29,13 @@ public class GroupServer {
     private static UserRepository userRepository;
 
     private static GroupRepository groupRepository;
+
+    private static GroupService groupService;
+
+    @Autowired
+    public void setGroupService(GroupService serv) {
+        groupService = serv;
+    }
 
     @Autowired
     public void setUserRepository(UserRepository repo) {
@@ -49,7 +58,6 @@ public class GroupServer {
             return;
         }
 
-
         Group group = groupRepository.findBygroupName(groupName);
         logger.info("group = " + group.getGroupName());
 
@@ -70,11 +78,9 @@ public class GroupServer {
             return;
         }
 
-
         //Notify chat
         broadcastToGroup(groupName,username + " has joined.");
         logger.info("[onOpen] Current group size: {}", groupSessions.get(groupName).size());
-
     }
 
     @OnMessage
@@ -90,27 +96,21 @@ public class GroupServer {
 
     @OnClose
     public void onClose(Session session, @PathParam("groupName") String groupName) throws IOException {
-        // get the username from session-username mapping
+
         String username = sessionUsernameMap.get(session);
 
-        // server side log
+        // Server side log
         logger.info("[onClose] " + username);
 
-        Group group = groupRepository.findBygroupName(groupName);
-        User user = userRepository.findByUserName(username);
-
-        group.removeUser(user);
-
-        // remove user from mappings
+        // Remove user from mappings
         groupSessions.get(groupName).remove(session);
         sessionUsernameMap.remove(session);
         usernameSessionMap.remove(username);
-
-        //update repos
-        groupRepository.save(group);
-        userRepository.save(user);
-
         session.close();
+
+        // Remove the user from the group and delete the group if empty
+        groupService.removeUserFromGroupAndDeleteIfEmpty(groupName, username);
+
         broadcastToGroup(groupName, "User " + username + " has left the group.");
     }
 
