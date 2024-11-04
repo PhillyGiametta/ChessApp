@@ -1,4 +1,4 @@
-package Backend.ChessApp.Group.Chat;
+package Backend.ChessApp.Group;
 
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
