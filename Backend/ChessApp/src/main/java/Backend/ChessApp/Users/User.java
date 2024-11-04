@@ -1,11 +1,11 @@
 package Backend.ChessApp.Users;
 
+import Backend.ChessApp.Group.Group;
 import Backend.ChessApp.AdminControl.Admin;
 import Backend.ChessApp.Game.ChessGame;
 import Backend.ChessApp.Leaderboard.LeaderboardEntry;
 import Backend.ChessApp.Settings.SettingsUserStates;
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -47,6 +47,7 @@ public class User {
 
 
     @ManyToOne
+    @JoinColumn(name = "group_id")
     private Group group;
 
     //CONSTRUCTORS----------------------------------------
