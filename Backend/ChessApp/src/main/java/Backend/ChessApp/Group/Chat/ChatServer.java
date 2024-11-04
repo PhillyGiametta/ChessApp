@@ -1,4 +1,4 @@
-package Backend.ChessApp.Chat;
+package Backend.ChessApp.Group.Chat;
 
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
 
