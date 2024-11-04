@@ -1,4 +1,4 @@
-package Backend.ChessApp.Group.Chat;
+package Backend.ChessApp.Group;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
