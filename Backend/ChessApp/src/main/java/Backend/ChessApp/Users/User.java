@@ -1,10 +1,13 @@
 package Backend.ChessApp.Users;
 
+import Backend.ChessApp.Group.Group;
 import Backend.ChessApp.Leaderboard.LeaderboardEntry;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+
 import org.springframework.boot.*;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -27,6 +30,9 @@ public class User {
     private UserActivity activity;
     private String passwordResetToken;
     private LocalDateTime passwordResetTokenCreationDate;
+
+    @ManyToOne
+    private Group group;
 
     //CONSTRUCTORS----------------------------------------
 
@@ -89,4 +95,7 @@ public class User {
 
     public void setPasswordResetTokenCreationDate(LocalDateTime tokenCreationDate){this.passwordResetTokenCreationDate = tokenCreationDate;}
 
+    public Group getGroup(){return group;}
+    
+    public void setGroup(Group group){this.group = group;}
 }

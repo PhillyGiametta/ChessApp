@@ -1,45 +1,67 @@
 package Backend.ChessApp.Group;
 
 import Backend.ChessApp.Users.User;
+import jakarta.persistence.*;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
 import java.util.ArrayList;
+import java.util.List;
 
+@Entity
+@Table(name = "group", schema = "DBChessApp")
 public class Group {
-    private final int GroupId;
-    private ArrayList<User> users = new ArrayList<>();
-    private boolean full = false;
 
-    public Group(int GroupId){
-        this.GroupId = GroupId;
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "group_id", nullable = false)
+    private int id;
+    private String name;
+    private boolean isFull;
+
+    @OneToMany
+    @JoinTable
+    List<User> users;
+
+    public Group(){
+        //NULL Group
+    }
+
+    //Constructor
+    public Group(String name){
+        this.name = name;
+    }
+
+    //Getters and Setters
+    public int getGroupId(){
+        return this.id;
+    }
+
+    public void setGroupId(int id){
+        this.id = id;
+    }
+
+    public boolean isFull(){
+        return isFull;
     }
 
     public boolean addUser(User user){
-        if(full){
+        if(isFull){
             return false;
         }
 
         users.add(user);
         if(users.size() >= 4){
-            full = true;
+            isFull = true;
         }
         return true;
     }
 
     public void removeUser(User user){
         users.remove(user);
-        full = false;
+        isFull = false;
     }
 
-    public boolean isFull(){
-        return full;
-    }
-
-    public ArrayList<User> getUsers(){
+    public List<User> getUsers(){
         return users;
     }
-
-    public int getGroupId(){
-        return GroupId;
-    }
-
 }
