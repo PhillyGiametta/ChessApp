@@ -13,13 +13,13 @@ import java.util.Map;
 
 @ServerEndpoint("/group/{groupName}/{username}")
 @Component
-public class ChatServer {
+public class GroupServer {
     private static Map<String, Map<Session, String>> groupSessions = new Hashtable<>();
     private static Map<Session, String > sessionUsernameMap = new Hashtable< >();
     private static Map <String, Session > usernameSessionMap = new Hashtable < > ();
 
     // server side logger
-    private final Logger logger = LoggerFactory.getLogger(ChatServer.class);
+    private final Logger logger = LoggerFactory.getLogger(GroupServer.class);
 
     @OnOpen
     public void onOpen(Session session, @PathParam("groupName") String groupName, @PathParam("username") String username) throws IOException {
