@@ -1,5 +1,7 @@
 package Backend.ChessApp.Users;
 
+import Backend.ChessApp.AdminControl.Admin;
+import Backend.ChessApp.Game.ChessGame;
 import Backend.ChessApp.Leaderboard.LeaderboardEntry;
 import Backend.ChessApp.Group.Group;
 import Backend.ChessApp.AdminControl.Admin;
