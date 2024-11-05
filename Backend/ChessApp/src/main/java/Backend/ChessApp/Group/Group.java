@@ -25,6 +25,9 @@ public class Group {
     @JsonManagedReference
     private List<User> users = new ArrayList<>();
 
+    @OneToOne
+    private User leader;
+
     public Group(){
         //NULL Group
     }
@@ -38,6 +41,18 @@ public class Group {
     //Getters and Setters
     public int getGroupId(){
         return this.id;
+    }
+
+    public User getLeaderId(){
+        return leader;
+    }
+
+    public void setLeader(User user){
+        this.leader = user;
+    }
+
+    public boolean isLeader(User user){
+        return leader!= null && leader.equals(user);
     }
 
     public void setGroupId(int id){
@@ -60,6 +75,12 @@ public class Group {
 
         users.add(user);
         user.setGroup(this);
+
+        //Assign leader to first user who joins (the user who created the group)
+        if(leader == null){
+            leader = user;
+        }
+
         if(users.size() >= 4){
             isFull = true;
         }
@@ -72,6 +93,13 @@ public class Group {
         users.remove(user);
         user.setGroup(null);
         isFull = false;
+
+        //Reassign leader if the leader leaves
+        if(leader == user && !users.isEmpty()){
+            leader = users.get(0);
+        }else if(users.isEmpty()){
+            leader = null;
+        }
     }
 
     public List<User> getUsers(){
