@@ -46,7 +46,7 @@ public class GroupController {
 
         //Make sure only the leader can start the game
         if(!group.isLeader(user)){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Leader must star the game");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Leader must start the game");
         }
 //        gameService.startGame(group); Waiting for game implementation
         return ResponseEntity.ok("Game is starting");
