@@ -37,19 +37,4 @@ public class GroupController {
     public void deleteGroup(@PathVariable int groupId) {
         groupRepository.deleteById(groupId);
     }
-
-    //Start game
-    @PostMapping(path = "/groups/{groupId}/start")
-    public ResponseEntity<String> startGame(@PathVariable int groupId, @RequestParam String username){
-        Group group = groupRepository.findById(groupId);
-        User user = userRepository.findByUserName(username);
-
-        //Make sure only the leader can start the game
-        if(!group.isLeader(user)){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Leader must start the game");
-        }
-//        gameService.startGame(group); Waiting for game implementation
-        return ResponseEntity.ok("Game is starting");
-    }
-
 }
