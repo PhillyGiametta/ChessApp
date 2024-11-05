@@ -3,6 +3,7 @@ package Backend.ChessApp.Settings;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import org.springframework.stereotype.Component;
 
 /*
        A class that stores all the different settings options for the user,
@@ -10,6 +11,7 @@ import jakarta.persistence.Table;
 
  */
 //No entity this is temporary should be in memory only
+@Component
 public class SettingGameStates {
         short timeController; //in minutes
         int incrementTimer; //in seconds

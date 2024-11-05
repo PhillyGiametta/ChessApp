@@ -1,20 +1,40 @@
 package Backend.ChessApp.Game;
 
+import Backend.ChessApp.AdminControl.Admin;
 import Backend.ChessApp.Game.Board.ChessBoard;
 import Backend.ChessApp.Game.Board.Position;
 import Backend.ChessApp.Game.Pieces.King;
 import Backend.ChessApp.Game.Pieces.PieceColor;
 import Backend.ChessApp.Game.Pieces.Piece;
+import Backend.ChessApp.Users.User;
+import jakarta.persistence.*;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.ArrayList;
 
+@Entity
+@Table(schema = "DBChessApp", name = "chessGame")
 public class ChessGame {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "chessGame_id", nullable = false)
+    private int id;
+
+    @OneToOne
+    private Admin admin;
+
+    @OneToMany
+    private List<User> listOfUsers;
+
+    @OneToOne
     private ChessBoard board;
+
     private boolean whiteTurn = true; // White starts the game
     private Duration GAMETIME;
+    @OneToOne
     private Timer whiteTimer;
+    @OneToOne
     private Timer blackTimer;
 
     public ChessGame() {
@@ -34,6 +54,7 @@ public class ChessGame {
         return whiteTurn ? PieceColor.WHITE : PieceColor.BLACK;
     }
 
+    @Transient
     private Position selectedPosition;
 
     public boolean isPieceSelected() {

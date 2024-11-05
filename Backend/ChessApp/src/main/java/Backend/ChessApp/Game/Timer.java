@@ -1,14 +1,26 @@
 package Backend.ChessApp.Game;
 
+import jakarta.persistence.*;
+
 import java.time.Duration;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+@Entity
+@Table(schema = "DBChessApp", name="timer")
 public class Timer {
+    @Transient
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private Duration timeLeft;
     private boolean isRunning = false;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "timer_id", nullable = false)
+    private int id;
+
+    @ManyToOne
+    private ChessGame chessGame;
 
     public Timer(Duration startingTime) {
         this.timeLeft = startingTime;

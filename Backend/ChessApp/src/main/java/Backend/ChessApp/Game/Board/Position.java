@@ -1,5 +1,11 @@
 package Backend.ChessApp.Game.Board;
 
+import jakarta.transaction.Transactional;
+
+import javax.persistence.Embeddable;
+import java.beans.Transient;
+
+@Embeddable
 public class Position {
     private int row;
     private int column;

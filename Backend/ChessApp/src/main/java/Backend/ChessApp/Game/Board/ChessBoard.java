@@ -1,9 +1,20 @@
 package Backend.ChessApp.Game.Board;
 
+import Backend.ChessApp.Game.ChessGame;
 import Backend.ChessApp.Game.Pieces.*;
+import jakarta.persistence.*;
 
+@Entity
+@Table(schema = "DBChessApp", name="board")
 public class ChessBoard {
-    private Piece[][] board;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "board_id")
+    private final Piece[][] board;
+
+    @OneToOne
+    @JoinColumn()
+    private ChessGame chessGame;
 
     public ChessBoard() {
         this.board = new Piece[8][8]; // Chessboard is 8x8

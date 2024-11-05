@@ -14,26 +14,11 @@ import java.util.List;
 @SpringBootApplication
 @EnableJpaRepositories
 @EnableAutoConfiguration
-@ComponentScan(basePackages = {"Backend.ChessApp.websocket"})
+@ComponentScan(basePackages = {"Backend.ChessApp"})
 public class ChessApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ChessApplication.class, args);
 	}
 
-
-	@Bean
-	@Transactional
-	CommandLineRunner deleteBadUser(UserRepository userRepo) {
-		return args -> {
-			List<User> users = userRepo.findAll();
-			for (User user : users) {
-				if (user.getUserEmail() == null ||
-						user.getUserPassword() == null ||
-						user.getUserName() == null) {
-					userRepo.delete(user);
-				}
-			}
-		};
-	}
 }

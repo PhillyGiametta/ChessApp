@@ -1,6 +1,6 @@
 package Backend.ChessApp.Settings;
 
-
+import org.json.JSONObject;
 import Backend.ChessApp.Game.ChessGame;
 import Backend.ChessApp.Users.User;
 import Backend.ChessApp.Users.UserRepository;
@@ -30,6 +30,8 @@ public class GameSettingsController {
     private final UserRepository userRepository;
     @Autowired
     private SettingsRepo settingsRepo;
+    @Autowired
+    private GameSettingsService gameSettingsService;
 
     private final Logger logger = LoggerFactory.getLogger(GameSettingsController.class);
 
@@ -102,7 +104,7 @@ public class GameSettingsController {
     }
 
     private void initializeDefaultSettings() {
-        SettingGameStates defaultSettings = new SettingGameStates((short) 5, 0, true, false, 30);
+        SettingGameStates defaultSettings = new SettingGameStates((short) 30, 1, true, false, 30);
         gameSettingsMap.put(chessGame, defaultSettings);
     }
 
@@ -143,8 +145,31 @@ public class GameSettingsController {
     }
 
     private void updateSettings(SettingGameStates settings, String message) {
-        // Logic to parse and update settings based on message content (e.g., JSON)
-        // This could update settings fields based on parsed values from the message
+        try {
+            JSONObject json = new JSONObject(message);
+
+            if (json.has("timeController")) {
+                settings.timeController = (short) json.getInt("timeController");
+            }
+            if (json.has("incrementTimer")) {
+                settings.incrementTimer = json.getInt("incrementTimer");
+            }
+            if (json.has("allowUndos")) {
+                settings.allowUndos = json.getBoolean("allowUndos");
+            }
+            if (json.has("enableLimitMoveTime")) {
+                settings.enableLimitMoveTime = json.getBoolean("enableLimitMoveTime");
+            }
+            if (json.has("limitMoveTime")) {
+                settings.limitMoveTime = json.getInt("limitMoveTime");
+            }
+
+            // Log the updated settings for debugging
+            logger.info("Settings updated: " + settings.toString());
+
+        } catch (Exception e) {
+            logger.error("Failed to parse and update settings", e);
+        }
     }
 
     private void assignNewAdmin(ChessGame game) {

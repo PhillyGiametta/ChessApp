@@ -1,5 +1,7 @@
 package Backend.ChessApp.Users;
 
+import Backend.ChessApp.AdminControl.Admin;
+import Backend.ChessApp.Game.ChessGame;
 import Backend.ChessApp.Leaderboard.LeaderboardEntry;
 import Backend.ChessApp.Settings.SettingsUserStates;
 import jakarta.persistence.*;
@@ -33,6 +35,13 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private SettingsUserStates settings;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Admin admin;
+
+    @ManyToOne
+    private ChessGame chessGame;
+
 
     //CONSTRUCTORS----------------------------------------
 
