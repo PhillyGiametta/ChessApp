@@ -1,12 +1,11 @@
 package Backend.ChessApp.Users;
 
-import Backend.ChessApp.Leaderboard.LeaderboardEntry;
+import Backend.ChessApp.Group.Group;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 import java.util.Date;
-import org.springframework.boot.*;
-
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 
@@ -27,6 +26,11 @@ public class User {
     private UserActivity activity;
     private String passwordResetToken;
     private LocalDateTime passwordResetTokenCreationDate;
+
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    @JsonBackReference
+    private Group group;
 
     //CONSTRUCTORS----------------------------------------
 
@@ -89,4 +93,7 @@ public class User {
 
     public void setPasswordResetTokenCreationDate(LocalDateTime tokenCreationDate){this.passwordResetTokenCreationDate = tokenCreationDate;}
 
+    public Group getGroup(){return group;}
+
+    public void setGroup(Group group){this.group = group;}
 }
