@@ -82,6 +82,7 @@ public class GroupServer {
 
         //Notify chat
         broadcastToGroup(groupName,username + " has joined.");
+        broadcastPlayerList(groupName);
         logger.info("[onOpen] Current group size: {}", groupSessions.get(groupName).size());
     }
 
@@ -95,22 +96,6 @@ public class GroupServer {
 
         // server side log
         logger.info("[onMessage] " + username + ": " + message);
-
-        /**
-         * if message is start_game
-         * (the message does not have to be a literal message sent in chat, the message can be sent to
-         * the server when the user presses a button for example.
-         **/
-        if(message.equals("start_game")){
-            // make sure the leader sent the message
-            if(user != null && group.isLeader(user)){
-                startGame(group);
-            }
-        }else{
-            broadcastToGroup(groupName,username + ": " + message);
-        }
-
-
     }
 
     @OnClose
@@ -129,7 +114,7 @@ public class GroupServer {
 
         // Remove the user from the group and delete the group if empty
         groupService.removeUserFromGroupAndDeleteIfEmpty(groupName, username);
-
+        broadcastPlayerList(groupName);
         broadcastToGroup(groupName, "User " + username + " has left the group.");
     }
 
@@ -151,6 +136,23 @@ public class GroupServer {
                     session.getBasicRemote().sendText(message);
                 } catch (IOException e) {
                     logger.info("[broadcastToGroup Exception] " + e.getMessage());
+                }
+            });
+        }
+    }
+
+    private void broadcastPlayerList(String groupName){
+        Map<Session, String> group = groupSessions.get(groupName);
+
+        if(group != null) {
+            List<String> playerList = group.values().stream().toList();
+            String message = "Players: " + String.join(", ", playerList);
+
+            group.keySet().forEach(session -> {
+                try{
+                    session.getBasicRemote().sendText(message);
+                } catch (IOException e) {
+                    logger.info("[broadcastPlayerList Exception] " + e.getMessage());
                 }
             });
         }
