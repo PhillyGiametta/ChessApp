@@ -2,6 +2,7 @@ package Backend.ChessApp.Group;
 
 import Backend.ChessApp.Users.User;
 import Backend.ChessApp.Users.UserRepository;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import jakarta.transaction.Transactional;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
@@ -9,6 +10,7 @@ import jakarta.websocket.server.ServerEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.stereotype.Controller;
 import java.io.IOException;
 import java.util.Hashtable;
@@ -88,10 +90,27 @@ public class GroupServer {
         // get the username by session
         String username = sessionUsernameMap.get(session);
 
+        User user = userRepository.findByUserName(username);
+        Group group = groupRepository.findBygroupName(groupName);
+
         // server side log
         logger.info("[onMessage] " + username + ": " + message);
 
-        broadcastToGroup(groupName,username + ": " + message);
+        /**
+         * if message is start_game
+         * (the message does not have to be a literal message sent in chat, the message can be sent to
+         * the server when the user presses a button for example.
+         **/
+        if(message.equals("start_game")){
+            // make sure the leader sent the message
+            if(user != null && group.isLeader(user)){
+                startGame(group);
+            }
+        }else{
+            broadcastToGroup(groupName,username + ": " + message);
+        }
+
+
     }
 
     @OnClose
@@ -135,5 +154,9 @@ public class GroupServer {
                 }
             });
         }
+    }
+
+    public void startGame(Group group){
+//        gameService.startGame(group);
     }
 }
