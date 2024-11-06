@@ -155,8 +155,4 @@ public class GroupServer {
             });
         }
     }
-
-    public void startGame(Group group){
-//        gameService.startGame(group);
-    }
 }
