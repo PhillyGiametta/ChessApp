@@ -10,7 +10,7 @@ public class GameConfig {
 
     @Bean
     public SettingGameStates settingGameStates() {
-        return new SettingGameStates((short) 5, 0, true, false, 30);
+        return new SettingGameStates((short) 30, 1, true, false, 30);
     }
 }
 
