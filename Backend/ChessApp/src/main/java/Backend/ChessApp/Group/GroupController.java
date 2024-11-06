@@ -22,9 +22,9 @@ public class GroupController {
     }
 
     //Get specific group
-    @GetMapping(path = "/groups/{groupId}")
-    Group getGroupById(@PathVariable int groupId) {
-        return groupRepository.findById(groupId);
+    @GetMapping(path = "/groups/{groupName}")
+    Group getGroupById(@PathVariable String groupName) {
+        return groupRepository.findBygroupName(groupName);
     }
 
     //Create
@@ -33,8 +33,8 @@ public class GroupController {
         return groupRepository.save(group);
     }
 
-    @DeleteMapping(path = "/groups/{groupId}")
-    public void deleteGroup(@PathVariable int groupId) {
-        groupRepository.deleteById(groupId);
+    @DeleteMapping(path = "/groups/{groupName}")
+    public void deleteGroup(@PathVariable String groupName) {
+        groupRepository.deleteBygroupName(groupName);
     }
 }
