@@ -41,6 +41,10 @@
             android:name=".ProfileActivity"
             android:exported="true" />
 
+        <activity
+            android:name=".ChessBoardActivity"
+            android:exported="true" />
+
     </application>
 
 </manifest>
