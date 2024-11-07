@@ -1,15 +1,12 @@
 package Backend.ChessApp.Game;
 
-import Backend.ChessApp.AdminControl.Admin;
 import Backend.ChessApp.AdminControl.AdminRepo;
 import Backend.ChessApp.Game.Board.Position;
-import Backend.ChessApp.Settings.GameSettingsController;
 import Backend.ChessApp.Settings.GameSettingsService;
 import Backend.ChessApp.Settings.SettingGameStates;
 import Backend.ChessApp.Settings.SettingsRepo;
 import Backend.ChessApp.Users.User;
 import Backend.ChessApp.Users.UserRepository;
-import jakarta.annotation.PostConstruct;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
@@ -22,8 +19,6 @@ import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.util.*;
-
-import static Backend.ChessApp.Game.Pieces.PieceColor.WHITE;
 
 @Controller
 @Component
@@ -42,7 +37,7 @@ public class ChessGameServer {
     @Autowired
     private SettingsRepo settingsRepo;
 
-    private final Logger logger = LoggerFactory.getLogger(GameSettingsController.class);
+    private final Logger logger = LoggerFactory.getLogger(ChessGameServer.class);
 
     // Session and User mappings
     private static final Map<Session, User> sessionUserMap = new Hashtable<>();
