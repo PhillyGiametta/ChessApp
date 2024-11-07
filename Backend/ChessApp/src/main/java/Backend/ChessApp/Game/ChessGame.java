@@ -32,6 +32,12 @@ public class ChessGame {
     private ChessBoard board;
 
     private boolean whiteTurn = true; // White starts the game
+    private GameActive gameActive = GameActive.GAME_NOT_STARTED;
+
+    @ManyToMany
+    List<User> WhiteTeam = new ArrayList<>();
+    @ManyToMany
+    List<User> BlackTeam = new ArrayList<>();
 
 
     @OneToOne
@@ -59,6 +65,18 @@ public class ChessGame {
     @Transient
     private Position selectedPosition;
 
+    public void forfeit(){
+        if(isCheckmate(PieceColor.WHITE)){
+
+        }
+        else if(isCheckmate(PieceColor.BLACK)){
+
+        }
+    }
+    public enum GameActive{
+        GAME_ACTIVE, GAME_ENDED, GAME_STALEMATE, GAME_NOT_STARTED
+    }
+
     public boolean isPieceSelected() {
         return selectedPosition != null;
     }
@@ -79,6 +97,8 @@ public class ChessGame {
         return false;
     }
     public boolean makeMove(Position start, Position end) {
+        if(gameActive != GameActive.GAME_ACTIVE)
+            return false;
         Piece movingPiece = board.getPiece(start.getRow(), start.getColumn());
         if (movingPiece == null || movingPiece.getColor() != (whiteTurn ? PieceColor.WHITE : PieceColor.BLACK)) {
             return false;
@@ -254,4 +274,26 @@ public class ChessGame {
         }
     }
 
+    public void setBlackTeam(List<User> blackTeam) {
+        BlackTeam = blackTeam;
+    }
+    public void setWhiteTeam(List<User> whiteTeam){
+        WhiteTeam = whiteTeam;
+    }
+
+    public List<User> getBlackTeam() {
+        return BlackTeam;
+    }
+
+    public List<User> getWhiteTeam() {
+        return WhiteTeam;
+    }
+
+    public GameActive getGameActive() {
+        return gameActive;
+    }
+
+    public void setGameActive(GameActive gameActive) {
+        this.gameActive = gameActive;
+    }
 }

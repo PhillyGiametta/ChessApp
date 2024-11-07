@@ -74,42 +74,47 @@ public class ChessGameServer {
             adminUser = user;
             logger.info("{} is now the admin", user.getUserName());
             initializeDefaultSettings();
-            chessGame.blackTimer = new Timer(gameSettingsService.getSettings(chessGame).getTimeController());
-            chessGame.whiteTimer = new Timer(gameSettingsService.getSettings(chessGame).getTimeController());
         }
+        chessGame.blackTimer = new Timer(gameSettingsService.getSettings(chessGame).getTimeController());
+        chessGame.whiteTimer = new Timer(gameSettingsService.getSettings(chessGame).getTimeController());
         // Add user session to game
         gameSessionMap.computeIfAbsent(chessGame, k -> new ArrayList<>()).add(session);
+        assignTeams(chessGame);
 
         // Send the current settings to the user
         sendSettings(session, gameSettingsMap.get(chessGame));
     }
 
     @OnMessage
-    public void updateSettings(Session session, String message) {
-        User user = sessionUserMap.get(session);
+    public void OnMessage(Session session, String message) {
+
         JSONObject json = new JSONObject(message);
+
         if(json.getString("type").equals("chessMove")){
             moveOnBoard(session, message);
             return;
         }
-
-        if (user != null && user.equals(adminUser)) {
-            // Only the admin can update settings
-            ChessGame game = userGameMap.get(user);
-            SettingGameStates settings = gameSettingsMap.get(game);
-
-            updateSettings(settings, message);
-            chessGame.whiteTimer = new Timer(settings.getTimeController());
-            chessGame.blackTimer = new Timer(settings.getTimeController());
-            broadcastSettings(game, settings);
-        } else {
-            assert user != null;
-            logger.warn("Unauthorized settings change attempt by user: {}", user.getUserName());
+        else if(json.getString("type").equals("settings")){
+            updateSettings(session, message);
+            return;
+        }
+        else if(json.getString("type").equals("start")){
+            startGame(session);
+        }
+        else if(json.getString("type").equals("end")){
+            endGame(session);
         }
     }
 
     public void moveOnBoard(Session session, String message){
-        User user = sessionUserMap.get(session);
+        if (chessGame.getGameActive() != ChessGame.GameActive.GAME_ACTIVE) {
+            try {
+                session.getBasicRemote().sendText("The game has ended. No further moves are allowed.");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return; // Stop processing the move
+        }
         if(chessGame.getCurrentPlayerColor()){
             chessGame.blackTimer.start();
         }
@@ -132,6 +137,23 @@ public class ChessGameServer {
         }
         else
             chessGame.whiteTimer.stop();
+    }
+
+    public void updateSettings(Session session, String message){
+        User user = sessionUserMap.get(session);
+        if (user != null && user.equals(adminUser)) {
+            // Only the admin can update settings
+            ChessGame game = userGameMap.get(user);
+            SettingGameStates settings = gameSettingsMap.get(game);
+
+            updateSettings(settings, message);
+            chessGame.whiteTimer = new Timer(settings.getTimeController());
+            chessGame.blackTimer = new Timer(settings.getTimeController());
+            sendSettings(session, settings);
+        } else {
+            assert user != null;
+            logger.warn("Unauthorized settings change attempt by user: {}", user.getUserName());
+        }
     }
 
     @OnClose
@@ -166,6 +188,29 @@ public class ChessGameServer {
         }
     }
 
+    private void startGame(Session session){
+        if(sessionUserMap.get(session) == adminUser){
+            chessGame.setGameActive(ChessGame.GameActive.GAME_ACTIVE);
+        }
+    }
+
+    private void assignTeams(ChessGame chessGame) throws IOException {
+        List<User> whiteTeam = new ArrayList<>();
+        List<User> blackTeam = new ArrayList<>();
+        for(int i = 0; i < gameSessionMap.get(chessGame).size(); i++) {
+            if (i % 2 == 0) {
+                whiteTeam.add(sessionUserMap.get(gameSessionMap.get(chessGame).get(i)));
+                gameSessionMap.get(chessGame).get(i).getBasicRemote().sendText("You are now white team");
+            }
+             else {
+                blackTeam.add(sessionUserMap.get(gameSessionMap.get(chessGame).get(i)));
+                gameSessionMap.get(chessGame).get(i).getBasicRemote().sendText("You are now black team");
+            }
+        }
+        chessGame.setWhiteTeam(whiteTeam);
+        chessGame.setBlackTeam(blackTeam);
+    }
+
     private void removeUserFromGame(Session session, User user) {
         ChessGame game = userGameMap.get(user);
         List<Session> sessions = gameSessionMap.get(game);
@@ -181,15 +226,6 @@ public class ChessGameServer {
         if (user.equals(adminUser)) {
             adminUser = null; // Clear admin if they leave
             assignNewAdmin(game);
-        }
-    }
-
-    private void broadcastSettings(ChessGame game, SettingGameStates settings) {
-        List<Session> sessions = gameSessionMap.get(game);
-        if (sessions != null) {
-            for (Session s : sessions) {
-                sendSettings(s, settings);
-            }
         }
     }
 
@@ -226,13 +262,17 @@ public class ChessGameServer {
         if (sessions != null && !sessions.isEmpty()) {
             Session newAdminSession = sessions.get(0);
             adminUser = sessionUserMap.get(newAdminSession);
-
             try {
                 newAdminSession.getBasicRemote().sendText("You are now the Admin.");
             } catch (IOException e) {
                 logger.warn("Failed to notify new admin", e);
             }
         }
+    }
+
+    private void endGame(Session session){
+        if(sessionUserMap.get(session) == adminUser)
+            chessGame.setGameActive(ChessGame.GameActive.GAME_ENDED);
     }
 }
 
