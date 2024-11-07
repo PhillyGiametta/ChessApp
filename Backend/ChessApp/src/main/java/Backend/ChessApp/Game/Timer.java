@@ -8,7 +8,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Entity
-@Table(schema = "DBChessApp", name="timer")
+@Table(schema = "DBChessApp", name = "timer")
 public class Timer {
     @Transient
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
@@ -22,8 +22,8 @@ public class Timer {
     @ManyToOne
     private ChessGame chessGame;
 
-    public Timer(Duration startingTime) {
-        this.timeLeft = startingTime;
+    public Timer(int startingTime) {
+        this.timeLeft = Duration.ofMinutes(startingTime);
     }
 
     public void start() {

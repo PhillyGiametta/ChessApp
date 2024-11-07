@@ -31,11 +31,12 @@ public class ChessGame {
     private ChessBoard board;
 
     private boolean whiteTurn = true; // White starts the game
-    private Duration GAMETIME;
+
+
     @OneToOne
-    private Timer whiteTimer;
+    public Timer whiteTimer;
     @OneToOne
-    private Timer blackTimer;
+    public Timer blackTimer;
 
     public ChessGame() {
         this.board = new ChessBoard();
@@ -50,8 +51,8 @@ public class ChessGame {
         this.whiteTurn = true;
     }
 
-    public PieceColor getCurrentPlayerColor() {
-        return whiteTurn ? PieceColor.WHITE : PieceColor.BLACK;
+    public boolean getCurrentPlayerColor() {
+        return whiteTurn;
     }
 
     @Transient
@@ -251,4 +252,5 @@ public class ChessGame {
             }
         }
     }
+
 }

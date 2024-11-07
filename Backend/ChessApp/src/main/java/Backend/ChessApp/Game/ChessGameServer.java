@@ -20,6 +20,8 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.*;
 
+import static Backend.ChessApp.Game.Pieces.PieceColor.WHITE;
+
 @ServerEndpoint("/game/{userName}")
 @Component
 public class ChessGameServer {
@@ -95,6 +97,12 @@ public class ChessGameServer {
 
     public void moveOnBoard(Session session, String message){
         User user = sessionUserMap.get(session);
+        if(chessGame.getCurrentPlayerColor()){
+            chessGame.whiteTimer.start();
+        }
+        else{
+            chessGame.blackTimer.start();
+        }
         JSONObject json = new JSONObject(message);
         int row = json.getInt("rowStart");
         int col = json.getInt("colStart");
@@ -106,8 +114,11 @@ public class ChessGameServer {
         if(p.contains(positionEnd)){
             chessGame.makeMove(positionStart, positionEnd);
         }
-
-
+        if(chessGame.getCurrentPlayerColor()){
+            chessGame.whiteTimer.stop();
+        }
+        else
+            chessGame.blackTimer.stop();
     }
 
     @OnClose
