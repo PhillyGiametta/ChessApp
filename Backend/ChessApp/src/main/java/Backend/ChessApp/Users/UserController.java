@@ -52,7 +52,7 @@ public class UserController {
     }
     @PostMapping(path = "/users/CopyUser")
 
-    @PutMapping(path = "/users/changePasswordFromEmail/{userEmail}")
+    @PutMapping(path = "/users/changePasswordFromUserName/{userName}")
     User updateUserByUsername(@PathVariable String userEmail, @RequestParam(value = "userPassword") String password){
         User user = userRepository.findByUserEmail(userEmail);
         if(user == null){
@@ -85,7 +85,7 @@ public class UserController {
         return user;
     }
 
-    @PutMapping(path = "/users/changeUserName/{userId}")
+    @PutMapping(path = "/users/changeUserName/{userName}")
     User updateUserName(@PathVariable int userId, @RequestParam(value = "userName") String userName){
         User update = userRepository.findById(userId);
         if(update == null){

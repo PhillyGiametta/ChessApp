@@ -88,7 +88,7 @@ public class ChessGameGUI extends JFrame {
     }
 
     private void checkGameState() {
-        PieceColor currentPlayer = game.getCurrentPlayerColor();
+        PieceColor currentPlayer = game.getCurrentPlayerColor() ? PieceColor.WHITE : PieceColor.BLACK;
         boolean inCheck = game.isInCheck(currentPlayer);
 
         if (inCheck) {
@@ -127,7 +127,7 @@ public class ChessGameGUI extends JFrame {
     }
 
     private void checkGameOver() {
-        if (game.isCheckmate(game.getCurrentPlayerColor())) {
+        if (game.isCheckmate(game.getCurrentPlayerColor() ? PieceColor.WHITE : PieceColor.BLACK) ){
             int response = JOptionPane.showConfirmDialog(this, "Checkmate! Would you like to play again?", "Game Over",
                     JOptionPane.YES_NO_OPTION);
             if (response == JOptionPane.YES_OPTION) {

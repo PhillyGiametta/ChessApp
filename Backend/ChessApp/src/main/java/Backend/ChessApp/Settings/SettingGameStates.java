@@ -13,27 +13,26 @@ import org.springframework.stereotype.Component;
 //No entity this is temporary should be in memory only
 @Component
 public class SettingGameStates {
-        short timeController; //in minutes
-        int incrementTimer; //in seconds
-        boolean allowUndos;
-        boolean enableLimitMoveTime; //eg. only have 30 sec. or no move
-        int limitMoveTime; //in seconds
+    short timeController; //in minutes
+    int incrementTimer; //in seconds
+    boolean allowUndos;
+    boolean enableLimitMoveTime; //eg. only have 30 sec. or no move
+    int limitMoveTime; //in seconds
 
-        public SettingGameStates(short time, int inc, boolean undo, boolean limiter, int limiterTimer){
-            this.timeController = time;
-            this.incrementTimer = inc;
-            this.allowUndos = undo;
-            this.enableLimitMoveTime = limiter;
-            this.limitMoveTime = limiterTimer;
-        }
+    public SettingGameStates(short time, int inc, boolean undo, boolean limiter, int limiterTimer) {
+        this.timeController = time;
+        this.incrementTimer = inc;
+        this.allowUndos = undo;
+        this.enableLimitMoveTime = limiter;
+        this.limitMoveTime = limiterTimer;
+    }
 
-
-
-
-
-
-
-
+    @Override
+    public String toString() {
+        String s = "";
+        s += String.format("Time: " + timeController + " \nIncrement: "+incrementTimer+" \nAllow undo: "+allowUndos+" \nEnable limiter: "+enableLimitMoveTime+" \nlimterTimer (if applicaple) " + limitMoveTime);
+        return s;
+    }
 
 
     public short getTimeController() {

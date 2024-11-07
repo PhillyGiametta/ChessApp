@@ -13,7 +13,8 @@ public class ChessBoard {
     private final Piece[][] board;
 
     @OneToOne
-    @JoinColumn()
+    @MapsId
+    @JoinColumn(name = "chessGame_id", nullable = false, unique = true)
     private ChessGame chessGame;
 
     public ChessBoard() {

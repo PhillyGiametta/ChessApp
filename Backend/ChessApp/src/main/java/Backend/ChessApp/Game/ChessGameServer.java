@@ -1,5 +1,6 @@
 package Backend.ChessApp.Game;
 
+import Backend.ChessApp.AdminControl.Admin;
 import Backend.ChessApp.AdminControl.AdminRepo;
 import Backend.ChessApp.Game.Board.Position;
 import Backend.ChessApp.Settings.GameSettingsController;
@@ -8,6 +9,7 @@ import Backend.ChessApp.Settings.SettingGameStates;
 import Backend.ChessApp.Settings.SettingsRepo;
 import Backend.ChessApp.Users.User;
 import Backend.ChessApp.Users.UserRepository;
+import jakarta.annotation.PostConstruct;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
@@ -16,23 +18,29 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.util.*;
 
 import static Backend.ChessApp.Game.Pieces.PieceColor.WHITE;
 
-@ServerEndpoint("/game/{userName}")
+@Controller
 @Component
+@ServerEndpoint(value = "/game/{userName}", configurator = SpringConfigurator.class)
 public class ChessGameServer {
+
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private SettingsRepo settingsRepo;
+
     @Autowired
     private GameSettingsService gameSettingsService;
+
     @Autowired
     private AdminRepo adminRepo;
+
+    @Autowired
+    private SettingsRepo settingsRepo;
 
     private final Logger logger = LoggerFactory.getLogger(GameSettingsController.class);
 
@@ -53,19 +61,22 @@ public class ChessGameServer {
         User user = userRepository.findByUserName(userName);
 
         if(user == null){
+            logger.info("user is null");
             session.close();
             return;
         }
         sessionUserMap.put(session, user);
         userSessionMap.put(user, session);
         userGameMap.put(user, chessGame);
-
+        logger.info("[onOpen] User {} joined", userName);
         // Set the first user as the Admin
         if (adminUser == null) {
             adminUser = user;
+            logger.info("{} is now the admin", user.getUserName());
             initializeDefaultSettings();
+            chessGame.blackTimer = new Timer(gameSettingsService.getSettings(chessGame).getTimeController());
+            chessGame.whiteTimer = new Timer(gameSettingsService.getSettings(chessGame).getTimeController());
         }
-
         // Add user session to game
         gameSessionMap.computeIfAbsent(chessGame, k -> new ArrayList<>()).add(session);
 
@@ -88,6 +99,8 @@ public class ChessGameServer {
             SettingGameStates settings = gameSettingsMap.get(game);
 
             updateSettings(settings, message);
+            chessGame.whiteTimer = new Timer(settings.getTimeController());
+            chessGame.blackTimer = new Timer(settings.getTimeController());
             broadcastSettings(game, settings);
         } else {
             assert user != null;
@@ -98,10 +111,10 @@ public class ChessGameServer {
     public void moveOnBoard(Session session, String message){
         User user = sessionUserMap.get(session);
         if(chessGame.getCurrentPlayerColor()){
-            chessGame.whiteTimer.start();
+            chessGame.blackTimer.start();
         }
         else{
-            chessGame.blackTimer.start();
+            chessGame.whiteTimer.start();
         }
         JSONObject json = new JSONObject(message);
         int row = json.getInt("rowStart");
@@ -115,19 +128,21 @@ public class ChessGameServer {
             chessGame.makeMove(positionStart, positionEnd);
         }
         if(chessGame.getCurrentPlayerColor()){
-            chessGame.whiteTimer.stop();
+            chessGame.blackTimer.stop();
         }
         else
-            chessGame.blackTimer.stop();
+            chessGame.whiteTimer.stop();
     }
 
     @OnClose
     public void onClose(Session session) throws IOException {
         User user = sessionUserMap.remove(session);
         if (user != null) {
+            String userName = user.getUserName();
             userSessionMap.remove(user);
             sessionUserMap.remove(session);
             removeUserFromGame(session, user);
+            logger.info("User {} has left", userName);
             session.close();
         }
     }
@@ -144,7 +159,7 @@ public class ChessGameServer {
 
     private void sendSettings(Session session, SettingGameStates settings) {
         try {
-            String settingsMessage = "Settings: " + settings.toString(); // Format this as needed
+            String settingsMessage = "Settings: " + settings.toString();
             session.getBasicRemote().sendText(settingsMessage);
         } catch (IOException e) {
             logger.warn("Failed to send settings", e);

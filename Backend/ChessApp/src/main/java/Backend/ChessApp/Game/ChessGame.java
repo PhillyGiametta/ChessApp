@@ -27,7 +27,8 @@ public class ChessGame {
     @OneToMany
     private List<User> listOfUsers;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private ChessBoard board;
 
     private boolean whiteTurn = true; // White starts the game

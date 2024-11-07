@@ -2,7 +2,7 @@ package Backend.ChessApp.Users;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Long> {
     User findById(int id);
     void deleteById(int id);
     User findByUserName(String userName);
