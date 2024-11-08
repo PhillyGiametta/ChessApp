@@ -1,7 +1,6 @@
 package com.example.chessapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,65 +9,63 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView messageText;   // define message textview variable
-    private TextView usernameText;  // define username textview variable
-    private Button loginButton;     // define login button variable
-    private Button signupButton;    // define signup button variable
-    private Button profileButton;   // define profile button variable
+    private TextView messageText;
+    private TextView usernameText;
+    private Button loginButton;
+    private Button signupButton;
+    private Button profileButton;
+    private Button chatButton;
+    private Button playNowButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);             // link to Main activity XML
+        setContentView(R.layout.activity_main);
 
-        /* initialize UI elements */
-        messageText = findViewById(R.id.main_msg_txt);      // link to message textview in the Main activity XML
-        usernameText = findViewById(R.id.main_username_txt);// link to username textview in the Main activity XML
-        loginButton = findViewById(R.id.main_login_btn);    // link to login button in the Main activity XML
-        signupButton = findViewById(R.id.main_signup_btn);  // link to signup button in the Main activity XML
-        profileButton = findViewById(R.id.main_profile_btn); // link to profile button in the Main activity XML
+        messageText = findViewById(R.id.main_msg_txt);
+        usernameText = findViewById(R.id.main_username_txt);
+        loginButton = findViewById(R.id.main_login_btn);
+        signupButton = findViewById(R.id.main_signup_btn);
+        profileButton = findViewById(R.id.main_profile_btn);
+        chatButton = findViewById(R.id.chat_button);
+        playNowButton = findViewById(R.id.play_now_button);
 
-        /* extract data passed into this activity from another activity */
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
             messageText.setText("ChessApp");
-            usernameText.setVisibility(View.INVISIBLE);             // set username text invisible initially
+            usernameText.setVisibility(View.INVISIBLE);
         } else {
             messageText.setText("ChessApp");
-            usernameText.setText(extras.getString("USERNAME")); // this will come from LoginActivity
-            loginButton.setVisibility(View.INVISIBLE);              // set login button invisible
-            signupButton.setVisibility(View.INVISIBLE);             // set signup button invisible
+            usernameText.setText(extras.getString("USERNAME"));
+            loginButton.setVisibility(View.INVISIBLE);
+            signupButton.setVisibility(View.INVISIBLE);
         }
 
-        /* click listener on login button pressed */
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /* when login button is pressed, use intent to switch to Login Activity */
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
+        loginButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
         });
 
-        /* click listener on signup button pressed */
-        signupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /* when signup button is pressed, use intent to switch to Signup Activity */
-                Intent intent = new Intent(MainActivity.this, SignupActivity.class);
-                startActivity(intent);
-            }
+        signupButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SignupActivity.class);
+            startActivity(intent);
         });
 
-        /* click listener on profile button pressed */
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /* when profile button is pressed, use intent to switch to Profile Activity */
-                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                intent.putExtra("USERNAME", usernameText.getText().toString()); // Pass username to profile screen
-                startActivity(intent);
-            }
+        profileButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            intent.putExtra("USERNAME", usernameText.getText().toString());
+            startActivity(intent);
+        });
+
+        chatButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+            intent.putExtra("USERNAME", usernameText.getText().toString());
+            startActivity(intent);
+        });
+
+        playNowButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ChessBoardActivity.class);
+            startActivity(intent);
         });
     }
 }

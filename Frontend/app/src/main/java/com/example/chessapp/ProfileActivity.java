@@ -49,7 +49,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Initialize Retrofit
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://coms-3090-050.class.las.iastate.edu:8080/")
+                .baseUrl("http://10.90.73.46:8080/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
