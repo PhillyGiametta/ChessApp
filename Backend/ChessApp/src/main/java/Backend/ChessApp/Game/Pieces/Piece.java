@@ -24,4 +24,23 @@ public abstract class Piece {
     }
 
     public abstract boolean isValidMove(Position newPosition, Piece[][] board);
+
+    @Override
+    public String toString() {
+        if (this instanceof King) {
+            return "K";
+        } else if (this instanceof Queen) {
+            return "Q";
+        } else if (this instanceof Rook) {
+            return "R";
+        } else if (this instanceof Bishop) {
+            return "B";
+        } else if (this instanceof Knight) {
+            return "N";
+        } else if (this instanceof Pawn) {
+            return "P";
+        } else {
+            return "?"; // Fallback for unknown pieces
+        }
+    }
 }
