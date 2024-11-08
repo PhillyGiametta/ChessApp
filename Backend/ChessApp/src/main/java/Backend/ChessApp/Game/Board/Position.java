@@ -22,4 +22,15 @@ public class Position {
     public int getColumn() {
         return column;
     }
+    @Override
+    public String toString(){
+        return "("+row + ", " + column + ")";
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Position position = (Position) obj;
+        return row == position.row && column == position.column;
+    }
 }
