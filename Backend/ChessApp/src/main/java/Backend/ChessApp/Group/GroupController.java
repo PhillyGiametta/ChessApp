@@ -1,5 +1,6 @@
 package Backend.ChessApp.Group;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -27,9 +28,15 @@ public class GroupController {
         return groupRepository.save(group);
     }
 
-    @DeleteMapping(path = "/groups/{id}")
-    public void deleteGroup(@PathVariable int id) {
-        groupRepository.deleteById(id);
+//    @DeleteMapping(path = "/groups/{id}")
+//    public void deleteGroup(@PathVariable int id) {
+//        groupRepository.deleteById(id);
+//    }
+
+
+    @DeleteMapping(path = "/groups/{groupName}")
+    public void deleteGroupBygroupName(@PathVariable String groupName) {
+        groupRepository.deleteBygroupName(groupName);
     }
 
 }
