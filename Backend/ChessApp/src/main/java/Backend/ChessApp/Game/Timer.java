@@ -55,7 +55,7 @@ public class Timer {
     }
 
     public void pause() {
-        setDuration();
+        //setDuration();
         this.previousDuration = duration;
         this.isRunning = false;
     }
