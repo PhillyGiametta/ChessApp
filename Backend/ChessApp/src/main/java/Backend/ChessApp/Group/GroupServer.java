@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @ServerEndpoint("/group/{groupName}/{username}")
 @Controller
@@ -95,6 +97,9 @@ public class GroupServer {
         Group group = groupRepository.findBygroupName(groupName);
 
         // server side log
+        DateTimeFormatter d = DateTimeFormatter.ofPattern("HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        broadcastToGroup(groupName,"[" + d.format(now) + "] " + username + ": " + message);
         logger.info("[onMessage] " + username + ": " + message);
     }
 
