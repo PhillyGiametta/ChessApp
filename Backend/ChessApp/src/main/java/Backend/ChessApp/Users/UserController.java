@@ -8,8 +8,8 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
-    //  @Autowired
-    //  private JpaRepository jpaRepository;
+  //  @Autowired
+  //  private JpaRepository jpaRepository;
 
     private String Dsuccess = "{\"User was deleted\": \"successfully\"}";
     private String Postsuccess = "{\"User was created\": \"successfully\"}";
@@ -50,32 +50,31 @@ public class UserController {
         userRepository.save(user);
         return Postsuccess;
     }
-    @PostMapping(path = "/users/CopyUser")
 
-    @PutMapping(path = "/users/changePasswordFromEmail/{userEmail}")
-    User updateUserByUsername(@PathVariable String userEmail, @RequestParam(value = "userPassword") String password){
+    @PutMapping(path = "/users/userName/{userName}")
+    User updateUserByUsername(@PathVariable String userName, @RequestParam(value = "userPassword") String password){
+        User user = userRepository.findByUserName(userName);
+        if(user == null){
+            return null;
+        }
+        user.setUserPassword(password);
+        userRepository.save(user);
+        return userRepository.findByUserName(userName);
+    }
+
+    @PutMapping(path = "/users/userEmail/{userEmail}")
+    User updateUserByUserEmail(@PathVariable String userEmail, @RequestParam(value = "userPassword") String password){
         User user = userRepository.findByUserEmail(userEmail);
         if(user == null){
             return null;
         }
         user.setUserPassword(password);
         userRepository.save(user);
-        return user;
-    }
-
-    @PutMapping(path = "/users/changeUserName/{userEmail}")
-    User updateUserByUserEmail(@PathVariable String userEmail, @RequestParam(value = "userName") String userName){
-        User user = userRepository.findByUserEmail(userEmail);
-        if(user == null){
-            return null;
-        }
-        user.setUserName(userName);
-        userRepository.save(user);
-        return user;
+        return userRepository.findByUserEmail(userEmail);
     }
 
 
-    @PutMapping(path = "/users/changePassword/{userId}")
+    @PutMapping(path = "/users/{userId}")
     User updateUserByUserId(@PathVariable int userId, @RequestParam(value = "userPassword") String password){
         User user = userRepository.findById(userId);
         if(user == null){
@@ -86,9 +85,20 @@ public class UserController {
         return user;
     }
 
+    @PutMapping(path = "/users/changeUserName/{userName}")
+    User updateUserName(@PathVariable int userId, @RequestParam(value = "userName") String userName){
+        User update = userRepository.findById(userId);
+        if(update == null){
+            return null;
+        }
+        update.setUserName(userName);
+        userRepository.save(update);
+        return update;
+    }
+
     @Transactional
     @DeleteMapping(path = "/users/{userId}")
-    public String deleteUser(@PathVariable int userId){
+    String deleteUser(@PathVariable int userId){
         userRepository.deleteById(userId);
         return Dsuccess;
     }
@@ -114,10 +124,33 @@ public class UserController {
     }
 
 
+    @Transactional
+    @DeleteMapping(path = "/users/deleteByUsername/{userName}")
+    String deleteUserByUsername(@PathVariable String userName){
+        User user;
+        user = userRepository.findByUserName(userName);
+        if(user == null){
+            return Dfail;
+        }
+        userRepository.deleteById(user.getUserId());
+        return Dsuccess;
+    }
+    @Transactional
+    @DeleteMapping(path = "/users/deleteByEmail/{userEmail}")
+    String deleteUserByEmail(@PathVariable String userEmail){
+        User user;
+        user = userRepository.findByUserEmail(userEmail);
+        if(user == null){
+            return Dfail;
+        }
+        userRepository.deleteById(user.getUserId());
+        return Dsuccess;
+    }
+
     @DeleteMapping(path = "/users/deleteAllUsers")
     String deleteAllUsers() {
         userRepository.deleteAll();
         return Dsuccess;
     }
 
-}
+ }

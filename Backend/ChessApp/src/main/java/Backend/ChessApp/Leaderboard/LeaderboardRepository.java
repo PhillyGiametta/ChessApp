@@ -11,4 +11,6 @@ public interface LeaderboardRepository extends JpaRepository<LeaderboardEntry, I
 
     List<LeaderboardEntry> findAllByOrderByRankPositionAsc();
 
+    LeaderboardEntry findByUserId(int id);
+
 }
