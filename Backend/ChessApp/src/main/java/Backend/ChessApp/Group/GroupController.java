@@ -11,8 +11,6 @@ import java.util.List;
 public class GroupController {
     @Autowired
     private GroupRepository groupRepository;
-    @Autowired
-    private UserRepository userRepository;
 
     //Get all groups
     @GetMapping(path = "/groups")
