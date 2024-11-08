@@ -1,7 +1,6 @@
 package Backend.ChessApp.Group;
 
-import Backend.ChessApp.Users.User;
-import Backend.ChessApp.Users.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +32,14 @@ public class GroupController {
         return groupRepository.save(group);
     }
 
+//    @DeleteMapping(path = "/groups/{id}")
+//    public void deleteGroup(@PathVariable int id) {
+//        groupRepository.deleteById(id);
+//    }
+
+
     @DeleteMapping(path = "/groups/{groupName}")
-    public void deleteGroup(@PathVariable String groupName) {
+    public void deleteGroupBygroupName(@PathVariable String groupName) {
         groupRepository.deleteBygroupName(groupName);
     }
 }

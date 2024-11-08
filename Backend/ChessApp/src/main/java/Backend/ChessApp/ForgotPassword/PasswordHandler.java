@@ -16,12 +16,6 @@ public class PasswordHandler {
         user.setUserPassword((userPassword));
         userRepo.save(user);
     }
-
-    public static class PasswordDto{
-        private String oldPassword;
-        private String token;
-        private String newPassword;
-    }
     public void updateResetPasswordToken(String token, String userEmail)  {
         User user = userRepo.findByUserEmail(userEmail);
         if (user == null) {
