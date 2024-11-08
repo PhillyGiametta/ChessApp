@@ -1,13 +1,18 @@
 package Backend.ChessApp.Users;
 
+import Backend.ChessApp.AdminControl.Admin;
+import Backend.ChessApp.Game.ChessGame;
 import Backend.ChessApp.Group.Group;
+import Backend.ChessApp.Settings.SettingsUserStates;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+import org.springframework.boot.*;
+import org.springframework.context.aot.AbstractAotProcessor;
 import static jakarta.persistence.GenerationType.IDENTITY;
-
 
 @Entity
 @Table(name = "user", schema = "DBChessApp")
@@ -26,6 +31,16 @@ public class User {
     private UserActivity activity;
     private String passwordResetToken;
     private LocalDateTime passwordResetTokenCreationDate;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private SettingsUserStates settings;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Admin admin;
+
+    @ManyToOne
+    private ChessGame chessGame;
 
     @ManyToOne
     @JoinColumn(name = "group_id")
