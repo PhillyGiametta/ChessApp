@@ -25,9 +25,19 @@
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
+
         <activity
             android:name=".ChatActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".ChessBoardActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="true" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -36,14 +46,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".ProfileActivity"
-            android:exported="true" />
-
-        <activity
-            android:name=".ChessBoardActivity"
-            android:exported="true" />
 
     </application>
 
