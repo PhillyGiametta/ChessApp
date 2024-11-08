@@ -2,6 +2,8 @@ package Backend.ChessApp.Group;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -9,6 +11,8 @@ import java.util.List;
 public class GroupController {
     @Autowired
     private GroupRepository groupRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     //Get all groups
     @GetMapping(path = "/groups")
@@ -17,9 +21,9 @@ public class GroupController {
     }
 
     //Get specific group
-    @GetMapping(path = "/groups/{id}")
-    Group getGroupById(@PathVariable int id) {
-        return groupRepository.findById(id);
+    @GetMapping(path = "/groups/{groupName}")
+    Group getGroupById(@PathVariable String groupName) {
+        return groupRepository.findBygroupName(groupName);
     }
 
     //Create
@@ -38,5 +42,4 @@ public class GroupController {
     public void deleteGroupBygroupName(@PathVariable String groupName) {
         groupRepository.deleteBygroupName(groupName);
     }
-
 }
