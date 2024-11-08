@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private Button loginButton;     // define login button variable
     private Button signupButton;    // define signup button variable
     private Button profileButton;   // define profile button variable
+    private Button chatButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.main_login_btn);    // link to login button in the Main activity XML
         signupButton = findViewById(R.id.main_signup_btn);  // link to signup button in the Main activity XML
         profileButton = findViewById(R.id.main_profile_btn); // link to profile button in the Main activity XML
+        chatButton = findViewById(R.id.chat_button);
 
         /* extract data passed into this activity from another activity */
         Bundle extras = getIntent().getExtras();
@@ -70,5 +72,21 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        chatButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+            intent.putExtra("USERNAME", usernameText.getText().toString());
+            startActivity(intent);
+        });
+
+        // Initialize the chat button in MainActivity.java
+        chatButton = findViewById(R.id.chat_button);
+        chatButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+            intent.putExtra("USERNAME", usernameText.getText().toString());
+            startActivity(intent);
+        });
+
+
     }
 }
