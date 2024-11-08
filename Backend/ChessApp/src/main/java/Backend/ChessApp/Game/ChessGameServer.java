@@ -103,6 +103,9 @@ public class ChessGameServer {
         else if(json.getString("type").equals("end")){
             endGame(session);
         }
+        else if(json.getString("type").equals("kick")){
+            kickUserFromGame(message);
+        }
     }
 
     public void moveOnBoard(Session session, String message) throws IOException {
@@ -246,6 +249,21 @@ public class ChessGameServer {
             adminUser = null; // Clear admin if they leave
             assignNewAdmin(game);
         }
+    }
+
+    private void kickUserFromGame(String userName) throws IOException {
+        JSONObject json = new JSONObject(userName);
+        String username = json.getString("userName");
+        User user = userRepository.findByUserName(username);
+        if(user == null) {
+            Session s = userSessionMap.get(adminUser);
+            s.getBasicRemote().sendText("User does not exist");
+            return;
+        }
+        Session s = userSessionMap.get(user);
+        userSessionMap.remove(user);
+        sessionUserMap.remove(s);
+
     }
 
     public void broadcastBoard() throws IOException {
