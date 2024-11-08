@@ -1,5 +1,6 @@
 package Backend.ChessApp.ForgotPassword;
 import Backend.ChessApp.Users.*;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,106 +34,25 @@ public class forgotPasswordController {
     private UserRepository userRepository;
 
     @Autowired
+    private ResetTokenRepo rtr;
+
+    @Autowired
     private UserService userService;
 
-    @GetMapping("/forgot_password")
-    public String showForgotPasswordForm() {
-        return "form_password_reset";
+    @GetMapping("/forgotPassword/{resetToken}")
+    User forgotPassword(@PathVariable String resetToken){
+        return passHand.getByResetPasswordToken(resetToken);
+    }
+    @PostMapping("/forgotPassword/{userId}")
+    void tokenCreator(@PathVariable int userId){
+        String rt = RandomString.make(30);
+        User user = userRepository.findById(userId);
+        ResetToken resetToken = new ResetToken(user, rt);
+        rtr.save(resetToken);
+
     }
 
-//    @PostMapping("/forgot_password")
-//    public String processForgotPassword(HttpServletRequest request, Model model) {
-//        String email = request.getParameter("email");
-//        String token = RandomString.make(30);
-//
-//        try {
-//            passHand.updateResetPasswordToken(token, email);
-//            String resetPasswordLink = EmailUtil.getSiteURL(request) + "/reset_password?token=" + token;
-//            sendEmail(email, resetPasswordLink);
-//            model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
-//
-//        } catch (UserNotFoundException ex) {
-//            model.addAttribute("error", ex.getMessage());
-//        } catch (UnsupportedEncodingException | MessagingException e) {
-//            model.addAttribute("error", "Error while sending email");
-//        }
-//
-//        return "forgot_password_form";
-//    }
-@PostMapping("/forgot_password")
-public String forgotPassword(@RequestParam String email) {
-
-    String response = userService.forgotPassword(email);
-
-    if (!response.startsWith("Invalid")) {
-        response = "http://localhost:8080/reset-password?token=" + response;
-    }
-    return response;
-}
 
 
-    @GetMapping("/reset_password")
-    public String showResetPasswordForm(@Param(value = "token") String token, Model model) {
-        User user = passHand.getByResetPasswordToken(token);
-        model.addAttribute("token", token);
 
-        if (user == null) {
-            model.addAttribute("message", "Invalid Token");
-            return "message";
-        }
-
-        return "reset_password_form";
-    }
-
-    @PostMapping("/reset_password")
-    public String processResetPassword(HttpServletRequest request, Model model) {
-        String token = request.getParameter("token");
-        String password = request.getParameter("password");
-
-        User user = passHand.getByResetPasswordToken(token);
-        model.addAttribute("title", "Reset your password");
-
-        if (user == null) {
-            model.addAttribute("message", "Invalid Token");
-            return "message";
-        } else {
-            passHand.updatePassword(user, password);
-
-            model.addAttribute("message", "You have successfully changed your password.");
-        }
-
-        return "message";
-    }
-
-    @PutMapping("/reset-password")
-    public String resetPassword(@RequestParam String token,
-                                @RequestParam String password) {
-
-        return userService.resetPassword(token, password);
-    }
-
-    public void sendEmail(String recipientEmail, String link)
-            throws MessagingException, UnsupportedEncodingException {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
-
-        helper.setFrom("contact@shopme.com", "Shopme Support");
-        helper.setTo(recipientEmail);
-
-        String subject = "Here's the link to reset your password";
-
-        String content = "<p>Hello,</p>"
-                + "<p>You have requested to reset your password.</p>"
-                + "<p>Click the link below to change your password:</p>"
-                + "<p><a href=\"" + link + "\">Change my password</a></p>"
-                + "<br>"
-                + "<p>Ignore this email if you do remember your password, "
-                + "or you have not made the request.</p>";
-
-        helper.setSubject(subject);
-
-        helper.setText(content, true);
-
-        mailSender.send(message);
-    }
 }
