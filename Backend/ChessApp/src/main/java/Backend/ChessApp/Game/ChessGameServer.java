@@ -104,7 +104,8 @@ public class ChessGameServer {
             endGame(session);
         }
         else if(json.getString("type").equals("kick")){
-            kickUserFromGame(message);
+            if(sessionUserMap.get(session) == adminUser)
+                kickUserFromGame(message);
         }
     }
 
