@@ -27,8 +27,7 @@ public class ChessGame {
     @OneToMany
     private List<User> listOfUsers;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
+    @OneToOne
     private ChessBoard board;
 
     private boolean whiteTurn = true; // White starts the game
@@ -65,14 +64,6 @@ public class ChessGame {
     @Transient
     private Position selectedPosition;
 
-    public void forfeit(){
-        if(isCheckmate(PieceColor.WHITE)){
-
-        }
-        else if(isCheckmate(PieceColor.BLACK)){
-
-        }
-    }
     public enum GameActive{
         GAME_ACTIVE, GAME_ENDED, GAME_STALEMATE, GAME_NOT_STARTED
     }

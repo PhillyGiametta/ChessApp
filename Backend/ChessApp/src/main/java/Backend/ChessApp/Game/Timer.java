@@ -11,9 +11,9 @@ import java.util.concurrent.TimeUnit;
 @Table(schema = "DBChessApp", name = "timer")
 public class Timer {
     @Transient
-    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private Duration timeLeft;
     private boolean isRunning = false;
+    private long duration, previousDuration, startTime;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "timer_id", nullable = false)
@@ -23,40 +23,85 @@ public class Timer {
     private ChessGame chessGame;
 
     public Timer(int startingTime) {
+
         this.timeLeft = Duration.ofMinutes(startingTime);
+        this.duration = timeLeft.toMillis(); // Total countdown duration in milliseconds
+    }
+
+    public void resetDuration(int startingTime) {
+        this.timeLeft = Duration.ofMinutes(startingTime);
+        this.duration = timeLeft.toMillis();
+        this.previousDuration = 0L;
+        this.isRunning = false;
     }
 
     public void start() {
-        if (!isRunning) {
-            isRunning = true;
-            scheduler.scheduleAtFixedRate(() -> {
-                if (!timeLeft.isZero() && !timeLeft.isNegative()) {
-                    timeLeft = timeLeft.minusSeconds(1);
-                    System.out.println("Time Left: " + formatDuration(timeLeft));
-                } else {
-                    stop();
-                    System.out.println("Time is up!");
+        isRunning = true;
+        new Thread(() -> {
+            while (isRunning && !timeLeft.isZero() && !timeLeft.isNegative()) {
+                try {
+                    Thread.sleep(1000); // Wait for 1 second
+                    timeLeft = timeLeft.minusSeconds(1); // Decrease timeLeft by 1 second
+                    System.out.println("Time Left: " + getFormattedDuration());
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt(); // Preserve interrupt status
                 }
-            }, 0, 1, TimeUnit.SECONDS);
-        }
+            }
+            if (timeLeft.isZero() || timeLeft.isNegative()) {
+                isRunning = false;
+                System.out.println("Time is up!");
+            }
+        }).start();
+    }
+
+    public void pause() {
+        setDuration();
+        this.previousDuration = duration;
+        this.isRunning = false;
     }
 
     public void stop() {
-        isRunning = false;
-        scheduler.shutdownNow();
+        setDuration();
+        this.isRunning = false;
     }
 
-    public void reset(Duration startingTime) {
-        stop();
-        timeLeft = startingTime;
-        isRunning = false;
+    private void setDuration() {
+        if (isRunning) {
+            long elapsedTime = System.currentTimeMillis() - startTime;
+            long newDuration = duration - elapsedTime; // Subtract elapsed time from total duration
+
+            // Ensure that duration does not go below zero
+            this.duration = Math.max(newDuration, 0);
+            this.timeLeft = Duration.ofMillis(this.duration);
+        }
     }
 
-    public String formatDuration(Duration duration) {
-        long hours = duration.toHours();
-        long minutes = duration.toMinutesPart();
-        long seconds = duration.toSecondsPart();
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    public String getFormattedDuration() {
+        long millis = timeLeft.toMillis();
+        int seconds = (int) ((millis + 500L) / 1000L); // Round to nearest second
+        int minutes = seconds / 60;
+        int hours = minutes / 60;
+
+        StringBuilder builder = new StringBuilder();
+        if (hours > 0) {
+            builder.append(hours).append(":");
+        }
+
+        minutes %= 60;
+        if (hours > 0) {
+            builder.append(String.format("%02d", minutes)).append(":");
+        } else if (minutes > 0) {
+            builder.append(minutes).append(":");
+        }
+
+        seconds %= 60;
+        if (hours > 0 || minutes > 0) {
+            builder.append(String.format("%02d", seconds));
+        } else {
+            builder.append(seconds);
+        }
+
+        return builder.toString();
     }
 
     public Duration getTimeLeft() {

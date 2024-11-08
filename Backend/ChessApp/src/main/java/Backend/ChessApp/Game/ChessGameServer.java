@@ -2,6 +2,7 @@ package Backend.ChessApp.Game;
 
 import Backend.ChessApp.AdminControl.AdminRepo;
 import Backend.ChessApp.Game.Board.Position;
+import Backend.ChessApp.Game.Pieces.PieceColor;
 import Backend.ChessApp.Settings.GameSettingsService;
 import Backend.ChessApp.Settings.SettingGameStates;
 import Backend.ChessApp.Settings.SettingsRepo;
@@ -51,6 +52,9 @@ public class ChessGameServer {
     private final ChessGame chessGame = new ChessGame();
     private User adminUser;
 
+    private boolean whiteWins = false;
+    private boolean blackWins = false;
+
     @OnOpen
     public void onOpen(Session session, @PathParam("userName") String userName) throws IOException {
         User user = userRepository.findByUserName(userName);
@@ -81,7 +85,7 @@ public class ChessGameServer {
     }
 
     @OnMessage
-    public void OnMessage(Session session, String message) {
+    public void OnMessage(Session session, String message) throws IOException {
 
         JSONObject json = new JSONObject(message);
 
@@ -101,10 +105,10 @@ public class ChessGameServer {
         }
     }
 
-    public void moveOnBoard(Session session, String message){
+    public void moveOnBoard(Session session, String message) throws IOException {
         if (chessGame.getGameActive() != ChessGame.GameActive.GAME_ACTIVE) {
             try {
-                session.getBasicRemote().sendText("The game has ended. No further moves are allowed.");
+                session.getBasicRemote().sendText("The game has ended or has not started. No further moves are allowed.");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -120,18 +124,27 @@ public class ChessGameServer {
         int row = json.getInt("rowStart");
         int col = json.getInt("colStart");
         Position positionStart = new Position(row,col);
+        session.getBasicRemote().sendText(Arrays.toString(chessGame.getLegalMovesForPieceAt(positionStart).toArray()));
         int row2 = json.getInt("rowEnd");
         int col2 = json.getInt("colEnd");
         Position positionEnd = new Position(row2, col2);
         List<Position> p = chessGame.getLegalMovesForPieceAt(positionStart);
-        if(p.contains(positionEnd)){
+        if(p.contains(positionEnd) && (chessGame.getCurrentPlayerColor() && chessGame.getBoard().getPiece(positionStart.getRow(), positionStart.getColumn()).getColor() == PieceColor.WHITE) ||
+                !chessGame.getCurrentPlayerColor() && chessGame.getBoard().getPiece(positionStart.getRow(), positionStart.getColumn()).getColor() == PieceColor.BLACK){
             chessGame.makeMove(positionStart, positionEnd);
+            broadcastBoard();
+        }
+        else if(!p.contains(positionEnd)){
+            session.getBasicRemote().sendText("Invalid Move");
+        }
+        else{
+            session.getBasicRemote().sendText("Not Your Turn");
         }
         if(chessGame.getCurrentPlayerColor()){
-            chessGame.blackTimer.stop();
+            chessGame.whiteTimer.pause();
         }
         else
-            chessGame.whiteTimer.stop();
+            chessGame.blackTimer.pause();
     }
 
     public void updateSettings(Session session, String message){
@@ -183,9 +196,20 @@ public class ChessGameServer {
         }
     }
 
-    private void startGame(Session session){
-        if(sessionUserMap.get(session) == adminUser){
+    private void startGame(Session session) {
+        if (sessionUserMap.get(session) == adminUser) {
             chessGame.setGameActive(ChessGame.GameActive.GAME_ACTIVE);
+
+            List<Session> gameSessions = gameSessionMap.get(chessGame);
+            if (gameSessions != null) {
+                for (Session s : gameSessions) {
+                    try {
+                        s.getBasicRemote().sendText("The game has started and is now active.");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
 
@@ -221,6 +245,13 @@ public class ChessGameServer {
         if (user.equals(adminUser)) {
             adminUser = null; // Clear admin if they leave
             assignNewAdmin(game);
+        }
+    }
+
+    public void broadcastBoard() throws IOException {
+        List<Session> sessions = gameSessionMap.get(chessGame);
+        for(Session s: sessions){
+            s.getBasicRemote().sendText(chessGame.getBoard().toString());
         }
     }
 
@@ -268,6 +299,12 @@ public class ChessGameServer {
     private void endGame(Session session){
         if(sessionUserMap.get(session) == adminUser)
             chessGame.setGameActive(ChessGame.GameActive.GAME_ENDED);
+        if(chessGame.getCurrentPlayerColor()){
+            blackWins = true;
+        }
+        else if(!chessGame.getCurrentPlayerColor()){
+            whiteWins = true;
+        }
     }
 }
 

@@ -8,13 +8,13 @@ import jakarta.persistence.*;
 @Table(schema = "DBChessApp", name="board")
 public class ChessBoard {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "board_id")
+    @MapsId
+    @JoinColumn(name = "chessGame_id", nullable = false, unique = true)
+    private int id;
+
     private final Piece[][] board;
 
     @OneToOne
-    @MapsId
-    @JoinColumn(name = "chessGame_id", nullable = false, unique = true)
     private ChessGame chessGame;
 
     public ChessBoard() {
@@ -74,5 +74,23 @@ public class ChessBoard {
             board[end.getRow()][end.getColumn()].setPosition(end);
             board[start.getRow()][start.getColumn()] = null;
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder boardString = new StringBuilder();
+
+        for (Piece[] pieces : board) {
+            for (Piece piece : pieces) {
+                if (piece == null) {
+                    boardString.append(". "); // Represent an empty square with a dot
+                } else {
+                    boardString.append(piece.toString()).append(" "); // Append the piece's string representation
+                }
+            }
+            boardString.append("\n"); // New line at the end of each row
+        }
+
+        return boardString.toString();
     }
 }
