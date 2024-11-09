@@ -22,4 +22,7 @@ public class LeaderboardItem {
     public int getRank() {
         return rank;
     }
+    public String toString(){
+        return "Name: " + playerName + "\n" + "Rating: " + Integer.toString(playerRating) + "\n" + "Rank: " + Integer.toString(rank) + "\n";
+    }
 }

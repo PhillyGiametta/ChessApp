@@ -2,11 +2,11 @@ plugins {
     alias(libs.plugins.android.application)
 }
 android {
-    namespace 'com.example.chessapp'
+    namespace "com.Chess2v2.app"
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.chessapp"
+        applicationId "com.Chess2v2.app"
         minSdk 24
         targetSdk 34
         versionCode 1

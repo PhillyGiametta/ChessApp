@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.Chess2v2.myapplication;
 
 import android.os.Bundle;
 

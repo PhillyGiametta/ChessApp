@@ -1,4 +1,4 @@
-package com.example.leaderboard;
+package com.Chess2v2.leaderboard;
 
 import org.junit.Test;
 

@@ -3,6 +3,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -20,27 +22,40 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name=".SignupActivity"
+            android:name="com.Chess2v2.app.SignupActivity"
             android:exported="false" />
 
         <activity
-            android:name=".LoginActivity"
+            android:name="com.Chess2v2.app.LoginActivity"
             android:exported="false" />
 
         <activity
-            android:name=".ChatActivity"
+            android:name="com.Chess2v2.app.ChatActivity"
             android:exported="false" />
 
         <activity
-            android:name=".ChessBoardActivity"
+            android:name="com.Chess2v2.leaderboard.LeaderboardActivity"
             android:exported="true" />
 
         <activity
-            android:name=".ProfileActivity"
+            android:name="com.Chess2v2.chess.ChessBoardActivity"
             android:exported="true" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.Chess2v2.groups.Group_finder"
+            android:exported="true" />
+
+
+        <activity
+            android:name="com.Chess2v2.app.HomeActivity"
+            android:exported="true" />
+
+        <activity
+            android:name="com.Chess2v2.app.WebSocketChatListener$ProfileActivity"
+            android:exported="true" />
+
+        <activity
+            android:name="com.Chess2v2.app.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

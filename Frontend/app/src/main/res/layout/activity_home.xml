@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp"
+    android:background="@color/backgroundLight">
+
+    <!-- Welcome Text -->
+    <TextView
+        android:id="@+id/home_msg_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome to ChessApp"
+        style="@style/HeadingTextStyle" />
+
+
+    <!-- Profile Button -->
+    <Button
+        android:id="@+id/home_profile_btn"
+        style="@style/CustomButtonStyle"
+        android:text="Profile" />
+
+    <!-- Chat Button -->
+    <Button
+        android:id="@+id/home_chat_btn"
+        style="@style/CustomButtonStyle"
+        android:text="Open Chat" />
+
+    <!-- Play Now Button -->
+    <Button
+        android:id="@+id/home_play_now_btn"
+        style="@style/CustomButtonStyle"
+        android:text="Play Now" />
+
+    <!-- Find Group Button -->
+    <Button
+        android:id="@+id/find_group_button"
+        style="@style/CustomButtonStyle"
+        android:text="Find Group" />
+
+    <!-- Leaderboard Button -->
+    <Button
+        android:id="@+id/home_leaderboard_btn"
+        style="@style/CustomButtonStyle"
+        android:text="Leaderboard" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

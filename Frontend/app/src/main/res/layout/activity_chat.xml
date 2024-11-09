@@ -34,11 +34,16 @@
             android:text="Send" />
 
         <Button
-            android:id="@+id/chat_button"
+            android:id="@+id/back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Chat" />
+            android:layout_gravity="start"
+            android:text="Back"
+            android:layout_marginTop="20dp"
+            android:textSize="18sp"
+            android:backgroundTint="#D32F2F"
+            android:textColor="#FFFFFF" />
+
     </LinearLayout>
 
 </LinearLayout>

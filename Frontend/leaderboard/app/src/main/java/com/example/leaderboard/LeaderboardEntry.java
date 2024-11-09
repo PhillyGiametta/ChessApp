@@ -1,4 +1,4 @@
-package com.example.leaderboard;
+package com.Chess2v2.leaderboard;
 
 public class LeaderboardEntry {
 

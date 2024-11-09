@@ -1,21 +1,33 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp">
 
+    <!-- Back Button -->
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:layout_gravity="start"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Player Turn TextView -->
     <TextView
         android:id="@+id/playerTurnTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="White's Turn"
         android:textSize="20sp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"/>
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp" />
 
+    <!-- Chess Board RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chessBoardRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/playerTurnTextView"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:padding="4dp" />
-</RelativeLayout>
+</LinearLayout>

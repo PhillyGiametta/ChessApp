@@ -1,4 +1,4 @@
-package com.Chess2v2.myapplication;
+package com.Chess2v2.app;
 
 import org.junit.Test;
 
