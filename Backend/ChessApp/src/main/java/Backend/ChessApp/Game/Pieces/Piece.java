@@ -1,8 +1,15 @@
 package Backend.ChessApp.Game.Pieces;
 
 import Backend.ChessApp.Game.Board.Position;
+import jakarta.persistence.Transient;
 
-public abstract class Piece {
+import java.io.Serial;
+import java.io.Serializable;
+
+public abstract class Piece implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     protected Position position;
     protected PieceColor color;
 

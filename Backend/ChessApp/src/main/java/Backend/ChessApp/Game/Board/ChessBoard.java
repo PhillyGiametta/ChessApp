@@ -5,17 +5,21 @@ import Backend.ChessApp.Game.Pieces.*;
 import jakarta.persistence.*;
 
 @Entity
-@Table(schema = "DBChessApp", name="board")
 public class ChessBoard {
     @Id
-    @MapsId
-    @JoinColumn(name = "chessGame_id", nullable = false, unique = true)
+    @Column(name="chess_board_id")
     private int id;
 
+    @Lob
     private final Piece[][] board;
 
-    @OneToOne
+    @OneToOne(mappedBy = "board")
+    @MapsId
     private ChessGame chessGame;
+
+    @ManyToOne
+    @JoinColumn(name = "chess_game_id", insertable = false, updatable = false)
+    private ChessGame gameHistory;
 
     public ChessBoard() {
         this.board = new Piece[8][8]; // Chessboard is 8x8

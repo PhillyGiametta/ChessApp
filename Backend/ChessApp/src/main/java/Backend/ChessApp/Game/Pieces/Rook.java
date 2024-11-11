@@ -1,6 +1,7 @@
 package Backend.ChessApp.Game.Pieces;
 
 import Backend.ChessApp.Game.Board.Position;
+import org.springframework.data.annotation.Transient;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -22,10 +22,11 @@ public class Admin {
 
 
     @OneToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name="admin_id")
     User user;
 
     @OneToOne
+    @JoinColumn(name = "admin_id")
     ChessGame chessGame;
 
     @OneToMany

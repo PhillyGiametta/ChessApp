@@ -1,8 +1,8 @@
 package Backend.ChessApp.Settings;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import Backend.ChessApp.Game.ChessGame;
+import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
 /*
@@ -11,8 +11,16 @@ import org.springframework.stereotype.Component;
 
  */
 //No entity this is temporary should be in memory only
-@Component
+@Entity
 public class SettingGameStates {
+    @Id
+    @Column(name = "game_settings_id")
+    private int id;
+
+    @OneToOne(mappedBy = "settingGameStates")
+    @MapsId
+    private ChessGame chessGame;
+
     short timeController; //in minutes
     int incrementTimer; //in seconds
     boolean allowUndos;
@@ -30,7 +38,7 @@ public class SettingGameStates {
     @Override
     public String toString() {
         String s = "";
-        s += String.format("Time: " + timeController + " \nIncrement: "+incrementTimer+" \nAllow undo: "+allowUndos+" \nEnable limiter: "+enableLimitMoveTime+" \nlimterTimer (if applicaple) " + limitMoveTime);
+        s += String.format("Time: " + timeController + " \nIncrement: " + incrementTimer + " \nAllow undo: " + allowUndos + " \nEnable limiter: " + enableLimitMoveTime + " \nlimterTimer (if applicaple) " + limitMoveTime);
         return s;
     }
 

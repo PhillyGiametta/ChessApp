@@ -6,6 +6,8 @@ import Backend.ChessApp.Game.Board.Position;
 import Backend.ChessApp.Game.Pieces.King;
 import Backend.ChessApp.Game.Pieces.PieceColor;
 import Backend.ChessApp.Game.Pieces.Piece;
+import Backend.ChessApp.Settings.GameSettingsService;
+import Backend.ChessApp.Settings.SettingGameStates;
 import Backend.ChessApp.Users.User;
 import jakarta.persistence.*;
 
@@ -14,34 +16,45 @@ import java.util.List;
 import java.util.ArrayList;
 
 @Entity
-@Table(schema = "DBChessApp", name = "chessGame")
+@Table(schema = "DBChessApp", name = "chess_game")
 public class ChessGame {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "chessGame_id", nullable = false)
+    @Column(name = "chess_game_id", nullable = false)
     private int id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "chess_game_id")
     private Admin admin;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.MERGE)
     private List<User> listOfUsers;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @PrimaryKeyJoinColumn
     private ChessBoard board;
+
+    @OneToMany(mappedBy = "gameHistory", cascade = CascadeType.PERSIST)
+    private List<ChessBoard> boardHistory = new ArrayList<>();
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @PrimaryKeyJoinColumn
+    private SettingGameStates settingGameStates;
 
     private boolean whiteTurn = true; // White starts the game
     private GameActive gameActive = GameActive.GAME_NOT_STARTED;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     List<User> WhiteTeam = new ArrayList<>();
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     List<User> BlackTeam = new ArrayList<>();
 
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "chess_game_id")
     public Timer whiteTimer;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "chess_game_id")
     public Timer blackTimer;
 
     public ChessGame() {
@@ -98,9 +111,14 @@ public class ChessGame {
         if (movingPiece.isValidMove(end, board.getBoard())) {
             board.movePiece(start, end);
             whiteTurn = !whiteTurn;
+            recordMove();
             return true;
         }
         return false;
+    }
+
+    public void recordMove(){
+        boardHistory.add(this.board);
     }
 
 

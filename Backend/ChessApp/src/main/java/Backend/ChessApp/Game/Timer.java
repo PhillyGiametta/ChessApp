@@ -8,19 +8,23 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Entity
-@Table(schema = "DBChessApp", name = "timer")
 public class Timer {
     @Transient
     private Duration timeLeft;
     private boolean isRunning = false;
     private long duration, previousDuration, startTime;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "timer_id", nullable = false)
+    @Column(name = "timer_id", insertable = false, updatable = false)
     private int id;
 
     @ManyToOne
+    @JoinColumn(name="timer_id")
     private ChessGame chessGame;
+
+    public Timer(){
+        this.timeLeft = Duration.ZERO;
+        this.duration = timeLeft.toMillis();
+    }
 
     public Timer(int startingTime) {
 

@@ -4,9 +4,15 @@ import jakarta.transaction.Transactional;
 
 import javax.persistence.Embeddable;
 import java.beans.Transient;
+import java.io.Serial;
+import java.io.Serializable;
 
 @Embeddable
-public class Position {
+public class Position implements Serializable
+{
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private int row;
     private int column;
 

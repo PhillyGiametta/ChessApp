@@ -38,6 +38,9 @@ public class ChessGameServer {
     @Autowired
     private SettingsRepo settingsRepo;
 
+    @Autowired
+    private ChessGameRepository chessGameRepository;
+
     private final Logger logger = LoggerFactory.getLogger(ChessGameServer.class);
 
     // Session and User mappings
@@ -50,6 +53,7 @@ public class ChessGameServer {
     private static final Map<ChessGame, List<Session>> gameSessionMap = new Hashtable<>();
 
     private final ChessGame chessGame = new ChessGame();
+
     private User adminUser;
 
     private boolean whiteWins = false;
@@ -79,6 +83,7 @@ public class ChessGameServer {
         // Add user session to game
         gameSessionMap.computeIfAbsent(chessGame, k -> new ArrayList<>()).add(session);
         assignTeams(chessGame);
+        chessGameRepository.save(chessGame);
 
         // Send the current settings to the user
         sendSettings(session, gameSettingsMap.get(chessGame));
@@ -136,6 +141,7 @@ public class ChessGameServer {
         if(p.contains(positionEnd) && (chessGame.getCurrentPlayerColor() && chessGame.getBoard().getPiece(positionStart.getRow(), positionStart.getColumn()).getColor() == PieceColor.WHITE) ||
                 !chessGame.getCurrentPlayerColor() && chessGame.getBoard().getPiece(positionStart.getRow(), positionStart.getColumn()).getColor() == PieceColor.BLACK){
             chessGame.makeMove(positionStart, positionEnd);
+            chessGameRepository.save(chessGame);
             broadcastBoard();
         }
         else if(!p.contains(positionEnd)){
