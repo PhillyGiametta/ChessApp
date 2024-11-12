@@ -18,7 +18,7 @@ public class Timer {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name="timer_id")
+    @JoinColumn(name="chess_game_id")
     private ChessGame chessGame;
 
     public Timer(){

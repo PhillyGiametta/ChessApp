@@ -1,6 +1,7 @@
 package Backend.ChessApp.Game;
 
 import Backend.ChessApp.AdminControl.AdminRepo;
+import Backend.ChessApp.Game.Board.ChessBoard;
 import Backend.ChessApp.Game.Board.Position;
 import Backend.ChessApp.Game.Pieces.PieceColor;
 import Backend.ChessApp.Settings.GameSettingsService;
@@ -52,7 +53,7 @@ public class ChessGameServer {
     private static final Map<User, ChessGame> userGameMap = new Hashtable<>();
     private static final Map<ChessGame, List<Session>> gameSessionMap = new Hashtable<>();
 
-    private final ChessGame chessGame = new ChessGame();
+    private ChessGame chessGame = new ChessGame();
 
     private User adminUser;
 
@@ -62,12 +63,15 @@ public class ChessGameServer {
     @OnOpen
     public void onOpen(Session session, @PathParam("userName") String userName) throws IOException {
         User user = userRepository.findByUserName(userName);
+        chessGame.setBoard(new ChessBoard());
+        chessGameRepository.save(chessGame);
 
         if(user == null){
             logger.info("user is null");
             session.close();
             return;
         }
+
         sessionUserMap.put(session, user);
         userSessionMap.put(user, session);
         userGameMap.put(user, chessGame);
@@ -167,6 +171,7 @@ public class ChessGameServer {
             updateSettings(settings, message);
             chessGame.whiteTimer = new Timer(settings.getTimeController());
             chessGame.blackTimer = new Timer(settings.getTimeController());
+            chessGameRepository.save(chessGame);
             sendSettings(session, settings);
         } else {
             assert user != null;
@@ -195,6 +200,7 @@ public class ChessGameServer {
     private void initializeDefaultSettings() {
         gameSettingsService.initializeDefaultSettings(chessGame);
         gameSettingsMap.put(chessGame, gameSettingsService.getSettings(chessGame));
+        chessGameRepository.save(chessGame);
     }
 
     private void sendSettings(Session session, SettingGameStates settings) {
@@ -238,6 +244,7 @@ public class ChessGameServer {
         }
         chessGame.setWhiteTeam(whiteTeam);
         chessGame.setBlackTeam(blackTeam);
+        chessGameRepository.save(chessGame);
     }
 
     private void removeUserFromGame(Session session, User user) {

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
  */
 //No entity this is temporary should be in memory only
 @Entity
+@Table(schema = "DBChessApp", name = "setting_game_states")
 public class SettingGameStates {
     @Id
     @Column(name = "game_settings_id")

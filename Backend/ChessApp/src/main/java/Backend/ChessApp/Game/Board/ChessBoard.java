@@ -5,6 +5,7 @@ import Backend.ChessApp.Game.Pieces.*;
 import jakarta.persistence.*;
 
 @Entity
+@Table(schema = "DBChessApp", name = "board")
 public class ChessBoard {
     @Id
     @Column(name="chess_board_id")

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class ChessGame {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "chess_game_id", nullable = false)
+    @Column(name = "chess_game_id", nullable = false, unique = true)
     private int id;
 
     @OneToOne(cascade = CascadeType.REFRESH)
@@ -50,19 +50,15 @@ public class ChessGame {
     List<User> BlackTeam = new ArrayList<>();
 
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "chess_game_id")
     public Timer whiteTimer;
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "chess_game_id")
     public Timer blackTimer;
 
     public ChessGame() {
         this.board = new ChessBoard();
-    }
-
-    public ChessBoard getBoard() {
-        return this.board;
     }
 
     public void resetGame() {
@@ -305,4 +301,19 @@ public class ChessGame {
     public void setGameActive(GameActive gameActive) {
         this.gameActive = gameActive;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setBoard(ChessBoard chessBoard){
+        this.board = chessBoard;
+    }
+
+    public ChessBoard getBoard(){
+        return this.board;
+    }
+
+
+
 }
