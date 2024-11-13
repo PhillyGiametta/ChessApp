@@ -29,9 +29,13 @@ import java.util.*;
 public class ChessGameServer {
 
     private static UserRepository userRepository;
-
     private static ChessGameRepository chessGameRepository;
+    private static AdminRepo adminRepo;
+    private static SettingsRepo settingsRepo;
 
+    private static GameSettingsService gameSettingsService;
+
+    //Auto wire repositories and services
     @Autowired
     public void setUserRepository(UserRepository repo) {
         userRepository = repo;
@@ -42,20 +46,20 @@ public class ChessGameServer {
         chessGameRepository = repo;
     }
 
+    @Autowired
+    public void setAdminRepo(AdminRepo repo) {
+        adminRepo = repo;
+    }
 
-    private static GameSettingsService gameSettingsService;
+    @Autowired
+    public void setSettingsRepo(SettingsRepo repo) {
+        settingsRepo = repo;
+    }
 
     @Autowired
     public void setGameSettingsService(GameSettingsService service) {
         gameSettingsService = service;
     }
-
-    @Autowired
-    private AdminRepo adminRepo;
-
-    @Autowired
-    private SettingsRepo settingsRepo;
-
 
 
 
