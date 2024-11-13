@@ -13,11 +13,10 @@ import java.util.List;
 
 @SpringBootApplication
 @EnableJpaRepositories
-@EnableAutoConfiguration
-@ComponentScan(basePackages = {"Backend.ChessApp"})
 public class ChessApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ChessApplication.class, args);
 	}
+
 }
