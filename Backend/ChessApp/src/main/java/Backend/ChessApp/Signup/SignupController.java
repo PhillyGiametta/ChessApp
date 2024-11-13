@@ -4,6 +4,7 @@ import Backend.ChessApp.Leaderboard.LeaderboardService;
 import Backend.ChessApp.Leaderboard.LeaderboardEntry;
 import Backend.ChessApp.Leaderboard.LeaderboardRepository;
 import Backend.ChessApp.Users.*;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ public class SignupController {
     private LeaderboardService leaderboardService;
 
     //when user signs up
+    @Operation(summary = "Creates new user and adds user to database")
     @PostMapping(path = "/signup")
     String createUser(@RequestBody User user){
         if(user == null){
