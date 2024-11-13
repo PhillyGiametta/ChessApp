@@ -61,8 +61,6 @@ public class ChessGameServer {
         gameSettingsService = service;
     }
 
-
-
     private final Logger logger = LoggerFactory.getLogger(ChessGameServer.class);
 
     // Session and User mappings
