@@ -1,6 +1,7 @@
 package Backend.ChessApp.Login;
 
 import Backend.ChessApp.Users.*;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +13,7 @@ public class LoginController {
     UserRepository userRepository;
 
     //when user logs in
+    @Operation(summary = "Verifies login information is correct allows user to log in")
     @PostMapping(path ="/login")
     String userLogin(@RequestBody User user){
 
