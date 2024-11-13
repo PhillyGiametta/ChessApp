@@ -10,13 +10,14 @@ import Backend.ChessApp.Settings.GameSettingsService;
 import Backend.ChessApp.Settings.SettingGameStates;
 import Backend.ChessApp.Users.User;
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.ArrayList;
 
 @Entity
-@Table(schema = "DBChessApp", name = "chess_game")
+@Table(name = "chess_game", schema = "DBChessApp")
 public class ChessGame {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,21 +25,21 @@ public class ChessGame {
     private int id;
 
     @OneToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "chess_game_id")
+    @JoinColumn(name = "admin_id")
     private Admin admin;
 
     @OneToMany(cascade = CascadeType.MERGE)
     private List<User> listOfUsers;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @PrimaryKeyJoinColumn
+    @JoinColumn(name = "chess_board_id")
     private ChessBoard board;
 
     @OneToMany(mappedBy = "gameHistory", cascade = CascadeType.PERSIST)
     private List<ChessBoard> boardHistory = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    @PrimaryKeyJoinColumn
+    @JoinColumn(name = "game_settings_id")
     private SettingGameStates settingGameStates;
 
     private boolean whiteTurn = true; // White starts the game
@@ -51,11 +52,10 @@ public class ChessGame {
 
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "chess_game_id")
     public Timer whiteTimer;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "chess_game_id")
     public Timer blackTimer;
+
 
     public ChessGame() {
         this.board = new ChessBoard();

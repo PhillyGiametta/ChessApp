@@ -33,13 +33,13 @@ public class User {
     private LocalDateTime passwordResetTokenCreationDate;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
     private SettingsUserStates settings;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Admin admin;
 
     @ManyToOne
+    @JoinColumn(name = "chess_game_id")
     private ChessGame chessGame;
 
     @ManyToOne

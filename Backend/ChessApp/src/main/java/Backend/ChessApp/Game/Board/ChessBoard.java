@@ -11,11 +11,9 @@ public class ChessBoard {
     @Column(name="chess_board_id")
     private int id;
 
-    @Lob
     private final Piece[][] board;
 
-    @OneToOne(mappedBy = "board")
-    @MapsId
+    @OneToOne(cascade = CascadeType.PERSIST)
     private ChessGame chessGame;
 
     @ManyToOne
