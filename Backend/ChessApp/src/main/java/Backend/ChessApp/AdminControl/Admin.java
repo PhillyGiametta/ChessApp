@@ -17,7 +17,7 @@ public class Admin {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "admin_id", nullable = false)
+    @Column(name = "admin_id")
     private int id;
 
 
@@ -29,8 +29,8 @@ public class Admin {
     @JoinColumn(name = "game_id") // join with game_id
     ChessGame chessGame;
 
-    @OneToMany
-    private List<User> usersInGame;
+
+//    private List<User> usersInGame;
 
     public Admin(User user){
         this.user = user;

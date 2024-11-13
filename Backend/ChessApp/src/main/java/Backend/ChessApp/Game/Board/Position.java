@@ -6,12 +6,9 @@ import javax.persistence.Embeddable;
 import java.beans.Transient;
 import java.io.Serial;
 import java.io.Serializable;
-
 @Embeddable
-public class Position implements Serializable
+public class Position
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     private int row;
     private int column;

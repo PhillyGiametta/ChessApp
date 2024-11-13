@@ -1,17 +1,35 @@
 package Backend.ChessApp.Game.Pieces;
 
+import Backend.ChessApp.Game.Board.BoardSquare;
 import Backend.ChessApp.Game.Board.Position;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
+import java.util.List;
 
-import java.io.Serial;
-import java.io.Serializable;
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "piece_type", discriminatorType = DiscriminatorType.STRING)
+//@MappedSuperclass
+public abstract class Piece {
 
-public abstract class Piece implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "piece_id")
+    private int id;
 
-    protected Position position;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "color")
     protected PieceColor color;
+
+    @ManyToOne
+    @JoinColumn(name = "board_square_id")
+    private BoardSquare boardSquare;
+
+    @Embedded
+    protected Position position;
+
+    public Piece(){
+
+    }
 
     public Piece(PieceColor color, Position position) {
         this.color = color;
@@ -30,7 +48,16 @@ public abstract class Piece implements Serializable {
         this.position = position;
     }
 
-    public abstract boolean isValidMove(Position newPosition, Piece[][] board);
+    public BoardSquare getBoardSquare(int row, int col, List<BoardSquare> boardSquares){
+        for(BoardSquare boardSquare : boardSquares){
+            if(boardSquare.getRow() == row && boardSquare.getColumn() == col){
+                return boardSquare;
+            }
+        }
+        return null;
+    }
+
+    public abstract boolean isValidMove(Position newPosition, List<BoardSquare> boardSquares);
 
     @Override
     public String toString() {

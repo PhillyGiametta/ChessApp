@@ -1,9 +1,10 @@
 package Backend.ChessApp.Game;
 
 import Backend.ChessApp.AdminControl.AdminRepo;
-import Backend.ChessApp.Game.Board.ChessBoard;
+import Backend.ChessApp.Game.Board.Board;
 import Backend.ChessApp.Game.Board.Position;
 import Backend.ChessApp.Game.Pieces.PieceColor;
+import Backend.ChessApp.Group.GroupService;
 import Backend.ChessApp.Settings.GameSettingsService;
 import Backend.ChessApp.Settings.SettingGameStates;
 import Backend.ChessApp.Settings.SettingsRepo;
@@ -24,14 +25,30 @@ import java.util.*;
 
 @Controller
 @Component
-@ServerEndpoint(value = "/game/{userName}", configurator = SpringConfigurator.class)
+@ServerEndpoint(value = "/game/{userName}")
 public class ChessGameServer {
 
-    @Autowired
-    private UserRepository userRepository;
+    private static UserRepository userRepository;
+
+    private static ChessGameRepository chessGameRepository;
 
     @Autowired
-    private GameSettingsService gameSettingsService;
+    public void setUserRepository(UserRepository repo) {
+        userRepository = repo;
+    }
+
+    @Autowired
+    public void setChessGameRepository(ChessGameRepository repo) {
+        chessGameRepository = repo;
+    }
+
+
+    private static GameSettingsService gameSettingsService;
+
+    @Autowired
+    public void setGameSettingsService(GameSettingsService service) {
+        gameSettingsService = service;
+    }
 
     @Autowired
     private AdminRepo adminRepo;
@@ -39,8 +56,8 @@ public class ChessGameServer {
     @Autowired
     private SettingsRepo settingsRepo;
 
-    @Autowired
-    private ChessGameRepository chessGameRepository;
+
+
 
     private final Logger logger = LoggerFactory.getLogger(ChessGameServer.class);
 
@@ -63,7 +80,8 @@ public class ChessGameServer {
     @OnOpen
     public void onOpen(Session session, @PathParam("userName") String userName) throws IOException {
         User user = userRepository.findByUserName(userName);
-        chessGame.setBoard(new ChessBoard());
+        Board board = new Board();
+        chessGame.setBoard(board);
         chessGameRepository.save(chessGame);
 
         if(user == null){
@@ -82,8 +100,13 @@ public class ChessGameServer {
             logger.info("{} is now the admin", user.getUserName());
             initializeDefaultSettings();
         }
+
         chessGame.blackTimer = new Timer(gameSettingsService.getSettings(chessGame).getTimeController());
+
+
         chessGame.whiteTimer = new Timer(gameSettingsService.getSettings(chessGame).getTimeController());
+
+
         // Add user session to game
         gameSessionMap.computeIfAbsent(chessGame, k -> new ArrayList<>()).add(session);
         assignTeams(chessGame);
@@ -142,8 +165,8 @@ public class ChessGameServer {
         int col2 = json.getInt("colEnd");
         Position positionEnd = new Position(row2, col2);
         List<Position> p = chessGame.getLegalMovesForPieceAt(positionStart);
-        if(p.contains(positionEnd) && (chessGame.getCurrentPlayerColor() && chessGame.getBoard().getPiece(positionStart.getRow(), positionStart.getColumn()).getColor() == PieceColor.WHITE) ||
-                !chessGame.getCurrentPlayerColor() && chessGame.getBoard().getPiece(positionStart.getRow(), positionStart.getColumn()).getColor() == PieceColor.BLACK){
+        if(p.contains(positionEnd) && (chessGame.getCurrentPlayerColor() && chessGame.getBoard().getBoardSquare(positionStart.getRow(), positionStart.getColumn()).getPiece().getColor() == PieceColor.WHITE) ||
+                !chessGame.getCurrentPlayerColor() && chessGame.getBoard().getBoardSquare(positionStart.getRow(), positionStart.getColumn()).getPiece().getColor() == PieceColor.BLACK){
             chessGame.makeMove(positionStart, positionEnd);
             chessGameRepository.save(chessGame);
             broadcastBoard();

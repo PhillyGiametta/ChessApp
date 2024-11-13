@@ -1,7 +1,7 @@
 package Backend.ChessApp.Game;
 
 import jakarta.persistence.*;
-
+import java.util.List;
 import java.time.Duration;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -9,17 +9,22 @@ import java.util.concurrent.TimeUnit;
 
 @Entity
 public class Timer {
-    @Transient
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "timer_id")
+    private int id;
+
     private Duration timeLeft;
     private boolean isRunning = false;
     private long duration, previousDuration, startTime;
-    @Id
-    @Column(name = "timer_id", insertable = false, updatable = false)
-    private int id;
 
-    @ManyToOne
-    @JoinColumn(name="chess_game_id")
+    @OneToOne
     private ChessGame chessGame;
+//    @OneToMany(mappedBy = "whiteTimer")
+//    private List<ChessGame> whiteTimerGames;
+//
+//    @OneToMany(mappedBy = "blackTimer")
+//    private List<ChessGame> blackTimerGames;
 
     public Timer(){
         this.timeLeft = Duration.ZERO;

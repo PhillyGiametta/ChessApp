@@ -1,6 +1,8 @@
 package Backend.ChessApp.Game.Pieces;
 
+import Backend.ChessApp.Game.Board.BoardSquare;
 import Backend.ChessApp.Game.Board.Position;
+import jakarta.persistence.Entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,28 +13,31 @@ public class Pawn extends Piece {
         super(color, position);
     }
 
+    public Pawn() {
+
+    }
+
     @Override
-    public boolean isValidMove(Position newPosition, Piece[][] board) {
+    public boolean isValidMove(Position newPosition, List<BoardSquare> boardSquares) {
         int forwardDirection = color == PieceColor.WHITE ? -1 : 1;
         int rowDiff = (newPosition.getRow() - position.getRow()) * forwardDirection;
         int colDiff = newPosition.getColumn() - position.getColumn();
 
-        if (colDiff == 0 && rowDiff == 1 && board[newPosition.getRow()][newPosition.getColumn()] == null) {
+        BoardSquare destSquare = getBoardSquare(newPosition.getRow(), newPosition.getColumn(), boardSquares);
+        if (colDiff == 0 && rowDiff == 1 && destSquare == null) {
             return true;
         }
 
         boolean isStartingPosition = (color == PieceColor.WHITE && position.getRow() == 6) ||
                 (color == PieceColor.BLACK && position.getRow() == 1);
-        if (colDiff == 0 && rowDiff == 2 && isStartingPosition
-                && board[newPosition.getRow()][newPosition.getColumn()] == null) {
-            int middleRow = position.getRow() + forwardDirection;
-            if (board[middleRow][position.getColumn()] == null) {
+        if (colDiff == 0 && rowDiff == 2 && isStartingPosition){
+            BoardSquare betweenSquare = getBoardSquare(position.getRow() + forwardDirection, position.getColumn(), boardSquares);
+            if(destSquare != null && destSquare.getPiece() == null && betweenSquare != null && betweenSquare.getPiece() == null){
                 return true;
             }
         }
 
-        if (Math.abs(colDiff) == 1 && rowDiff == 1 && board[newPosition.getRow()][newPosition.getColumn()] != null &&
-                board[newPosition.getRow()][newPosition.getColumn()].color != this.color) {
+        if (Math.abs(colDiff) == 1 && rowDiff == 1 && destSquare != null && destSquare.getPiece() == null && destSquare.getPiece().getColor() != this.color) {
             return true;
         }
 

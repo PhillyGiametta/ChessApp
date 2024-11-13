@@ -5,13 +5,12 @@ import Backend.ChessApp.Game.ChessGame;
 import Backend.ChessApp.Group.Group;
 import Backend.ChessApp.Settings.SettingsUserStates;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.springframework.boot.*;
-import org.springframework.context.aot.AbstractAotProcessor;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -23,6 +22,7 @@ public class User {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "user_id", nullable = false)
     private int id;
+
     private String userEmail;
     private String userName;
     private String userPassword;
@@ -46,6 +46,12 @@ public class User {
     @JoinColumn(name = "group_id")
     @JsonBackReference
     private Group group;
+
+    @ManyToMany(mappedBy = "whiteTeam")
+    private List<ChessGame> whiteGames = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "blackTeam")
+    private List<ChessGame> blackGames = new ArrayList<>();
 
     //CONSTRUCTORS----------------------------------------
 
