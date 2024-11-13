@@ -2,6 +2,7 @@ package Backend.ChessApp.Leaderboard;
 
 import Backend.ChessApp.Users.User;
 import Backend.ChessApp.Users.UserRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,18 +22,21 @@ public class LeaderboardController {
     @Autowired
     private LeaderboardService leaderboardService;
     //List
+    @Operation(summary = "Fetches all leaderboard entries sorted by position on the leaderboard")
     @GetMapping(path = "/leaderboard")
     public List<LeaderboardEntry> getLeaderboard() {
         return leaderboardRepository.findAllByOrderByRankPositionAsc();
     }
 
     //Get
+    @Operation(summary = "Fetches specific users leaderboard information")
     @GetMapping(path = "/leaderboard/{id}")
     public LeaderboardEntry getLeaderboard(@PathVariable int id) {
         return leaderboardRepository.findById(id);
     }
 
     //Create
+    @Operation(summary = "Creates a leaderboard entry for a user given the userId in the request body")
     @PostMapping(path = "/leaderboard")
     public LeaderboardEntry createLeaderboardEntry(@RequestBody LeaderboardEntry leaderboardEntry){
         if(leaderboardEntry == null){
@@ -50,6 +54,7 @@ public class LeaderboardController {
     }
 
     //Create
+    @Operation(summary = "Creates a leaderboard entry for a user given the userId in the path")
     @PostMapping(path = "/leaderboard/{id}")
     public LeaderboardEntry createLeaderboardEntry(@RequestBody LeaderboardEntry leaderboardEntry, @PathVariable int id){
         if(leaderboardEntry == null){
@@ -68,6 +73,7 @@ public class LeaderboardController {
     }
 
     //Update
+    @Operation(summary = "Updates a leaderboard entry for a user given the userId in the path")
     @PutMapping(path = "/leaderboard/{id}")
     public LeaderboardEntry updateLeaderboardEntry(@PathVariable int id, @RequestBody LeaderboardEntry update){
         LeaderboardEntry leaderboard = leaderboardRepository.findById(id);
@@ -82,6 +88,7 @@ public class LeaderboardController {
     }
 
     //Delete
+    @Operation(summary = "Deletes a leaderboard entry for a user given the userId in the path")
     @DeleteMapping(path = "/leaderboard/{id}")
     public String deleteLeaderboardEntry(@PathVariable int id){
         leaderboardRepository.deleteById(id);
