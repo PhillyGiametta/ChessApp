@@ -182,8 +182,9 @@ public class ChessGameServer {
         if(chessGame.getCurrentPlayerColor()){
             chessGame.whiteTimer.pause();
         }
-        else
+        else {
             chessGame.blackTimer.pause();
+        }
     }
 
     public void updateSettings(Session session, String message){

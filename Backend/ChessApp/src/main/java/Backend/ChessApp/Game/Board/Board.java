@@ -127,7 +127,7 @@ public class Board {
                 if(square.getPiece() == null){
                     boardString.append(". ");
                 }else{
-                    boardString.append(square.getPiece().toString());
+                    boardString.append(square.getPiece().toString() + " ");
                 }
             }
             boardString.append("\n");
