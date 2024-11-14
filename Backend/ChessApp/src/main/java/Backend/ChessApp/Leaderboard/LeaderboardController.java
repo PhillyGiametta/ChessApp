@@ -3,11 +3,13 @@ package Backend.ChessApp.Leaderboard;
 import Backend.ChessApp.Users.User;
 import Backend.ChessApp.Users.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
+@Tag(name = "Leaderboard", description = "Leaderboard related HTTP methods")
 public class LeaderboardController {
 
 
