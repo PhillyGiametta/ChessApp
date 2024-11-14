@@ -47,11 +47,8 @@ public class User {
     @JsonBackReference
     private Group group;
 
-    @ManyToMany(mappedBy = "whiteTeam")
-    private List<ChessGame> whiteGames = new ArrayList<>();
-
-    @ManyToMany(mappedBy = "blackTeam")
-    private List<ChessGame> blackGames = new ArrayList<>();
+    //Tracks which team user is on "white" or "black"
+    private String team;
 
     //CONSTRUCTORS----------------------------------------
 

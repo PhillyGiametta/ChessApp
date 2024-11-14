@@ -4,11 +4,10 @@ import Backend.ChessApp.Game.Pieces.Piece;
 import jakarta.persistence.*;
 
 @Entity
-@Table(schema = "DBChessApp", name = "board_square")
 public class BoardSquare {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "board_square_id")
     private int id;
 
     @ManyToOne

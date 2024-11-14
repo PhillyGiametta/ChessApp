@@ -2,11 +2,13 @@ package Backend.ChessApp.Game;
 
 import Backend.ChessApp.AdminControl.Admin;
 import Backend.ChessApp.Game.Board.Board;
+import Backend.ChessApp.Game.Board.BoardSnapshot;
 import Backend.ChessApp.Game.Board.BoardSquare;
 import Backend.ChessApp.Game.Board.Position;
 import Backend.ChessApp.Game.Pieces.King;
 import Backend.ChessApp.Game.Pieces.PieceColor;
 import Backend.ChessApp.Game.Pieces.Piece;
+import Backend.ChessApp.Group.Group;
 import Backend.ChessApp.Settings.SettingGameStates;
 import Backend.ChessApp.Users.User;
 import jakarta.persistence.*;
@@ -22,24 +24,24 @@ public class ChessGame {
     private int id;
 
     @OneToOne
-    @JoinColumn(name = "admin")
+    @JoinColumn(name = "admin_id")
     private Admin admin;
 
-    @ManyToMany
-    @JoinTable(
-            name = "chess_game_users",
-            joinColumns = @JoinColumn(name = "chess_game_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<User> listOfUsers;
+    //Each group corresponds to one game
+    @OneToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
 
+    //One game has one board
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "board_id")
     private Board board;
 
+    //One game has many board snapshots
     @OneToMany(mappedBy = "chessGame", cascade = CascadeType.ALL)
-    private List<Board> boardHistory = new ArrayList<>();
+    private List<BoardSnapshot> boardHistory = new ArrayList<>();
 
+    //One game has one game setting states
     @OneToOne
     @JoinColumn(name = "game_settings_id")
     private SettingGameStates settingGameStates;
@@ -49,7 +51,7 @@ public class ChessGame {
 
     @ManyToMany
     @JoinTable(
-            name = "white_team_users",
+            name = "chess_game_white_team",
             joinColumns = @JoinColumn(name = "chess_game_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
@@ -57,7 +59,7 @@ public class ChessGame {
 
     @ManyToMany
     @JoinTable(
-            name = "black_team_users",
+            name = "chess_game_black_team",
             joinColumns = @JoinColumn(name = "chess_game_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
@@ -71,6 +73,9 @@ public class ChessGame {
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "black_timer_id")
     public Timer blackTimer;
+
+    //Tracks number of moves for the board history
+    int moveNumber = 0;
 
 
     public ChessGame() {
@@ -132,7 +137,9 @@ public class ChessGame {
     }
 
     public void recordMove(){
-        boardHistory.add(this.board);
+        BoardSnapshot history = new BoardSnapshot(this.board, this, moveNumber);
+        boardHistory.add(history);
+        moveNumber++;
     }
 
 

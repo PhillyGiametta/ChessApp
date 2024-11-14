@@ -2,6 +2,7 @@ package Backend.ChessApp.AdminControl;
 
 
 import Backend.ChessApp.Game.ChessGame;
+import Backend.ChessApp.Group.Group;
 import Backend.ChessApp.Users.User;
 import Backend.ChessApp.Users.UserRepository;
 import jakarta.persistence.*;
@@ -23,11 +24,15 @@ public class Admin {
 
     @OneToOne
     @JoinColumn(name="user_id") // join with user_id
-    User user;
+    private User user;
+
+//    @OneToOne
+//    @JoinColumn(name = "game_id") // join with game_id
+//    ChessGame chessGame;
 
     @OneToOne
-    @JoinColumn(name = "game_id") // join with game_id
-    ChessGame chessGame;
+    @JoinColumn(name = "group_id")
+    private Group group;
 
 
 //    private List<User> usersInGame;
@@ -39,5 +44,25 @@ public class Admin {
     public Admin(){
 
     }
+
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+    public Group getGroup() {
+        return group;
+    }
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
 
 }

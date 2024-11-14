@@ -8,21 +8,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(schema = "DBChessApp", name = "chess_board")
+@Table(schema = "DBChessApp", name = "board")
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="board_id")
     private int id;
 
+    //One board has many board squares
     @OneToMany(mappedBy = "board")
     private List<BoardSquare> boardSquares;
 
-    @ManyToOne
+    //One board corresponds to one chess game
+    @OneToOne
+    @JoinColumn(name = "chess_game_id")
     private ChessGame chessGame;
-
-
-//    private ChessGame gameHistory;
 
     public Board() {
         this.boardSquares = new ArrayList<>();

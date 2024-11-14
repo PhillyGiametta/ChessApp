@@ -19,6 +19,7 @@ public class Timer {
     private long duration, previousDuration, startTime;
 
     @OneToOne
+    @JoinColumn(name = "chess_game_id")
     private ChessGame chessGame;
 //    @OneToMany(mappedBy = "whiteTimer")
 //    private List<ChessGame> whiteTimerGames;
