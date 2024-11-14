@@ -6,11 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ChessBoardRepo extends JpaRepository<ChessBoard, Integer> {
+public interface ChessBoardRepo extends JpaRepository<Board, Integer> {
     @Override
     @NotNull
-    List<ChessBoard> findAll();
+    List<Board> findAll();
 
-    ChessBoard findById(int id);
+    Board findById(int id);
 
 }

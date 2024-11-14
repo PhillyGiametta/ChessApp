@@ -17,23 +17,27 @@ public class Admin {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "admin_id", nullable = false)
+    @Column(name = "admin_id")
     private int id;
 
 
     @OneToOne
-    @JoinColumn(name="admin_id")
+    @JoinColumn(name="user_id") // join with user_id
     User user;
 
     @OneToOne
-    @JoinColumn(name = "admin_id")
+    @JoinColumn(name = "game_id") // join with game_id
     ChessGame chessGame;
 
-    @OneToMany
-    private List<User> usersInGame;
+
+//    private List<User> usersInGame;
 
     public Admin(User user){
         this.user = user;
+    }
+
+    public Admin(){
+
     }
 
 }

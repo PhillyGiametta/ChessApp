@@ -5,6 +5,8 @@ import Backend.ChessApp.Game.ChessGame;
 import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
+
 /*
        A class that stores all the different settings options for the user,
        should link to the user, the game, the frontend, and perhaps admin/spectator in future
@@ -15,11 +17,11 @@ import org.springframework.stereotype.Component;
 @Table(schema = "DBChessApp", name = "setting_game_states")
 public class SettingGameStates {
     @Id
-    @Column(name = "game_settings_id")
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "game_settings_id", nullable = false)
     private int id;
 
     @OneToOne(mappedBy = "settingGameStates")
-    @MapsId
     private ChessGame chessGame;
 
     short timeController; //in minutes
@@ -27,6 +29,10 @@ public class SettingGameStates {
     boolean allowUndos;
     boolean enableLimitMoveTime; //eg. only have 30 sec. or no move
     int limitMoveTime; //in seconds
+
+    public SettingGameStates() {
+
+    }
 
     public SettingGameStates(short time, int inc, boolean undo, boolean limiter, int limiterTimer) {
         this.timeController = time;

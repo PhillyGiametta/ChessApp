@@ -1,6 +1,8 @@
 package Backend.ChessApp.Game.Pieces;
 
+import Backend.ChessApp.Game.Board.BoardSquare;
 import Backend.ChessApp.Game.Board.Position;
+import jakarta.persistence.Entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,8 +13,12 @@ public class Bishop extends Piece {
         super(color, position);
     }
 
+    public Bishop() {
+
+    }
+
     @Override
-    public boolean isValidMove(Position newPosition, Piece[][] board) {
+    public boolean isValidMove(Position newPosition, List<BoardSquare> boardSquares) {
         int rowDiff = Math.abs(position.getRow() - newPosition.getRow());
         int colDiff = Math.abs(position.getColumn() - newPosition.getColumn());
 
@@ -22,19 +28,25 @@ public class Bishop extends Piece {
 
         int rowStep = newPosition.getRow() > position.getRow() ? 1 : -1;
         int colStep = newPosition.getColumn() > position.getColumn() ? 1 : -1;
-        int steps = rowDiff - 1;
 
-        for (int i = 1; i <= steps; i++) {
-            if (board[position.getRow() + i * rowStep][position.getColumn() + i * colStep] != null) {
-                return false;
+        for (int i = 1; i < rowDiff; i++) {
+            int currentRow = position.getRow() + i * rowStep;
+            int currentCol = position.getColumn() + i * colStep;
+
+            BoardSquare square = getBoardSquare(currentRow, currentCol, boardSquares);
+            if(square != null && square.getPiece() != null){
+                return false; //Piece in the way
             }
         }
 
-        Piece destinationPiece = board[newPosition.getRow()][newPosition.getColumn()];
-        if (destinationPiece == null) {
-            return true;
-        } else if (destinationPiece.getColor() != this.getColor()) {
-            return true;
+        BoardSquare destSquare = getBoardSquare(newPosition.getRow(), newPosition.getColumn(), boardSquares);
+        if(destSquare == null){
+            return false; //Bad destination
+        }
+
+        Piece destPiece = destSquare.getPiece();
+        if(destPiece == null || destPiece.getColor() != getColor()){
+            return true; //Destination is empty or has opponent piece
         }
 
         return false;
