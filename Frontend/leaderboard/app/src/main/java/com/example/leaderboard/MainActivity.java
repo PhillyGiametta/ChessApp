@@ -1,6 +1,5 @@
-package com.example.leaderboard;
+package com.Chess2v2.leaderboard;
 
-import android.os.Bundle;
 import android.os.Bundle;
 import android.widget.TextView;
 

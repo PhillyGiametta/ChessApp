@@ -4,7 +4,9 @@ import Backend.ChessApp.AdminControl.AdminRepo;
 import Backend.ChessApp.Game.Board.Board;
 import Backend.ChessApp.Game.Board.Position;
 import Backend.ChessApp.Game.Pieces.PieceColor;
-import Backend.ChessApp.Group.GroupService;
+import Backend.ChessApp.Leaderboard.LeaderboardEntry;
+import Backend.ChessApp.Leaderboard.LeaderboardRepository;
+import Backend.ChessApp.Leaderboard.LeaderboardService;
 import Backend.ChessApp.Settings.GameSettingsService;
 import Backend.ChessApp.Settings.SettingGameStates;
 import Backend.ChessApp.Settings.SettingsRepo;
@@ -61,6 +63,12 @@ public class ChessGameServer {
         gameSettingsService = service;
     }
 
+    @Autowired
+    private LeaderboardRepository leaderboardRepository;
+
+    @Autowired
+    private LeaderboardService leaderboardService;
+
     private final Logger logger = LoggerFactory.getLogger(ChessGameServer.class);
 
     // Session and User mappings
@@ -72,8 +80,11 @@ public class ChessGameServer {
     private static final Map<User, ChessGame> userGameMap = new Hashtable<>();
     private static final Map<ChessGame, List<Session>> gameSessionMap = new Hashtable<>();
 
-    private ChessGame chessGame = new ChessGame();
+    // List for teams
+    private List<User> whiteTeam = new ArrayList<>();
+    private List<User> blackTeam = new ArrayList<>();
 
+    private final ChessGame chessGame = new ChessGame();
     private User adminUser;
 
     private boolean whiteWins = false;
@@ -256,8 +267,6 @@ public class ChessGameServer {
     }
 
     private void assignTeams(ChessGame chessGame) throws IOException {
-        List<User> whiteTeam = new ArrayList<>();
-        List<User> blackTeam = new ArrayList<>();
         for(int i = 0; i < gameSessionMap.get(chessGame).size(); i++) {
             if (i % 2 == 0) {
                 whiteTeam.add(sessionUserMap.get(gameSessionMap.get(chessGame).get(i)));
@@ -363,6 +372,46 @@ public class ChessGameServer {
         else if(!chessGame.getCurrentPlayerColor()){
             whiteWins = true;
         }
+    }
+
+    private void calculateRatingChange(){
+        if(whiteWins){
+            for(User u : whiteTeam){
+                int userId = u.getUserId();
+                LeaderboardEntry leaderboardEntry = leaderboardRepository.findByUserId(userId);
+                leaderboardEntry.setRating(leaderboardEntry.getRating() + 50);
+                leaderboardEntry.setUserWins(leaderboardEntry.getUserWins() + 1);
+                leaderboardRepository.save(leaderboardEntry);
+            }
+
+            for(User u : blackTeam){
+                int userId = u.getUserId();
+                LeaderboardEntry leaderboardEntry = leaderboardRepository.findByUserId(userId);
+                leaderboardEntry.setRating(leaderboardEntry.getRating() - 50);
+                leaderboardEntry.setUserLosses(leaderboardEntry.getUserLosses() + 1);
+                leaderboardRepository.save(leaderboardEntry);
+            }
+        }else if (blackWins){
+            for(User u : whiteTeam){
+                int userId = u.getUserId();
+                LeaderboardEntry leaderboardEntry = leaderboardRepository.findByUserId(userId);
+                leaderboardEntry.setRating(leaderboardEntry.getRating() - 50);
+                leaderboardEntry.setUserLosses(leaderboardEntry.getUserLosses() + 1);
+                leaderboardRepository.save(leaderboardEntry);
+            }
+
+            for(User u : blackTeam){
+                int userId = u.getUserId();
+                LeaderboardEntry leaderboardEntry = leaderboardRepository.findByUserId(userId);
+                leaderboardEntry.setRating(leaderboardEntry.getRating() + 50);
+                leaderboardEntry.setUserWins(leaderboardEntry.getUserWins() + 1);
+                leaderboardRepository.save(leaderboardEntry);
+            }
+        }else{
+            //Tie?? do nothing
+        }
+
+        leaderboardService.updateRankings();
     }
 }
 
