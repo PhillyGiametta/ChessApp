@@ -4,18 +4,20 @@ import Backend.ChessApp.Game.Pieces.Piece;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "board_square", schema = "DBChessApp")
 public class BoardSquare {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_square_id")
     private int id;
 
+    //Many square correspond to one chess board
     @ManyToOne
     @JoinColumn(name = "chess_board_id")
     private Board board;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "piece_id")
+    @JoinColumn(name = "piece_id", nullable = true)
     private Piece piece;
 
     @Column(name = "square_row")
