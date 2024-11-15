@@ -51,4 +51,17 @@ public class BoardSquare {
     public int getColumn(){
         return column;
     }
+
+    @Override
+    public String toString(){
+        Position p = new Position(this.row, this.column);
+        try {
+            String piece = getPiece().toString();
+
+            return piece + " at " + p.toString();
+        }
+        catch(NullPointerException e){
+            return "Empty square at " + p.toString();
+        }
+    }
 }

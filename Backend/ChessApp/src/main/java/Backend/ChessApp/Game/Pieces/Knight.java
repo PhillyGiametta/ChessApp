@@ -35,7 +35,7 @@ public class Knight extends Piece {
         }
 
         BoardSquare destSquare = getBoardSquare(newPosition.getRow(), newPosition.getColumn(), boardSquares);
-        if(destSquare == null){
+        if(destSquare.getPiece() != null){
             return false; //Bad destination
         }
 

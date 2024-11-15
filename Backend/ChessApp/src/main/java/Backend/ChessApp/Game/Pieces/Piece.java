@@ -55,12 +55,12 @@ public abstract class Piece {
     }
 
     public BoardSquare getBoardSquare(int row, int col, List<BoardSquare> boardSquares){
-        for(BoardSquare boardSquare : boardSquares){
-            if(boardSquare.getRow() == row && boardSquare.getColumn() == col){
-                return boardSquare;
-            }
-        }
-        return null;
+
+        boardSquare = boardSquares.get(row * 8 + col);
+        if(boardSquare == null)
+            return null;
+        return boardSquare;
+
     }
 
     public abstract boolean isValidMove(Position newPosition, List<BoardSquare> boardSquares);

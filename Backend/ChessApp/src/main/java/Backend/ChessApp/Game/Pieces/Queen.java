@@ -44,7 +44,7 @@ public class Queen extends Piece {
         int currentCol = this.position.getColumn() + colDirection;
         while (currentRow != newPosition.getRow() || currentCol != newPosition.getColumn()) {
             BoardSquare nextSquare = getBoardSquare(currentRow, currentCol, boardSquares);
-            if(nextSquare != null) {
+            if(nextSquare.getPiece() != null) {
                 return false;
             }
 
@@ -53,6 +53,6 @@ public class Queen extends Piece {
         }
 
         BoardSquare destSquare = getBoardSquare(newPosition.getRow(), newPosition.getColumn(), boardSquares);
-        return destSquare == null || destSquare.getPiece().getColor() != this.getColor();
+        return destSquare.getPiece() == null || destSquare.getPiece().getColor() != this.getColor();
     }
 }

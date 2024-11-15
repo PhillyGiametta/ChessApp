@@ -28,7 +28,7 @@ public class Rook extends Piece {
 
             for (int column = columnStart; column < columnEnd; column++) {
                 BoardSquare nextSquare = getBoardSquare(position.getRow(), column, boardSquares);
-                if (nextSquare != null) {
+                if (nextSquare.getPiece() != null) {
                     return false;
                 }
             }
@@ -39,7 +39,7 @@ public class Rook extends Piece {
             for (int row = rowStart; row < rowEnd; row++) {
                 BoardSquare nextSquare = getBoardSquare(row, position.getColumn(), boardSquares);
 
-                if (nextSquare != null) {
+                if (nextSquare.getPiece() != null) {
                     return false;
                 }
             }

@@ -85,9 +85,9 @@ public class Board {
         // Place Pawns
         for (int i = 0; i < 8; i++) {
             square = getBoardSquare(1,i);
-            square.setPiece(new Pawn(PieceColor.BLACK, new Position(0, i)));
+            square.setPiece(new Pawn(PieceColor.BLACK, new Position(1, i)));
             square = getBoardSquare(6,i);
-            square.setPiece(new Pawn(PieceColor.WHITE, new Position(0, i)));
+            square.setPiece(new Pawn(PieceColor.WHITE, new Position(6, i)));
         }
     }
 
@@ -106,10 +106,10 @@ public class Board {
 
         Piece piece = startSquare.getPiece();
 
-        if(piece != null && piece.isValidMove(end, boardSquares)){
+            piece.setPosition(end);
             endSquare.setPiece(piece);
             startSquare.setPiece(null);
-        }
+
 
     }
 

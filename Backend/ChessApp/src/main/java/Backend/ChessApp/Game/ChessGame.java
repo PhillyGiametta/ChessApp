@@ -338,6 +338,86 @@ public class ChessGame {
         return this.board;
     }
 
+    /**
+     * This is a main class to ensure that the game is working as intended before going to the server.
+     * Will be deleted before production
+     * @param args
+     */
+    public static void main(String[] args){
+        ChessGame chessGame = new ChessGame();
+        System.out.println(chessGame.getBoard().toString());
+
+        // Setting the game to active
+        chessGame.setGameActive(GameActive.GAME_ACTIVE);
+
+        // 1. White pawn moves e2 to e4 (Position (6, 4) to (4, 4))
+        Position whitePawnStart = new Position(6, 4);
+        Position whitePawnEnd = new Position(4, 4);
+        String result = chessGame.makeMove(whitePawnStart, whitePawnEnd) ? "yes" : "no";
+        System.out.println(result);
+        System.out.println(chessGame.getBoard().toString());
+
+        // 2. Black pawn moves e7 to e5 (Position (1, 4) to (3, 4))
+        Position blackPawnStart = new Position(1, 4);
+        Position blackPawnEnd = new Position(3, 4);
+        result = chessGame.makeMove(blackPawnStart, blackPawnEnd) ? "yes" : "no";
+        System.out.println(result);
+        System.out.println(chessGame.getBoard().toString());
+
+        // 3. White knight moves g1 to f3 (Position (7, 6) to (5, 5))
+        Position whiteKnightStart = new Position(7, 6);
+        Position whiteKnightEnd = new Position(5, 5);
+        result = chessGame.makeMove(whiteKnightStart, whiteKnightEnd) ? "yes" : "no";
+        System.out.println(result);
+        System.out.println(chessGame.getBoard().toString());
+
+        // 4. Black knight moves b8 to c6 (Position (0, 1) to (2, 2))
+        Position blackKnightStart = new Position(0, 1);
+        Position blackKnightEnd = new Position(2, 2);
+        result = chessGame.makeMove(blackKnightStart, blackKnightEnd) ? "yes" : "no";
+        System.out.println(result);
+        System.out.println(chessGame.getBoard().toString());
+
+        // 5. White bishop moves f1 to c4 (Position (7, 5) to (4, 2))
+        Position whiteBishopStart = new Position(7, 5);
+        Position whiteBishopEnd = new Position(4, 2);
+        result = chessGame.makeMove(whiteBishopStart, whiteBishopEnd) ? "yes" : "no";
+        System.out.println(result);
+        System.out.println(chessGame.getBoard().toString());
+
+        // 6. Black queen moves d8 to h4 (Position (0, 3) to (4, 7))
+        Position blackQueenStart = new Position(0, 3);
+        Position blackQueenEnd = new Position(4, 7);
+        result = chessGame.makeMove(blackQueenStart, blackQueenEnd) ? "yes" : "no";
+        System.out.println(result);
+        System.out.println(chessGame.getBoard().toString());
+
+        // 7. White rook moves a1 to a3 (Position (7, 0) to (5, 0))
+        Position whiteRookStart = new Position(7, 7);
+        Position whiteRookEnd = new Position(7, 5);
+        result = chessGame.makeMove(whiteRookStart, whiteRookEnd) ? "yes" : "no";
+        System.out.println(result);
+        System.out.println(chessGame.getBoard().toString());
+
+        // 8. Black king moves e8 to e7 (Position (0, 4) to (1, 4))
+        Position blackKingStart = new Position(0, 4);
+        Position blackKingEnd = new Position(1, 4);
+        result = chessGame.makeMove(blackKingStart, blackKingEnd) ? "yes" : "no";
+        System.out.println(result);
+        System.out.println(chessGame.getBoard().toString());
+
+        // 9. White queen moves d1 to h5 (Position (7, 3) to (3, 7))
+        Position whiteQueenStart = new Position(7, 3);
+        Position whiteQueenEnd = new Position(6, 4);
+        result = chessGame.makeMove(whiteQueenStart, whiteQueenEnd) ? "yes" : "no";
+        System.out.println(result);
+        System.out.println(chessGame.getBoard().toString());
 
 
+        Position blackKnightStart2 = new Position(2, 2);
+        Position blackKnightEnd2 = new Position(4, 3);
+        result = chessGame.makeMove(blackKnightStart2, blackKnightEnd2) ? "yes" : "no";
+        System.out.println(result);
+        System.out.println(chessGame.getBoard().toString());
+    }
 }

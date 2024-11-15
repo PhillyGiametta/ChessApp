@@ -110,6 +110,9 @@ public class ChessGameServer {
         // Set the first user as the Admin
         if (adminUser == null) {
             adminUser = user;
+            for(Session s: gameSessionMap.get(chessGame)){
+                s.getBasicRemote().sendText(adminUser.getUserName() + " is now the admin");
+            }
             logger.info("{} is now the admin", user.getUserName());
             initializeDefaultSettings();
         }
@@ -139,7 +142,10 @@ public class ChessGameServer {
             return;
         }
         else if(json.getString("type").equals("settings")){
-            updateSettings(session, message);
+            if(chessGame.getGameActive() == ChessGame.GameActive.GAME_NOT_STARTED)
+                updateSettings(session, message);
+            else
+                session.getBasicRemote().sendText("Not able to change settings in this game state.");
             return;
         }
         else if(json.getString("type").equals("start")){
@@ -161,7 +167,7 @@ public class ChessGameServer {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return; // Stop processing the move
+            return;
         }
         if(chessGame.getCurrentPlayerColor()){
             chessGame.blackTimer.start();
@@ -268,7 +274,7 @@ public class ChessGameServer {
 
     private void assignTeams(ChessGame chessGame) throws IOException {
         for(int i = 0; i < gameSessionMap.get(chessGame).size(); i++) {
-            if (i % 2 == 0) {
+            if (whiteTeam.size() <= 2) {
                 whiteTeam.add(sessionUserMap.get(gameSessionMap.get(chessGame).get(i)));
                 gameSessionMap.get(chessGame).get(i).getBasicRemote().sendText("You are now white team");
             }
