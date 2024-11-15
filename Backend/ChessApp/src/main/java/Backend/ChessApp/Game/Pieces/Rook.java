@@ -2,13 +2,15 @@ package Backend.ChessApp.Game.Pieces;
 
 import Backend.ChessApp.Game.Board.BoardSquare;
 import Backend.ChessApp.Game.Board.Position;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import org.springframework.data.annotation.Transient;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
+@Entity
+@DiscriminatorValue("ROOK")
 public class Rook extends Piece {
     public Rook(PieceColor color, Position position) {
         super(color, position);

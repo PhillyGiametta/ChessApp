@@ -2,6 +2,7 @@ package Backend.ChessApp.Game.Pieces;
 
 import Backend.ChessApp.Game.Board.BoardSquare;
 import Backend.ChessApp.Game.Board.Position;
+import Backend.ChessApp.Game.ChessGame;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -23,6 +24,11 @@ public abstract class Piece {
     @ManyToOne
     @JoinColumn(name = "board_square_id")
     private BoardSquare boardSquare;
+
+
+    @ManyToOne
+    @JoinColumn(name = "chess_game_id")
+    private ChessGame chessGame;
 
     @Embedded
     protected Position position;

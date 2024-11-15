@@ -2,12 +2,14 @@ package Backend.ChessApp.Game.Pieces;
 
 import Backend.ChessApp.Game.Board.BoardSquare;
 import Backend.ChessApp.Game.Board.Position;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
+@Entity
+@DiscriminatorValue("QUEEN")
 public class Queen extends Piece {
     public Queen(PieceColor color, Position position) {
         super(color, position);
