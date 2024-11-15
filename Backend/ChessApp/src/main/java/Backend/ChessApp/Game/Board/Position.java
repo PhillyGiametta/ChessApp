@@ -1,39 +1,34 @@
 package Backend.ChessApp.Game.Board;
 
-import jakarta.transaction.Transactional;
-
 import javax.persistence.Embeddable;
-import java.beans.Transient;
-import java.io.Serial;
-import java.io.Serializable;
+
 @Embeddable
 public class Position
 {
-
-    private int row;
-    private int column;
+    private int r;
+    private int c;
 
     public Position(int row, int column) {
-        this.row = row;
-        this.column = column;
+        this.r = row;
+        this.c = column;
     }
 
     public int getRow() {
-        return row;
+        return r;
     }
 
     public int getColumn() {
-        return column;
+        return c;
     }
     @Override
     public String toString(){
-        return "("+row + ", " + column + ")";
+        return "("+ r + ", " + c + ")";
     }
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Position position = (Position) obj;
-        return row == position.row && column == position.column;
+        return r == position.r && c == position.c;
     }
 }
