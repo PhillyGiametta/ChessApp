@@ -37,7 +37,7 @@ public class ChessGame {
     @JoinColumn(name = "board_id")
     private Board board;
 
-    //One game has many board snapshots
+//    //One game has many board snapshots
     @OneToMany(mappedBy = "chessGame", cascade = CascadeType.ALL)
     private List<BoardSnapshot> boardHistory = new ArrayList<>();
 
@@ -46,12 +46,9 @@ public class ChessGame {
     @JoinColumn(name = "game_settings_id")
     private SettingGameStates settingGameStates;
 
-    private boolean whiteTurn = true; // White starts the game
-    private GameActive gameActive = GameActive.GAME_NOT_STARTED;
-
     @ManyToMany
     @JoinTable(
-            name = "chess_game_white_team",
+            name = "white_team",
             joinColumns = @JoinColumn(name = "chess_game_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
@@ -59,12 +56,11 @@ public class ChessGame {
 
     @ManyToMany
     @JoinTable(
-            name = "chess_game_black_team",
+            name = "black_team",
             joinColumns = @JoinColumn(name = "chess_game_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private List<User> blackTeam = new ArrayList<>();
-
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "white_timer_id")
@@ -77,6 +73,9 @@ public class ChessGame {
     //Tracks number of moves for the board history
     int moveNumber = 0;
 
+    private boolean whiteTurn = true; // White starts the game
+
+    private GameActive gameActive = GameActive.GAME_NOT_STARTED;
 
     public ChessGame() {
         this.board = new Board();
