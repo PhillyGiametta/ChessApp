@@ -114,4 +114,22 @@ public class User {
     public Group getGroup(){return group;}
 
     public void setGroup(Group group){this.group = group;}
+
+    public SettingsUserStates getSettings(){return this.settings;}
+
+    public void setSettings(SettingsUserStates settings) {
+        this.settings = settings;
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
+    }
+
+    public void setChessGame(ChessGame chessGame) {
+        this.chessGame = chessGame;
+    }
+
+    public void setTeam(String team) {
+        this.team = team;
+    }
 }
