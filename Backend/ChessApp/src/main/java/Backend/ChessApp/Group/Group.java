@@ -1,5 +1,6 @@
 package Backend.ChessApp.Group;
 
+import Backend.ChessApp.AdminControl.Admin;
 import Backend.ChessApp.Users.User;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -26,7 +27,7 @@ public class Group {
     private List<User> users = new ArrayList<>();
 
     @OneToOne
-    private User leader;
+    private Admin admin;
 
     public Group(){
         //NULL Group
@@ -43,16 +44,16 @@ public class Group {
         return this.id;
     }
 
-    public User getLeaderId(){
-        return leader;
+    public Admin getAdminId(){
+        return admin;
     }
 
-    public void setLeader(User user){
-        this.leader = user;
+    public void setAdmin(Admin admin){
+        this.admin = admin;
     }
 
-    public boolean isLeader(User user){
-        return leader!= null && leader.equals(user);
+    public boolean isAdmin(User user){
+        return admin!= null && admin.getUser().equals(user);
     }
 
     public void setGroupId(int id){
@@ -77,8 +78,9 @@ public class Group {
         user.setGroup(this);
 
         //Assign leader to first user who joins (the user who created the group)
-        if(leader == null){
-            leader = user;
+        if(admin == null){
+            admin = new Admin();
+            admin.setUser(user);
         }
 
         if(users.size() >= 4){
@@ -95,10 +97,10 @@ public class Group {
         isFull = false;
 
         //Reassign leader if the leader leaves
-        if(leader == user && !users.isEmpty()){
-            leader = users.get(0);
+        if(admin.getUser() == user && !users.isEmpty()){
+            admin.setUser(users.get(0));
         }else if(users.isEmpty()){
-            leader = null;
+            admin = null;
         }
     }
 

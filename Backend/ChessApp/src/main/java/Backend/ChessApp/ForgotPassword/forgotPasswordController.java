@@ -1,6 +1,8 @@
 package Backend.ChessApp.ForgotPassword;
 import Backend.ChessApp.Users.*;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +25,7 @@ import java.util.UUID;
 
 
 @Controller
+@Tag(name = "forgot password", description = "Handles password tokens given HTTP, non-functional")
 public class forgotPasswordController {
     @Autowired
     private JavaMailSender mailSender;
@@ -39,10 +42,12 @@ public class forgotPasswordController {
     @Autowired
     private UserService userService;
 
+    @Operation(summary = "Returns a reset token from the user")
     @GetMapping("/forgotPassword/{resetToken}")
     User forgotPassword(@PathVariable String resetToken){
         return passHand.getByResetPasswordToken(resetToken);
     }
+    @Operation(summary = "creates a passwordToken for a user given the id.")
     @PostMapping("/forgotPassword/{userId}")
     void tokenCreator(@PathVariable int userId){
         String rt = RandomString.make(30);

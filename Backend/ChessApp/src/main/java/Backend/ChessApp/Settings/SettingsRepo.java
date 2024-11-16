@@ -5,7 +5,7 @@ import Backend.ChessApp.Users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface SettingsRepo extends JpaRepository<SettingsUserStates, User> {
+public interface SettingsRepo extends JpaRepository<SettingsUserStates, Integer> {
 
     SettingsUserStates findByUser(User user);
 

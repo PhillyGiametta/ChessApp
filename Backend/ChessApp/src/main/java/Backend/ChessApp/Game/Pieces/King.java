@@ -1,18 +1,26 @@
 package Backend.ChessApp.Game.Pieces;
 
+import Backend.ChessApp.Game.Board.BoardSquare;
 import Backend.ChessApp.Game.Board.Position;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
+@Entity
+@DiscriminatorValue("KING")
 public class King extends Piece {
     public King(PieceColor color, Position position) {
         super(color, position);
     }
 
+    public King() {
+
+    }
+
     @Override
-    public boolean isValidMove(Position newPosition, Piece[][] board) {
+    public boolean isValidMove(Position newPosition, List<BoardSquare> boardSquares) {
         int rowDiff = Math.abs(position.getRow() - newPosition.getRow());
         int colDiff = Math.abs(position.getColumn() - newPosition.getColumn());
 
@@ -22,7 +30,16 @@ public class King extends Piece {
             return false;
         }
 
-        Piece destinationPiece = board[newPosition.getRow()][newPosition.getColumn()];
-        return destinationPiece == null || destinationPiece.getColor() != this.getColor();
+        BoardSquare destSquare = getBoardSquare(newPosition.getRow(), newPosition.getColumn(), boardSquares);
+        if(destSquare == null){
+            return false; //Bad destination
+        }
+
+        Piece destPiece = destSquare.getPiece();
+        if(destPiece == null || destPiece.getColor() != getColor()){
+            return true; //Destination is empty or has opponent piece
+        }
+
+        return false;
     }
 }

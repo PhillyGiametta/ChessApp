@@ -1,6 +1,7 @@
 package Backend.ChessApp.Game;
 
 import Backend.ChessApp.AdminControl.AdminRepo;
+import Backend.ChessApp.Game.Board.Board;
 import Backend.ChessApp.Game.Board.Position;
 import Backend.ChessApp.Game.Pieces.PieceColor;
 import Backend.ChessApp.Leaderboard.LeaderboardEntry;
@@ -26,20 +27,41 @@ import java.util.*;
 
 @Controller
 @Component
-@ServerEndpoint(value = "/game/{userName}", configurator = SpringConfigurator.class)
+@ServerEndpoint(value = "/game/{userName}")
 public class ChessGameServer {
 
+    private static UserRepository userRepository;
+    private static ChessGameRepository chessGameRepository;
+    private static AdminRepo adminRepo;
+    private static SettingsRepo settingsRepo;
+
+    private static GameSettingsService gameSettingsService;
+
+    //Auto wire repositories and services
     @Autowired
-    private UserRepository userRepository;
+    public void setUserRepository(UserRepository repo) {
+        userRepository = repo;
+    }
 
     @Autowired
-    private GameSettingsService gameSettingsService;
+    public void setChessGameRepository(ChessGameRepository repo) {
+        chessGameRepository = repo;
+    }
 
     @Autowired
-    private AdminRepo adminRepo;
+    public void setAdminRepo(AdminRepo repo) {
+        adminRepo = repo;
+    }
 
     @Autowired
-    private SettingsRepo settingsRepo;
+    public void setSettingsRepo(SettingsRepo repo) {
+        settingsRepo = repo;
+    }
+
+    @Autowired
+    public void setGameSettingsService(GameSettingsService service) {
+        gameSettingsService = service;
+    }
 
     @Autowired
     private LeaderboardRepository leaderboardRepository;
@@ -71,12 +93,16 @@ public class ChessGameServer {
     @OnOpen
     public void onOpen(Session session, @PathParam("userName") String userName) throws IOException {
         User user = userRepository.findByUserName(userName);
+        Board board = new Board();
+        chessGame.setBoard(board);
+        chessGameRepository.save(chessGame);
 
         if(user == null){
             logger.info("user is null");
             session.close();
             return;
         }
+
         sessionUserMap.put(session, user);
         userSessionMap.put(user, session);
         userGameMap.put(user, chessGame);
@@ -84,14 +110,23 @@ public class ChessGameServer {
         // Set the first user as the Admin
         if (adminUser == null) {
             adminUser = user;
+            for(Session s: gameSessionMap.get(chessGame)){
+                s.getBasicRemote().sendText(adminUser.getUserName() + " is now the admin");
+            }
             logger.info("{} is now the admin", user.getUserName());
             initializeDefaultSettings();
         }
+
         chessGame.blackTimer = new Timer(gameSettingsService.getSettings(chessGame).getTimeController());
+
+
         chessGame.whiteTimer = new Timer(gameSettingsService.getSettings(chessGame).getTimeController());
+
+
         // Add user session to game
         gameSessionMap.computeIfAbsent(chessGame, k -> new ArrayList<>()).add(session);
         assignTeams(chessGame);
+        chessGameRepository.save(chessGame);
 
         // Send the current settings to the user
         sendSettings(session, gameSettingsMap.get(chessGame));
@@ -107,7 +142,10 @@ public class ChessGameServer {
             return;
         }
         else if(json.getString("type").equals("settings")){
-            updateSettings(session, message);
+            if(chessGame.getGameActive() == ChessGame.GameActive.GAME_NOT_STARTED)
+                updateSettings(session, message);
+            else
+                session.getBasicRemote().sendText("Not able to change settings in this game state.");
             return;
         }
         else if(json.getString("type").equals("start")){
@@ -129,7 +167,7 @@ public class ChessGameServer {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return; // Stop processing the move
+            return;
         }
         if(chessGame.getCurrentPlayerColor()){
             chessGame.blackTimer.start();
@@ -146,9 +184,10 @@ public class ChessGameServer {
         int col2 = json.getInt("colEnd");
         Position positionEnd = new Position(row2, col2);
         List<Position> p = chessGame.getLegalMovesForPieceAt(positionStart);
-        if(p.contains(positionEnd) && (chessGame.getCurrentPlayerColor() && chessGame.getBoard().getPiece(positionStart.getRow(), positionStart.getColumn()).getColor() == PieceColor.WHITE) ||
-                !chessGame.getCurrentPlayerColor() && chessGame.getBoard().getPiece(positionStart.getRow(), positionStart.getColumn()).getColor() == PieceColor.BLACK){
+        if(p.contains(positionEnd) && (chessGame.getCurrentPlayerColor() && chessGame.getBoard().getBoardSquare(positionStart.getRow(), positionStart.getColumn()).getPiece().getColor() == PieceColor.WHITE) ||
+                !chessGame.getCurrentPlayerColor() && chessGame.getBoard().getBoardSquare(positionStart.getRow(), positionStart.getColumn()).getPiece().getColor() == PieceColor.BLACK){
             chessGame.makeMove(positionStart, positionEnd);
+            chessGameRepository.save(chessGame);
             broadcastBoard();
         }
         else if(!p.contains(positionEnd)){
@@ -160,8 +199,9 @@ public class ChessGameServer {
         if(chessGame.getCurrentPlayerColor()){
             chessGame.whiteTimer.pause();
         }
-        else
+        else {
             chessGame.blackTimer.pause();
+        }
     }
 
     public void updateSettings(Session session, String message){
@@ -174,6 +214,7 @@ public class ChessGameServer {
             updateSettings(settings, message);
             chessGame.whiteTimer = new Timer(settings.getTimeController());
             chessGame.blackTimer = new Timer(settings.getTimeController());
+            chessGameRepository.save(chessGame);
             sendSettings(session, settings);
         } else {
             assert user != null;
@@ -202,6 +243,7 @@ public class ChessGameServer {
     private void initializeDefaultSettings() {
         gameSettingsService.initializeDefaultSettings(chessGame);
         gameSettingsMap.put(chessGame, gameSettingsService.getSettings(chessGame));
+        chessGameRepository.save(chessGame);
     }
 
     private void sendSettings(Session session, SettingGameStates settings) {
@@ -232,7 +274,7 @@ public class ChessGameServer {
 
     private void assignTeams(ChessGame chessGame) throws IOException {
         for(int i = 0; i < gameSessionMap.get(chessGame).size(); i++) {
-            if (i % 2 == 0) {
+            if (whiteTeam.size() <= 2) {
                 whiteTeam.add(sessionUserMap.get(gameSessionMap.get(chessGame).get(i)));
                 gameSessionMap.get(chessGame).get(i).getBasicRemote().sendText("You are now white team");
             }
@@ -243,6 +285,7 @@ public class ChessGameServer {
         }
         chessGame.setWhiteTeam(whiteTeam);
         chessGame.setBlackTeam(blackTeam);
+        chessGameRepository.save(chessGame);
     }
 
     private void removeUserFromGame(Session session, User user) {

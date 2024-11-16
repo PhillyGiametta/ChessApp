@@ -19,13 +19,16 @@ public class SettingsUserStates {
     boolean moveHighlighting;
 
     @Id
-    @Column(name="user_id")
-    private int settings_id;
+    @Column(name="settings_id")
+    private int id;
 
     @OneToOne
-    @MapsId
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
+
+    public SettingsUserStates() {
+
+    }
 
     public SettingsUserStates(User user){
         this.user = user;
