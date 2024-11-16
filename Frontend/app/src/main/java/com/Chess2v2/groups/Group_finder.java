@@ -19,6 +19,11 @@ import okhttp3.WebSocket;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * generates a list of all the groups available to join and puts them in a Recyclerview
+ * each available group in the Recyclerview has a join button that connects the user to
+ * the websocket and sends data to the database saying the group has been joined
+ */
 public class Group_finder extends AppCompatActivity {
 
     private Button group1;
@@ -67,7 +72,9 @@ public class Group_finder extends AppCompatActivity {
 
 
     }
-
+/*
+connects to the websocket when the joinGroup button is pressed
+ */
     private void joinGroup(String groupname){
         for(Group group: groups){
             if(group.getGroupName() == groupname){
