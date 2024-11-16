@@ -5,13 +5,12 @@ import Backend.ChessApp.Game.ChessGame;
 import Backend.ChessApp.Group.Group;
 import Backend.ChessApp.Settings.SettingsUserStates;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.springframework.boot.*;
-import org.springframework.context.aot.AbstractAotProcessor;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -23,6 +22,7 @@ public class User {
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "user_id", nullable = false)
     private int id;
+
     private String userEmail;
     private String userName;
     private String userPassword;
@@ -33,19 +33,22 @@ public class User {
     private LocalDateTime passwordResetTokenCreationDate;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
     private SettingsUserStates settings;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Admin admin;
 
     @ManyToOne
+    @JoinColumn(name = "chess_game_id")
     private ChessGame chessGame;
 
     @ManyToOne
     @JoinColumn(name = "group_id")
     @JsonBackReference
     private Group group;
+
+    //Tracks which team user is on "white" or "black"
+    private String team;
 
     //CONSTRUCTORS----------------------------------------
 
@@ -111,4 +114,22 @@ public class User {
     public Group getGroup(){return group;}
 
     public void setGroup(Group group){this.group = group;}
+
+    public SettingsUserStates getSettings(){return this.settings;}
+
+    public void setSettings(SettingsUserStates settings) {
+        this.settings = settings;
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
+    }
+
+    public void setChessGame(ChessGame chessGame) {
+        this.chessGame = chessGame;
+    }
+
+    public void setTeam(String team) {
+        this.team = team;
+    }
 }

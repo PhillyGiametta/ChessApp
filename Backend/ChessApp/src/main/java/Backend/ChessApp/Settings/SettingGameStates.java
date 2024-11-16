@@ -1,9 +1,11 @@
 package Backend.ChessApp.Settings;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import Backend.ChessApp.Game.ChessGame;
+import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
+
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 /*
        A class that stores all the different settings options for the user,
@@ -11,13 +13,26 @@ import org.springframework.stereotype.Component;
 
  */
 //No entity this is temporary should be in memory only
-@Component
+@Entity
+@Table(schema = "DBChessApp", name = "setting_game_states")
 public class SettingGameStates {
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "game_settings_id", nullable = false)
+    private int id;
+
+    @OneToOne(mappedBy = "settingGameStates")
+    private ChessGame chessGame;
+
     short timeController; //in minutes
     int incrementTimer; //in seconds
     boolean allowUndos;
     boolean enableLimitMoveTime; //eg. only have 30 sec. or no move
     int limitMoveTime; //in seconds
+
+    public SettingGameStates() {
+
+    }
 
     public SettingGameStates(short time, int inc, boolean undo, boolean limiter, int limiterTimer) {
         this.timeController = time;
@@ -30,7 +45,7 @@ public class SettingGameStates {
     @Override
     public String toString() {
         String s = "";
-        s += String.format("Time: " + timeController + " \nIncrement: "+incrementTimer+" \nAllow undo: "+allowUndos+" \nEnable limiter: "+enableLimitMoveTime+" \nlimterTimer (if applicaple) " + limitMoveTime);
+        s += String.format("Time: " + timeController + " \nIncrement: " + incrementTimer + " \nAllow undo: " + allowUndos + " \nEnable limiter: " + enableLimitMoveTime + " \nlimterTimer (if applicaple) " + limitMoveTime);
         return s;
     }
 

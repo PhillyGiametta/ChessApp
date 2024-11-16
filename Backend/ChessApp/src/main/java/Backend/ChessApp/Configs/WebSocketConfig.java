@@ -1,4 +1,4 @@
-package Backend.ChessApp.websocket;
+package Backend.ChessApp.Configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,18 +1,26 @@
 package Backend.ChessApp.Game.Pieces;
 
+import Backend.ChessApp.Game.Board.BoardSquare;
 import Backend.ChessApp.Game.Board.Position;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
+@Entity
+@DiscriminatorValue("QUEEN")
 public class Queen extends Piece {
     public Queen(PieceColor color, Position position) {
         super(color, position);
     }
 
+    public Queen() {
+
+    }
+
     @Override
-    public boolean isValidMove(Position newPosition, Piece[][] board) {
+    public boolean isValidMove(Position newPosition, List<BoardSquare> boardSquares) {
         if (newPosition.equals(this.position)) {
             return false;
         }
@@ -35,14 +43,16 @@ public class Queen extends Piece {
         int currentRow = this.position.getRow() + rowDirection;
         int currentCol = this.position.getColumn() + colDirection;
         while (currentRow != newPosition.getRow() || currentCol != newPosition.getColumn()) {
-            if (board[currentRow][currentCol] != null) {
+            BoardSquare nextSquare = getBoardSquare(currentRow, currentCol, boardSquares);
+            if(nextSquare.getPiece() != null) {
                 return false;
             }
+
             currentRow += rowDirection;
             currentCol += colDirection;
         }
 
-        Piece destinationPiece = board[newPosition.getRow()][newPosition.getColumn()];
-        return destinationPiece == null || destinationPiece.getColor() != this.getColor();
+        BoardSquare destSquare = getBoardSquare(newPosition.getRow(), newPosition.getColumn(), boardSquares);
+        return destSquare.getPiece() == null || destSquare.getPiece().getColor() != this.getColor();
     }
 }
