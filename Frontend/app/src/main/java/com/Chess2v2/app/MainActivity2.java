@@ -52,7 +52,7 @@
 //        //TextView textView = findViewById(R.id.textView);
 //
 //        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("http://10.90.73.46:8080/")
+//                .baseUrl(ChessApplication.getInstance().getBaseUrl())
 //                .addConverterFactory(GsonConverterFactory.create())
 //                .build();
 //

@@ -29,7 +29,7 @@ public class HomeActivity extends AppCompatActivity {
         findGroupButton = findViewById(R.id.find_group_button); // Initialize the new button
 
         profileButton.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, WebSocketChatListener.ProfileActivity.class);
+            Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
             startActivity(intent);
         });
 
