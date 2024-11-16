@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.Chess2v2.ChessApplication;
 import com.Chess2v2.groups.Group_finder;
 
 public class ChatActivity extends AppCompatActivity {
@@ -14,9 +16,6 @@ public class ChatActivity extends AppCompatActivity {
     private TextView chatView;
     private EditText messageEditText;
     private Button sendButton;
-
-    private static final String GROUP_NAME = "test";  // Hardcoded group name
-    private static final String USER_NAME = "lofe";   // Hardcoded username
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +36,7 @@ public class ChatActivity extends AppCompatActivity {
         webSocketManager = new WebSocketManager(listener);
 
         // Construct the WebSocket URL using the group name and user name
-        String webSocketUrl = "ws://10.90.73.46:8080/group/" + GROUP_NAME + "/" + USER_NAME;
+        String webSocketUrl = ChessApplication.getInstance().getWebSocketBaseUrl() + "group/" + ChessApplication.getInstance().getGroupName() + "/" + ChessApplication.getInstance().getUserName();
 
         // Connect to WebSocket server using the constructed URL
         webSocketManager.connect(webSocketUrl);

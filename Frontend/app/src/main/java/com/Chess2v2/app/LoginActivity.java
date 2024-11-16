@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.Chess2v2.ChessApplication;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -45,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize Retrofit with the backend API URL and Gson converter
         Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://10.90.73.46:8080/")
+                    .baseUrl(ChessApplication.getInstance().getBaseUrl())
                 .addConverterFactory(GsonConverterFactory.create(gson)) // Use lenient Gson
                 .build();
 
@@ -54,57 +55,11 @@ public class LoginActivity extends AppCompatActivity {
 
         // Set click listener on login button
         loginButton.setOnClickListener(v -> {
-            // Grab strings from user inputs
-            String username = usernameEditText.getText().toString();
-            String password = passwordEditText.getText().toString();
-
-            // Validate input fields are not empty
-            if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(LoginActivity.this, "Please enter both username and password.", Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            // Create the request body (UserRequest object)
-            UserRequest userRequest = new UserRequest(username, password);
-            Log.d("LoginActivity", "Sending JSON: " + new Gson().toJson(userRequest));
-
-            // API call for login using Retrofit
-            apiService.loginUser(userRequest).enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    // This is where you should replace the code
-                    if (response.isSuccessful() && response.body() != null) {
-                        try {
-                            String responseMessage = response.body().string();
-                            Toast.makeText(LoginActivity.this, responseMessage, Toast.LENGTH_LONG).show();
-
-                            // Navigate to HomeActivity if login is successful
-                            if (responseMessage.toLowerCase().contains("success")) {
-                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                                intent.putExtra("USERNAME", username); // Pass the username to HomeActivity
-                                startActivity(intent);
-                                finish(); // Close LoginActivity to prevent going back
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            Toast.makeText(LoginActivity.this, "Error reading response", Toast.LENGTH_LONG).show();
-                        }
-                    } else {
-                        Toast.makeText(LoginActivity.this, "Login failed: " + response.message(), Toast.LENGTH_LONG).show();
-                        Log.e("LoginError", "Response failure: " + response.message());
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    // Network error or JSON parsing issue
-                    Toast.makeText(LoginActivity.this, "Network Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                    Log.e("NetworkError", "Error during login", t);
-                }
-            });
+            loginButton.setEnabled(false);
+            signupButton.setEnabled(false);
+            LoginCallback callback = new LoginCallback();
+            doLogin(callback);
         });
-
-
 
         // Set click listener on signup button
         signupButton.setOnClickListener(v -> {
@@ -112,5 +67,101 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
             startActivity(intent);
         });
+    }
+
+    protected void doLogin(LoginCallback callback) {
+
+        // Grab strings from user inputs
+        String username = usernameEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+
+        // Validate input fields are not empty
+        if (username.isEmpty() || password.isEmpty()) {
+            Toast.makeText(LoginActivity.this, "Please enter both username and password.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // Create the request body (UserRequest object)
+        UserRequest userRequest = new UserRequest(username, password);
+        Log.d("LoginActivity", "Sending JSON: " + new Gson().toJson(userRequest));
+
+        // API call for login using Retrofit
+        apiService.loginUser(userRequest).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                // This is where you should replace the code
+                if (response.isSuccessful() && response.body() != null) {
+                    try {
+                        String responseMessage = response.body().string();
+                        Toast.makeText(LoginActivity.this, responseMessage, Toast.LENGTH_LONG).show();
+
+                        // Navigate to HomeActivity if login is successful
+                        if (responseMessage.toLowerCase().contains("success")) {
+                            fetchUserProfile(username, callback);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(LoginActivity.this, "Error reading response", Toast.LENGTH_LONG).show();
+                        callback.onFail();
+                    }
+                } else {
+                    Toast.makeText(LoginActivity.this, "Login failed: " + response.message(), Toast.LENGTH_LONG).show();
+                    Log.e("LoginError", "Response failure: " + response.message());
+                    callback.onFail();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                // Network error or JSON parsing issue
+                Toast.makeText(LoginActivity.this, "Network Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e("NetworkError", "Error during login", t);
+                callback.onFail();
+            }
+        });
+    }
+
+    protected void fetchUserProfile(String username, LoginCallback callback) {
+
+        Log.d("LoginActivity", "Sending Get Profile");
+
+        // API call for login using Retrofit
+        apiService.getProfile(username).enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                // This is where you should replace the code
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onComplete(response.body().getId(), response.body().getEmail(), response.body().getUsername());
+                } else {
+                    Toast.makeText(LoginActivity.this, "Fetching user profile: " + response.message(), Toast.LENGTH_LONG).show();
+                    Log.e("LoginError", "Response failure: " + response.message());
+                    callback.onFail();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                // Network error or JSON parsing issue
+                Toast.makeText(LoginActivity.this, "Network Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e("NetworkError", "Error during login", t);
+                callback.onFail();
+            }
+        });
+    }
+
+    protected class LoginCallback {
+        public void onComplete(int userId, String email, String userName) {
+            ChessApplication.getInstance().setUserId(userId);
+            ChessApplication.getInstance().setEmail(email);
+            ChessApplication.getInstance().setUserName(userName);
+
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish(); // Close LoginActivity to prevent going back
+        }
+        public void onFail() {
+            loginButton.setEnabled(true);
+            signupButton.setEnabled(true);
+        }
     }
 }

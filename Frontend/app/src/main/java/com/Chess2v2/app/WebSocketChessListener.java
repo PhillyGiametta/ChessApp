@@ -41,7 +41,6 @@ public class WebSocketChessListener extends WebSocketListener {
                 }
             } catch (JSONException e) {
                 Log.e("WebSocketChessListener", "JSON parsing error: " + e.getMessage());
-                chessBoardActivity.displayMessage(text);
             }
         });
     }
