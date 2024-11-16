@@ -16,6 +16,7 @@ public class Timer {
 
     private Duration timeLeft;
     private boolean isRunning = false;
+    private boolean isPaused = false;
     private long duration, previousDuration, startTime;
 
     @OneToOne
@@ -49,12 +50,22 @@ public class Timer {
         isRunning = true;
         new Thread(() -> {
             while (isRunning && !timeLeft.isZero() && !timeLeft.isNegative()) {
+                synchronized (this) {
+                    while (isPaused) {
+                        try {
+                            System.out.println("Timer paused, waiting...");
+                            wait(); // Pauses the thread safely
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt(); // Preserve interrupt status
+                        }
+                    }
+                }
                 try {
                     Thread.sleep(1000); // Wait for 1 second
                     timeLeft = timeLeft.minusSeconds(1); // Decrease timeLeft by 1 second
                     System.out.println("Time Left: " + getFormattedDuration());
                 } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt(); // Preserve interrupt status
+                    Thread.currentThread().interrupt();
                 }
             }
             if (timeLeft.isZero() || timeLeft.isNegative()) {
@@ -64,12 +75,16 @@ public class Timer {
         }).start();
     }
 
-    public void pause() {
-        //setDuration();
-        this.previousDuration = duration;
-        this.isRunning = false;
+    public synchronized void pause() {
+        isPaused = true;
+        System.out.println("Paused:");
     }
 
+    public synchronized void resume() {
+        isPaused = false;
+        System.out.println("Resumed:");
+        notify(); // Resume the thread
+    }
     public void stop() {
         setDuration();
         this.isRunning = false;
@@ -117,4 +132,5 @@ public class Timer {
     public Duration getTimeLeft() {
         return timeLeft;
     }
+
 }
