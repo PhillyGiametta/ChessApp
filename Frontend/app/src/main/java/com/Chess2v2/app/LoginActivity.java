@@ -21,14 +21,33 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * The LoginActivity handles user login functionality.
+ * It communicates with the backend API to authenticate users and retrieve user profiles.
+ */
 public class LoginActivity extends AppCompatActivity {
 
+    /** Input field for the user's username. */
     private EditText usernameEditText;
-    private EditText passwordEditText;
-    private Button loginButton;
-    private Button signupButton;
-    private ApiService apiService;  // Declare ApiService for Retrofit
 
+    /** Input field for the user's password. */
+    private EditText passwordEditText;
+
+    /** Button to trigger the login process. */
+    private Button loginButton;
+
+    /** Button to navigate to the SignupActivity. */
+    private Button signupButton;
+
+    /** ApiService instance for making network requests to the backend. */
+    private ApiService apiService;
+
+    /**
+     * Called when the activity is created. Sets up the view, initializes UI components,
+     * and configures Retrofit for network communication with the backend API.
+     *
+     * @param savedInstanceState Bundle containing the saved state of the activity.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize Retrofit with the backend API URL and Gson converter
         Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(ChessApplication.getInstance().getBaseUrl())
+                .baseUrl(ChessApplication.getInstance().getBaseUrl())
                 .addConverterFactory(GsonConverterFactory.create(gson)) // Use lenient Gson
                 .build();
 
@@ -69,19 +88,21 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Executes the login process by validating the user's input,
+     * sending a login request to the backend, and handling the response.
+     *
+     * @param callback The LoginCallback instance for handling the success or failure of the login.
+     */
     protected void doLogin(LoginCallback callback) {
-
-        // Grab strings from user inputs
         String username = usernameEditText.getText().toString();
         String password = passwordEditText.getText().toString();
 
-        // Validate input fields are not empty
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(LoginActivity.this, "Please enter both username and password.", Toast.LENGTH_LONG).show();
             return;
         }
 
-        // Create the request body (UserRequest object)
         UserRequest userRequest = new UserRequest(username, password);
         Log.d("LoginActivity", "Sending JSON: " + new Gson().toJson(userRequest));
 
@@ -89,13 +110,11 @@ public class LoginActivity extends AppCompatActivity {
         apiService.loginUser(userRequest).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                // This is where you should replace the code
                 if (response.isSuccessful() && response.body() != null) {
                     try {
                         String responseMessage = response.body().string();
                         Toast.makeText(LoginActivity.this, responseMessage, Toast.LENGTH_LONG).show();
 
-                        // Navigate to HomeActivity if login is successful
                         if (responseMessage.toLowerCase().contains("success")) {
                             fetchUserProfile(username, callback);
                         }
@@ -113,7 +132,6 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                // Network error or JSON parsing issue
                 Toast.makeText(LoginActivity.this, "Network Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 Log.e("NetworkError", "Error during login", t);
                 callback.onFail();
@@ -121,15 +139,18 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Fetches the user profile from the backend after a successful login.
+     *
+     * @param username The username of the logged-in user.
+     * @param callback The LoginCallback instance for handling the success or failure of profile fetching.
+     */
     protected void fetchUserProfile(String username, LoginCallback callback) {
-
         Log.d("LoginActivity", "Sending Get Profile");
 
-        // API call for login using Retrofit
         apiService.getProfile(username).enqueue(new Callback<UserResponse>() {
             @Override
             public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                // This is where you should replace the code
                 if (response.isSuccessful() && response.body() != null) {
                     callback.onComplete(response.body().getId(), response.body().getEmail(), response.body().getUsername());
                 } else {
@@ -141,7 +162,6 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<UserResponse> call, Throwable t) {
-                // Network error or JSON parsing issue
                 Toast.makeText(LoginActivity.this, "Network Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 Log.e("NetworkError", "Error during login", t);
                 callback.onFail();
@@ -149,7 +169,19 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * LoginCallback is a helper class for handling login completion.
+     * It enables or disables buttons and manages navigation upon login success or failure.
+     */
     protected class LoginCallback {
+
+        /**
+         * Called upon successful login. Stores user details and navigates to HomeActivity.
+         *
+         * @param userId   The ID of the logged-in user.
+         * @param email    The email of the logged-in user.
+         * @param userName The username of the logged-in user.
+         */
         public void onComplete(int userId, String email, String userName) {
             ChessApplication.getInstance().setUserId(userId);
             ChessApplication.getInstance().setEmail(email);
@@ -157,8 +189,12 @@ public class LoginActivity extends AppCompatActivity {
 
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             startActivity(intent);
-            finish(); // Close LoginActivity to prevent going back
+            finish();
         }
+
+        /**
+         * Called when login fails, re-enabling login and signup buttons.
+         */
         public void onFail() {
             loginButton.setEnabled(true);
             signupButton.setEnabled(true);
