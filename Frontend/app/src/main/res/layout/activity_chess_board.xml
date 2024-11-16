@@ -13,6 +13,16 @@
         android:layout_gravity="start"
         android:layout_marginBottom="16dp" />
 
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Game"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp" />
+
+
     <!-- Player Turn TextView -->
     <TextView
         android:id="@+id/playerTurnTextView"

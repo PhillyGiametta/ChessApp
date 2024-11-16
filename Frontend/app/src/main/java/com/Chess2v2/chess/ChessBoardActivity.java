@@ -64,6 +64,10 @@ public class ChessBoardActivity extends AppCompatActivity {
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> finish());
 
+        Button startButton = findViewById(R.id.startButton);
+        startButton.setOnClickListener(v -> sendStartMessage());
+
+
         playerTurnTextView.setText("White's Turn");
 
         WebSocketChessListener listener = new WebSocketChessListener(this);
@@ -72,6 +76,19 @@ public class ChessBoardActivity extends AppCompatActivity {
         // Construct and connect to WebSocket server
         String webSocketUrl = "ws://10.90.73.46:8080/game/lofe";
         webSocketManager.connect(webSocketUrl);
+    }
+
+
+    /**
+     * Sends a start message to the server to indicate the start of the game.
+     */
+    private void sendStartMessage() {
+        if (webSocketManager != null) {
+            JsonObject startMessage = new JsonObject();
+            startMessage.addProperty("type", "start");
+            Log.d("ChessBoardActivity", "Sending start message: " + startMessage.toString());
+            webSocketManager.sendMessage(startMessage.toString());
+        }
     }
 
     /**
