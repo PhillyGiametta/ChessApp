@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize Retrofit with the backend API URL and Gson converter
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ChessApplication.getInstance().getBaseUrl())
+                .baseUrl("http://10.90.73.46:8080/")
                 .addConverterFactory(GsonConverterFactory.create(gson)) // Use lenient Gson
                 .build();
 
