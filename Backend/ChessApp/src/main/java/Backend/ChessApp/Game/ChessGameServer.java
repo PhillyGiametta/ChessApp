@@ -256,7 +256,7 @@ public class ChessGameServer {
     private void startGame(Session session) throws IOException {
         if(whiteTeam.size() != 2 || blackTeam.size() != 2){
             session.getBasicRemote().sendText("Not enough players!");
-            return;
+
         }
         if (sessionUserMap.get(session) == adminUser) {
             chessGame.setGameActive(ChessGame.GameActive.GAME_ACTIVE);

@@ -38,6 +38,9 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Admin admin;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private SettingsUserStates settingsUserStates;
+
     @ManyToOne
     @JoinColumn(name = "chess_game_id")
     private ChessGame chessGame;
@@ -132,4 +135,8 @@ public class User {
     public void setTeam(String team) {
         this.team = team;
     }
+
+    public void setSettingsUserStates(SettingsUserStates settings) {this.settingsUserStates = settings;}
+
+    public SettingsUserStates getSettingsUserStates(){return settingsUserStates;}
 }

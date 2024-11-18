@@ -22,11 +22,11 @@ public class Pawn extends Piece {
     @Override
     public boolean isValidMove(Position newPosition, List<BoardSquare> boardSquares) {
         int forwardDirection = color == PieceColor.WHITE ? -1 : 1;
-        int rowDiff = (newPosition.getRow() - position.getRow()) * forwardDirection;
+        int rowDiff = Math.abs((newPosition.getRow() - position.getRow()) * forwardDirection);
         int colDiff = newPosition.getColumn() - position.getColumn();
 
         BoardSquare destSquare = getBoardSquare(newPosition.getRow(), newPosition.getColumn(), boardSquares);
-        if (colDiff == 0 && rowDiff == 1 && destSquare == null) {
+        if (colDiff == 0 && rowDiff == 1 && destSquare.getPiece() == null) {
             return true;
         }
 

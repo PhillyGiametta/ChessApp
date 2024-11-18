@@ -352,7 +352,7 @@ public class ChessGame {
 
         // 1. White pawn moves e2 to e4 (Position (6, 4) to (4, 4))
         Position whitePawnStart = new Position(6, 4);
-        Position whitePawnEnd = new Position(4, 4);
+        Position whitePawnEnd = new Position(5, 4);
         String result = chessGame.makeMove(whitePawnStart, whitePawnEnd) ? "yes" : "no";
         System.out.println(result);
         System.out.println(chessGame.getBoard().toString());
