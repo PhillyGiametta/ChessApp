@@ -77,8 +77,8 @@ public class ChessGameServer {
 
     // Game and Settings mappings
     private static final Map<ChessGame, SettingGameStates> gameSettingsMap = new Hashtable<>();
-    private static final Map<User, ChessGame> userGameMap = new Hashtable<>();
     private static final Map<ChessGame, List<Session>> gameSessionMap = new Hashtable<>();
+    private static final Map<Session, ChessGame> sessionGameMap = new Hashtable<>();
 
     // List for teams
     private List<User> whiteTeam = new ArrayList<>();
@@ -93,8 +93,6 @@ public class ChessGameServer {
     @OnOpen
     public void onOpen(Session session, @PathParam("userName") String userName) throws IOException {
         User user = userRepository.findByUserName(userName);
-        Board board = new Board();
-        chessGame.setBoard(board);
         chessGameRepository.save(chessGame);
 
         if(user == null){
@@ -103,13 +101,18 @@ public class ChessGameServer {
             return;
         }
 
+
         sessionUserMap.put(session, user);
         userSessionMap.put(user, session);
-        userGameMap.put(user, chessGame);
         logger.info("[onOpen] User {} joined", userName);
+
+        // Add user session to game
+        gameSessionMap.putIfAbsent(chessGame, new ArrayList<>());
+        gameSessionMap.get(chessGame).add(session);
+
         // Set the first user as the Admin
         if (adminUser == null) {
-            adminUser = user;
+            assignNewAdmin(chessGame);
             for(Session s: gameSessionMap.get(chessGame)){
                 s.getBasicRemote().sendText(adminUser.getUserName() + " is now the admin");
             }
@@ -118,13 +121,8 @@ public class ChessGameServer {
         }
 
         chessGame.blackTimer = new Timer(gameSettingsService.getSettings(chessGame).getTimeController());
-
-
         chessGame.whiteTimer = new Timer(gameSettingsService.getSettings(chessGame).getTimeController());
 
-
-        // Add user session to game
-        gameSessionMap.computeIfAbsent(chessGame, k -> new ArrayList<>()).add(session);
         assignTeams(chessGame);
         chessGameRepository.save(chessGame);
 
@@ -139,14 +137,12 @@ public class ChessGameServer {
 
         if(json.getString("type").equals("chessMove")){
             moveOnBoard(session, message);
-            return;
         }
         else if(json.getString("type").equals("settings")){
             if(chessGame.getGameActive() == ChessGame.GameActive.GAME_NOT_STARTED)
                 updateSettings(session, message);
             else
                 session.getBasicRemote().sendText("Not able to change settings in this game state.");
-            return;
         }
         else if(json.getString("type").equals("start")){
             startGame(session);
@@ -170,10 +166,10 @@ public class ChessGameServer {
             return;
         }
         if(chessGame.getCurrentPlayerColor()){
-            chessGame.blackTimer.start();
+            chessGame.blackTimer.resume();
         }
         else{
-            chessGame.whiteTimer.start();
+            chessGame.whiteTimer.resume();
         }
         JSONObject json = new JSONObject(message);
         int row = json.getInt("rowStart");
@@ -192,9 +188,11 @@ public class ChessGameServer {
         }
         else if(!p.contains(positionEnd)){
             session.getBasicRemote().sendText("Invalid Move");
+            return;
         }
         else{
             session.getBasicRemote().sendText("Not Your Turn");
+            return;
         }
         if(chessGame.getCurrentPlayerColor()){
             chessGame.whiteTimer.pause();
@@ -208,11 +206,11 @@ public class ChessGameServer {
         User user = sessionUserMap.get(session);
         if (user != null && user.equals(adminUser)) {
             // Only the admin can update settings
-            ChessGame game = userGameMap.get(user);
-            SettingGameStates settings = gameSettingsMap.get(game);
+            SettingGameStates settings = gameSettingsMap.get(chessGame);
 
             updateSettings(settings, message);
             chessGame.whiteTimer = new Timer(settings.getTimeController());
+
             chessGame.blackTimer = new Timer(settings.getTimeController());
             chessGameRepository.save(chessGame);
             sendSettings(session, settings);
@@ -255,7 +253,11 @@ public class ChessGameServer {
         }
     }
 
-    private void startGame(Session session) {
+    private void startGame(Session session) throws IOException {
+        if(whiteTeam.size() != 2 || blackTeam.size() != 2){
+            session.getBasicRemote().sendText("Not enough players!");
+            return;
+        }
         if (sessionUserMap.get(session) == adminUser) {
             chessGame.setGameActive(ChessGame.GameActive.GAME_ACTIVE);
 
@@ -274,7 +276,7 @@ public class ChessGameServer {
 
     private void assignTeams(ChessGame chessGame) throws IOException {
         for(int i = 0; i < gameSessionMap.get(chessGame).size(); i++) {
-            if (whiteTeam.size() <= 2) {
+            if (whiteTeam.size() < 2) {
                 whiteTeam.add(sessionUserMap.get(gameSessionMap.get(chessGame).get(i)));
                 gameSessionMap.get(chessGame).get(i).getBasicRemote().sendText("You are now white team");
             }
@@ -289,20 +291,19 @@ public class ChessGameServer {
     }
 
     private void removeUserFromGame(Session session, User user) {
-        ChessGame game = userGameMap.get(user);
-        List<Session> sessions = gameSessionMap.get(game);
+        List<Session> sessions = gameSessionMap.get(chessGame);
 
         if (sessions != null) {
             sessions.remove(session);
             if (sessions.isEmpty()) {
-                gameSessionMap.remove(game);
-                gameSettingsMap.remove(game);
+                gameSessionMap.remove(chessGame);
+                gameSettingsMap.remove(chessGame);
             }
         }
 
         if (user.equals(adminUser)) {
             adminUser = null; // Clear admin if they leave
-            assignNewAdmin(game);
+            assignNewAdmin(chessGame);
         }
     }
 
