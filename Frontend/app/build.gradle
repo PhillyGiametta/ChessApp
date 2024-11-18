@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
 }
+
 android {
     namespace "com.Chess2v2.app"
     compileSdk 34
@@ -19,6 +20,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    
+    aaptOptions {
+        cruncherEnabled = false
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -26,7 +32,6 @@ android {
 }
 
 dependencies {
-
     implementation libs.appcompat
     implementation libs.material
     implementation libs.activity
@@ -44,5 +49,4 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-
 }
