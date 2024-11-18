@@ -25,26 +25,33 @@ public class WebSocketChessListener extends WebSocketListener {
         Log.d("WebSocketChessListener", "Raw message received: " + text);
         handler.post(() -> {
             try {
-                JSONObject response = new JSONObject(text);
-                String type = response.getString("type");
+                // Check if the message starts and ends with curly braces, indicating it is a JSON object.
+                if (text.startsWith("{") && text.endsWith("}")) {
+                    JSONObject response = new JSONObject(text);
+                    String type = response.optString("type", "undefined");
 
-                if ("moveConfirmed".equals(type)) {
-                    int fromX = response.getInt("rowStart");
-                    int fromY = response.getInt("colStart");
-                    int toX = response.getInt("rowEnd");
-                    int toY = response.getInt("colEnd");
-                    Log.d("WebSocketChessListener", "Move confirmed: from (" + fromX + ", " + fromY + ") to (" + toX + ", " + toY + ")");
-                    chessBoardActivity.updateBoard(fromX, fromY, toX, toY);
-                } else if ("invalidMove".equals(type)) {
-                    Log.d("WebSocketChessListener", "Received invalid move message");
-                    chessBoardActivity.undoInvalidMove();
+                    if ("moveConfirmed".equals(type)) {
+                        int fromX = response.getInt("rowStart");
+                        int fromY = response.getInt("colStart");
+                        int toX = response.getInt("rowEnd");
+                        int toY = response.getInt("colEnd");
+                        Log.d("WebSocketChessListener", "Move confirmed: from (" + fromX + ", " + fromY + ") to (" + toX + ", " + toY + ")");
+                        chessBoardActivity.updateBoard(fromX, fromY, toX, toY);
+                    } else if ("invalidMove".equals(type)) {
+                        Log.d("WebSocketChessListener", "Received invalid move message");
+                        chessBoardActivity.undoInvalidMove();
+                    }
+                } else {
+                    // Log the non-JSON message if needed or handle it as a non-JSON message.
+                    Log.d("WebSocketChessListener", "Non-JSON message received: " + text);
                 }
             } catch (JSONException e) {
-                Log.e("WebSocketChessListener", "JSON parsing error: " + e.getMessage());
-                chessBoardActivity.displayMessage(text);
+                // Remove or lower the priority of the JSON parsing error log to avoid clutter in logcat.
+                Log.v("WebSocketChessListener", "Ignoring non-JSON message: " + e.getMessage());
             }
         });
     }
+
 
 
     @Override

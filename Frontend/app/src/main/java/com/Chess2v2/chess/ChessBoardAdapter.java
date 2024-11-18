@@ -16,8 +16,8 @@ import java.util.List;
 
 public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.ChessViewHolder> {
 
-    private final List<ChessPiece> board;
-    private final OnPieceSelectedListener onPieceSelectedListener;
+    private final List<Position> board;
+    private final OnPositionSelectedListener onPositionSelectedListener;
     private int currentTurn = 0; // 0 for white, 1 for black
 
     private List<Move> moves;
@@ -33,8 +33,8 @@ public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.Ch
             'R', 'H', 'B', 'Q', 'K','B','H','R',
     };
 
-    public ChessBoardAdapter(OnPieceSelectedListener listener) {
-        this.onPieceSelectedListener = listener;
+    public ChessBoardAdapter(OnPositionSelectedListener listener) {
+        this.onPositionSelectedListener = listener;
         this.board = new ArrayList<>();
         moves = new ArrayList<>();
         initializeBoard();
@@ -43,38 +43,42 @@ public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.Ch
     private void initializeBoard() {
         boolean isWhite;
         ChessPiece piece;
+        Position position;
         char c;
         // Initialize the board
         for(int i = 0; i < INITIAL_PIECES.length; i++)
         {
+            isWhite = Position.isWhite(i);
+            position = new Position(i, isWhite ? R.drawable.empty_white :  R.drawable.empty_space);
             c = INITIAL_PIECES[i];
+
             switch (c)
             {
                 case 'P':
-                    piece = new ChessPiece(i > 16 ? R.drawable.pawn_white :  R.drawable.pawn_black, i > 16);
+                    piece = new ChessPiece(i > 16 ? R.drawable.pawn_white :  R.drawable.pawn_black, "Pawn", i > 16);
                     break;
                 case 'R':
-                    piece = new ChessPiece(i > 16 ? R.drawable.rook_white :  R.drawable.rook_black, i > 16);
+                    piece = new ChessPiece(i > 16 ? R.drawable.rook_white :  R.drawable.rook_black, "Rook", i > 16);
                     break;
                 case 'H':
-                    piece = new ChessPiece(i > 16 ? R.drawable.knight_white :  R.drawable.knight_black, i > 16);
+                    piece = new ChessPiece(i > 16 ? R.drawable.knight_white :  R.drawable.knight_black, "Knight", i > 16);
                     break;
                 case 'B':
-                    piece = new ChessPiece(i > 16 ? R.drawable.bishop_white :  R.drawable.bishop_black, i > 16);
+                    piece = new ChessPiece(i > 16 ? R.drawable.bishop_white :  R.drawable.bishop_black, "Bishop", i > 16);
                     break;
                 case 'Q':
-                    piece = new ChessPiece(i > 16 ? R.drawable.queen_white :  R.drawable.queen_black, i > 16);
+                    piece = new ChessPiece(i > 16 ? R.drawable.queen_white :  R.drawable.queen_black, "Queen", i > 16);
                     break;
                 case 'K':
-                    piece = new ChessPiece(i > 16 ? R.drawable.king_white :  R.drawable.king_black, i > 16);
+                    piece = new ChessPiece(i > 16 ? R.drawable.king_white :  R.drawable.king_black, "King", i > 16);
                     break;
                 default:
-                    isWhite = (i + (i / 8) % 2)% 2 == 0;
-                    piece = new ChessPiece(isWhite ? R.drawable.empty_white :  R.drawable.empty_space, isWhite);
+                    piece = null;
                     break;
             }
 
-            board.add(piece);
+            position.setPiece(piece);
+            board.add(position);
         }
     }
 
@@ -87,7 +91,7 @@ public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.Ch
 
     @Override
     public void onBindViewHolder(@NonNull ChessViewHolder holder, int position) {
-        holder.bind(board.get(position), position);
+        holder.bind(board.get(position));
     }
 
     @Override
@@ -96,7 +100,7 @@ public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.Ch
     }
 
     public void movePiece(int fromX, int fromY, int toX, int toY) {
-        movePiece(fromX * 8 + fromY, toX * 8 + toY);
+        movePiece(Position.coordToInt(fromX, fromY), Position.coordToInt(toX, toY));
     }
 
     public boolean undoInvalidMove() {
@@ -104,18 +108,18 @@ public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.Ch
             return false;
 
         Move move = moves.remove(moves.size() - 1);
-        board.set(move.fromIndex, board.get(move.toIndex));
-        board.set(move.toIndex, move.capturedPiece);
+        board.get(move.fromIndex).setPiece(board.get(move.toIndex).getPiece());
+        board.get(move.toIndex).setPiece(move.capturedPiece);
 
         notifyDataSetChanged();
         return true;
     }
     public void movePiece(int fromIndex, int toIndex) {
-        ChessPiece pieceToMove = board.get(fromIndex);
-        Move move = new Move(fromIndex, toIndex, board.get(toIndex));
-        boolean isWhite = (fromIndex + (fromIndex / 8) % 2)% 2 == 0;
-        board.set(fromIndex, new ChessPiece(isWhite ? R.drawable.empty_white :  R.drawable.empty_space, isWhite));
-        board.set(toIndex, pieceToMove);
+        ChessPiece pieceToMove = board.get(fromIndex).getPiece();
+        Move move = new Move(fromIndex, toIndex, board.get(toIndex).getPiece());
+        moves.add(move);
+        board.get(toIndex).setPiece(pieceToMove);
+        board.get(fromIndex).setPiece(null);
         notifyDataSetChanged();
     }
 
@@ -134,28 +138,34 @@ public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.Ch
                 int position = getAdapterPosition();
                 if(previousAdapterPosition == -1)
                 {
-                    previousAdapterPosition = position;
+                    if(board.get(position).getPiece() != null)
+                    {
+                        previousAdapterPosition = position;
+                    }
                     return;
                 }
-                int fromX = previousAdapterPosition / 8;
-                int fromY = previousAdapterPosition % 8;
-                int toX = position / 8;
-                int toY = position % 8;
+                ChessPiece piece = board.get(previousAdapterPosition).getPiece();
+                Coord coord = Position.toCoord(previousAdapterPosition);
+                int fromX =  coord.x;
+                int fromY = coord.y;
+                coord = Position.toCoord(position);
+                int toX = coord.x;
+                int toY = coord.y;
                 previousAdapterPosition = -1;
                 if(fromX == toX && fromY == toY)
                     return;
                 // Placeholder logic for selecting a target position, you can expand this
-                onPieceSelectedListener.onPieceSelected(fromX, fromY, toX, toY);
+                onPositionSelectedListener.onPositionSelected(piece, fromX, fromY, toX, toY);
             });
         }
 
-        public void bind(ChessPiece piece, int position) {
-            pieceImageView.setBackgroundColor((position + (position / 8) % 2)% 2 == 0 ? Color.WHITE : Color.BLACK);
-            pieceImageView.setImageResource(piece.getImageResource());
+        public void bind(Position position) {
+            pieceImageView.setBackgroundColor(position.isWhite ? Color.WHITE : Color.BLACK);
+            pieceImageView.setImageResource(position.getPiece() == null ? position.getImageResource() : position.getPiece().getImageResource());
         }
     }
 
-    public interface OnPieceSelectedListener {
-        void onPieceSelected(int fromX, int fromY, int toX, int toY);
+    public interface OnPositionSelectedListener {
+        void onPositionSelected(ChessPiece piece, int fromX, int fromY, int toX, int toY);
     }
 }
