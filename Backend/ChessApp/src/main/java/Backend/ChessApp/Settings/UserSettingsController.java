@@ -38,53 +38,70 @@ public class UserSettingsController {
         SettingsUserStates sus = new SettingsUserStates(user);
         settingsRepo.save(sus);
     }
-//    @Operation(summary = "From username sets all new settings for a user.")
-//    @PostMapping(path="/settings/{userName}")
-//    public void createAllNewSettings(@PathVariable String userName, @RequestBody SettingsUserStates settingsUserStates){
-//        User user = userRepository.findByUserName(userName);
-//        if(settingsUserStates == null)
-//            return;
-//        settingsUserStates = new SettingsUserStates(settingsUserStates.getBoardTheme(),
-//                settingsUserStates.getPieceTheme(), settingsUserStates.isAppTheme(),
-//                settingsUserStates.isSounds(), settingsUserStates.isMoveHighlighting());
-//        user.setSettings(settingsUserStates);
-//        settingsRepo.save(settingsUserStates);
-//
-//    }
-    @Operation(summary = "Given a user, updates the board theme for the user.")
-    @PutMapping(path="/settings/boardTheme/{user}")
-    public short updateBoardTheme(@PathVariable User user, @RequestParam(value="boardTheme") short boardTheme){
+    @Operation(summary = "Sets the settings from a json body.")
+    @PostMapping(path="/settings")
+    public void createAllNewSettings(@RequestBody SettingsUserStates settingsUserStates){
+        if(settingsUserStates == null)
+            return;
+        settingsUserStates = new SettingsUserStates(settingsUserStates.getBoardTheme(),
+                settingsUserStates.getPieceTheme(), settingsUserStates.isAppTheme(),
+                settingsUserStates.isSounds(), settingsUserStates.isMoveHighlighting(), settingsUserStates.isMenuMusic());
+        settingsRepo.save(settingsUserStates);
+
+    }
+    @Operation(summary = "Given a username, updates the board theme for the user.")
+    @PutMapping(path="/settings/boardTheme/{username}")
+    public short updateBoardTheme(@PathVariable String username, @RequestParam(value="boardTheme") short boardTheme){
+        User user = userRepository.findByUserName(username);
         SettingsUserStates sus = settingsRepo.findByUser(user);
         sus.setBoardTheme(boardTheme);
+        settingsRepo.save(sus);
         return boardTheme;
     }
-    @Operation(summary = "Given a user, updates the piece theme for the user.")
+    @Operation(summary = "Given a username, updates the piece theme for the user.")
     @PutMapping(path="/settings/pieceTheme/{user}")
-    public short updatePieceTheme(@PathVariable User user, @RequestParam(value="boardTheme") short pieceTheme){
+    public short updatePieceTheme(@PathVariable String username, @RequestParam(value="pieceTheme") short pieceTheme){
+        User user = userRepository.findByUserName(username);
         SettingsUserStates sus = settingsRepo.findByUser(user);
         sus.setPieceTheme(pieceTheme);
+        settingsRepo.save(sus);
         return pieceTheme;
     }
-    @Operation(summary = "Given a user, updates the app theme for the user.")
+    @Operation(summary = "Given a username, updates the app theme for the user.")
     @PutMapping(path="/settings/appTheme/{user}")
-    public boolean updateAppTheme(@PathVariable User user, @RequestParam(value="boardTheme") boolean appTheme){
+    public boolean updateAppTheme(@PathVariable String username, @RequestParam(value="appTheme") boolean appTheme){
+        User user = userRepository.findByUserName(username);
         SettingsUserStates sus = settingsRepo.findByUser(user);
         sus.setAppTheme(appTheme);
+        settingsRepo.save(sus);
         return appTheme;
     }
-    @Operation(summary = "Given a user, updates the sounds for the user.")
+    @Operation(summary = "Given a username, updates the sounds for the user.")
     @PutMapping(path="/settings/sounds/{user}")
-    public boolean updateSounds(@PathVariable User user, @RequestParam(value="boardTheme") boolean sounds){
+    public boolean updateSounds(@PathVariable String username, @RequestParam(value="sounds") boolean sounds){
+        User user = userRepository.findByUserName(username);
         SettingsUserStates sus = settingsRepo.findByUser(user);
         sus.setSounds(sounds);
+        settingsRepo.save(sus);
         return sounds;
     }
-    @Operation(summary = "Given a user, toggles the move highlighting for the user.")
+    @Operation(summary = "Given a username, toggles the move highlighting for the user.")
     @PutMapping(path="/settings/moveHighlighting/{user}")
-    public boolean updateMoveHighlighting(@PathVariable User user, @RequestParam(value="boardTheme") boolean moveHighlighting){
+    public boolean updateMoveHighlighting(@PathVariable String username, @RequestParam(value="moveHighlighting") boolean moveHighlighting){
+        User user = userRepository.findByUserName(username);
         SettingsUserStates sus = settingsRepo.findByUser(user);
         sus.setMoveHighlighting(moveHighlighting);
+        settingsRepo.save(sus);
         return moveHighlighting;
+    }
+    @Operation(summary = "Given a username, toggles the move highlighting for the user.")
+    @PutMapping(path = "/settings/menuMusic/{username}")
+    public boolean updateMenuMusic(@PathVariable String username, @RequestParam(value="menuMusic") boolean menuMusic){
+        User user = userRepository.findByUserName(username);
+        SettingsUserStates sus = settingsRepo.findByUser(user);
+        sus.setMenuMusic(menuMusic);
+        settingsRepo.save(sus);
+        return menuMusic;
     }
     @Operation(summary = "Resets the settings back to default.")
     @DeleteMapping(path="/settings/clear")
