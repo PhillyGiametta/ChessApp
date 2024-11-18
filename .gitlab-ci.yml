@@ -1,0 +1,39 @@
+stages:
+  - androidbuild
+  - androidtest
+
+android-build:
+  image: afirefly/android-ci:java17
+  stage: androidbuild
+  tags:
+   - phillipg_tag  # Your runner's tag
+  before_script:
+    - rm -rf ~/.gradle  # Clean Gradle caches
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - chmod +x ./Frontend/gradlew
+  script:
+    - cd Frontend  # Adjust to the path where `gradlew` is located
+    - ./gradlew build
+  only:
+    refs:
+      - Phillipg_CICD
+    changes:
+      - Frontend/**/*
+
+android-test:
+  image: afirefly/android-ci:java17
+  stage: androidtest
+  tags:
+    - phillipg_tag  # Your runner's tag
+  before_script:
+    - rm -rf ~/.gradle  # Clean Gradle caches
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - chmod +x ./Frontend/gradlew
+  script:
+    - cd Frontend  # Adjust to the path where `gradlew` is located
+    - ./gradlew test
+  only:
+    refs:
+      - Phillipg_CICD
+    changes:
+      - Frontend/**/*
