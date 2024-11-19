@@ -38,19 +38,19 @@ public class UserSettingsController {
         SettingsUserStates sus = new SettingsUserStates(user);
         settingsRepo.save(sus);
     }
-    @Operation(summary = "From username sets all new settings for a user.")
-    @PostMapping(path="/settings/{userName}")
-    public void createAllNewSettings(@PathVariable String userName, @RequestBody SettingsUserStates settingsUserStates){
-        User user = userRepository.findByUserName(userName);
-        if(settingsUserStates == null)
-            return;
-        settingsUserStates = new SettingsUserStates(settingsUserStates.getBoardTheme(),
-                settingsUserStates.getPieceTheme(), settingsUserStates.isAppTheme(),
-                settingsUserStates.isSounds(), settingsUserStates.isMoveHighlighting());
-        user.setSettings(settingsUserStates);
-        settingsRepo.save(settingsUserStates);
-
-    }
+//    @Operation(summary = "From username sets all new settings for a user.")
+//    @PostMapping(path="/settings/{userName}")
+//    public void createAllNewSettings(@PathVariable String userName, @RequestBody SettingsUserStates settingsUserStates){
+//        User user = userRepository.findByUserName(userName);
+//        if(settingsUserStates == null)
+//            return;
+//        settingsUserStates = new SettingsUserStates(settingsUserStates.getBoardTheme(),
+//                settingsUserStates.getPieceTheme(), settingsUserStates.isAppTheme(),
+//                settingsUserStates.isSounds(), settingsUserStates.isMoveHighlighting());
+//        user.setSettings(settingsUserStates);
+//        settingsRepo.save(settingsUserStates);
+//
+//    }
     @Operation(summary = "Given a user, updates the board theme for the user.")
     @PutMapping(path="/settings/boardTheme/{user}")
     public short updateBoardTheme(@PathVariable User user, @RequestParam(value="boardTheme") short boardTheme){

@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.Chess2v2.app.R;
+import com.Chess2v2.app.UserData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.Ch
     private final List<Position> board;
     private final OnPositionSelectedListener onPositionSelectedListener;
     private int currentTurn = 0; // 0 for white, 1 for black
+    private UserData player = null;
 
     private List<Move> moves;
     private int previousAdapterPosition = -1;
@@ -55,28 +57,51 @@ public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.Ch
             switch (c)
             {
                 case 'P':
-                    piece = new ChessPiece(i > 16 ? R.drawable.pawn_white :  R.drawable.pawn_black, "Pawn", i > 16);
+                    if(player.getSettings() == 0){
+                        piece = new ChessPiece(i > 16 ? R.drawable.pawn_white :  R.drawable.pawn_black, "Pawn", i > 16);
+                    } else {
+                        piece = new ChessPiece(i > 16 ? R.drawable.gold_pawn :  R.drawable.silver_pawn, "Pawn", i > 16);
+                    }
                     break;
                 case 'R':
-                    piece = new ChessPiece(i > 16 ? R.drawable.rook_white :  R.drawable.rook_black, "Rook", i > 16);
+                    if(player.getSettings() == 0){
+                        piece = new ChessPiece(i > 16 ? R.drawable.rook_white :  R.drawable.rook_black, "Rook", i > 16);
+                    } else {
+                        piece = new ChessPiece(i > 16 ? R.drawable.gold_rook :  R.drawable.silver_rook, "Rook", i > 16);
+                    }
                     break;
                 case 'H':
-                    piece = new ChessPiece(i > 16 ? R.drawable.knight_white :  R.drawable.knight_black, "Knight", i > 16);
+                    if(player.getSettings() == 0){
+                        piece = new ChessPiece(i > 16 ? R.drawable.knight_white :  R.drawable.knight_black, "Knight", i > 16);
+                    } else {
+                        piece = new ChessPiece(i > 16 ? R.drawable.gold_knight :  R.drawable.silver_knight, "Knight", i > 16);
+                    }
                     break;
                 case 'B':
-                    piece = new ChessPiece(i > 16 ? R.drawable.bishop_white :  R.drawable.bishop_black, "Bishop", i > 16);
+                    if(player.getSettings() == 0){
+                        piece = new ChessPiece(i > 16 ? R.drawable.bishop_white :  R.drawable.bishop_black, "Bishop", i > 16);
+                    } else {
+                        piece = new ChessPiece(i > 16 ? R.drawable.gold_bishop :  R.drawable.silver_bishop, "Bishop", i > 16);
+                    }
                     break;
                 case 'Q':
-                    piece = new ChessPiece(i > 16 ? R.drawable.queen_white :  R.drawable.queen_black, "Queen", i > 16);
+                    if(player.getSettings() == 0){
+                        piece = new ChessPiece(i > 16 ? R.drawable.queen_white :  R.drawable.queen_black, "Queen", i > 16);
+                    } else {
+                        piece = new ChessPiece(i > 16 ? R.drawable.gold_queen :  R.drawable.silver_queen, "Queen", i > 16);
+                    }
                     break;
                 case 'K':
-                    piece = new ChessPiece(i > 16 ? R.drawable.king_white :  R.drawable.king_black, "King", i > 16);
+                    if(player.getSettings() == 0){
+                        piece = new ChessPiece(i > 16 ? R.drawable.king_white :  R.drawable.king_black, "King", i > 16);
+                    } else {
+                        piece = new ChessPiece(i > 16 ? R.drawable.gold_king :  R.drawable.silver_king, "King", i > 16);
+                    }
                     break;
                 default:
                     piece = null;
                     break;
             }
-
             position.setPiece(piece);
             board.add(position);
         }
