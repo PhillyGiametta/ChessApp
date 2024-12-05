@@ -1,0 +1,436 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Test results - Class com.Chess2v2.app.PhillipSystemTest</title>
+<link href="css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="css/style.css" rel="stylesheet" type="text/css"/>
+<script src="js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>Class com.Chess2v2.app.PhillipSystemTest</h1>
+<div class="breadcrumbs">
+<a href="index.html">all</a> &gt; 
+<a href="com.Chess2v2.app.html">com.Chess2v2.app</a> &gt; PhillipSystemTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">6</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">5</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="skipped">
+<div class="counter">0</div>
+<p>skipped</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">11.849s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox failures" id="successRate">
+<div class="percent">16%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Failed tests</a>
+</li>
+<li>
+<a href="#tab1">Tests</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Failed tests</h2>
+<div class="test">
+<a name="testNavigateToChat"></a>
+<h3 class="failures">testNavigateToChat</h3>
+<span class="code">
+<pre>androidx.test.espresso.NoMatchingViewException: No views in hierarchy found matching: view.getId() is &lt;2131230945/com.Chess2v2.app:id/home_chat_btn&gt;
+
+View Hierarchy:
++&gt;DecorView{id=-1, visibility=VISIBLE, width=1080, height=2400, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params={(0,0)(fillxfill) ty=BASE_APPLICATION wanim=0x10302fd
+fl=LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+pfl=NO_MOVE_ANIMATION FORCE_DRAW_STATUS_BAR_BACKGROUND FIT_INSETS_CONTROLLED
+bhv=DEFAULT
+fitSides=}, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=3}
+|
++-&gt;LinearLayout{id=-1, visibility=VISIBLE, width=1080, height=2274, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}
+|
++--&gt;ViewStub{id=16908741, res-name=action_mode_bar_stub, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}
+|
++--&gt;FrameLayout{id=-1, visibility=VISIBLE, width=1080, height=2211, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=63.0, child-count=1}
+|
++---&gt;FitWindowsLinearLayout{id=2131230775, res-name=action_bar_root, visibility=VISIBLE, width=1080, height=2211, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}
+|
++----&gt;ViewStubCompat{id=2131230786, res-name=action_mode_bar_stub, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}
+|
++----&gt;ContentFrameLayout{id=16908290, res-name=content, visibility=VISIBLE, width=1080, height=2211, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=1}
+|
++-----&gt;LinearLayoutCompat{id=-1, visibility=VISIBLE, width=1080, height=2211, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=4}
+|
++------&gt;MaterialTextView{id=-1, visibility=VISIBLE, width=574, height=106, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.appcompat.widget.LinearLayoutCompat$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=253.0, y=263.0, text=ChessApp Login, input-type=0, ime-target=false, has-links=false}
+|
++------&gt;LinearLayout{id=-1, visibility=VISIBLE, width=726, height=131, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.appcompat.widget.LinearLayoutCompat$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=177.0, y=763.0, child-count=2}
+|
++-------&gt;MaterialTextView{id=-1, visibility=VISIBLE, width=260, height=71, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=26.0, text=username: , input-type=0, ime-target=false, has-links=false}
+|
++-------&gt;AppCompatEditText{id=2131230983, res-name=login_username_edt, visibility=VISIBLE, width=466, height=131, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=true, editor-info=[inputType=0x20001 imeOptions=0x48000005 privateImeOptions=null actionLabel=null actionId=0 initialSelStart=0 initialSelEnd=0 initialCapsMode=0x0 hintText=Enter Username Here label=null packageName=null autofillId=null fieldId=0 fieldName=null extras=null hintLocales=null contentMimeTypes=null ], x=260.0, y=0.0, text=, hint=Enter Username Here, input-type=131073, ime-target=false, has-links=false}
+|
++------&gt;LinearLayout{id=-1, visibility=VISIBLE, width=718, height=131, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.appcompat.widget.LinearLayoutCompat$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=181.0, y=973.0, child-count=2}
+|
++-------&gt;MaterialTextView{id=-1, visibility=VISIBLE, width=257, height=71, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=26.0, text=password: , input-type=0, ime-target=false, has-links=false}
+|
++-------&gt;AppCompatEditText{id=2131230981, res-name=login_password_edt, visibility=VISIBLE, width=461, height=131, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=true, editor-info=[inputType=0x81 imeOptions=0x4000006 privateImeOptions=null actionLabel=null actionId=0 initialSelStart=0 initialSelEnd=0 initialCapsMode=0x0 hintText=Enter Password Here label=null packageName=null autofillId=null fieldId=0 fieldName=null extras=null hintLocales=null contentMimeTypes=null ], x=257.0, y=0.0, text=, hint=Enter Password Here, input-type=129, ime-target=false, has-links=false}
+|
++------&gt;LinearLayout{id=-1, visibility=VISIBLE, width=840, height=126, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.appcompat.widget.LinearLayoutCompat$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=120.0, y=1367.0, child-count=2}
+|
++-------&gt;MaterialButton{id=2131230980, res-name=login_login_btn, visibility=VISIBLE, width=394, height=126, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, text=Login, input-type=0, ime-target=false, has-links=false, is-checked=false}
+|
++-------&gt;MaterialButton{id=2131230982, res-name=login_signup_btn, visibility=VISIBLE, width=394, height=126, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=446.0, y=0.0, text=Signup, input-type=0, ime-target=false, has-links=false, is-checked=false}
+|
++-&gt;View{id=16908336, res-name=navigationBarBackground, visibility=VISIBLE, width=1080, height=126, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=2274.0}
+|
++-&gt;View{id=16908335, res-name=statusBarBackground, visibility=VISIBLE, width=1080, height=63, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}
+The complete view hierarchy is available in artifact file 'view-hierarchy-1.txt'.
+at androidx.test.espresso.NoMatchingViewException$Builder.build(NoMatchingViewException.java:5)
+at androidx.test.espresso.base.DefaultFailureHandler.lambda$getNoMatchingViewExceptionTruncater$0(DefaultFailureHandler.java:5)
+at androidx.test.espresso.base.DefaultFailureHandler$$ExternalSyntheticLambda1.truncateExceptionMessage(Unknown Source:2)
+at androidx.test.espresso.base.ViewHierarchyExceptionHandler.handleSafely(ViewHierarchyExceptionHandler.java:5)
+at androidx.test.espresso.base.ViewHierarchyExceptionHandler.handleSafely(ViewHierarchyExceptionHandler.java:1)
+at androidx.test.espresso.base.DefaultFailureHandler$TypedFailureHandler.handle(DefaultFailureHandler.java:4)
+at androidx.test.espresso.base.DefaultFailureHandler.handle(DefaultFailureHandler.java:5)
+at androidx.test.espresso.ViewInteraction.waitForAndHandleInteractionResults(ViewInteraction.java:8)
+at androidx.test.espresso.ViewInteraction.desugaredPerform(ViewInteraction.java:11)
+at androidx.test.espresso.ViewInteraction.perform(ViewInteraction.java:8)
+at com.Chess2v2.app.PhillipSystemTest.testNavigateToChat(PhillipSystemTest.java:60)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="testNavigateToGroupFinder"></a>
+<h3 class="failures">testNavigateToGroupFinder</h3>
+<span class="code">
+<pre>androidx.test.espresso.NoMatchingViewException: No views in hierarchy found matching: view.getId() is &lt;2131230934/com.Chess2v2.app:id/group1&gt;
+
+View Hierarchy:
++&gt;DecorView{id=-1, visibility=VISIBLE, width=1080, height=2400, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params={(0,0)(fillxfill) ty=BASE_APPLICATION wanim=0x10302fd
+fl=LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+pfl=NO_MOVE_ANIMATION FORCE_DRAW_STATUS_BAR_BACKGROUND FIT_INSETS_CONTROLLED
+bhv=DEFAULT
+fitSides=}, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=3}
+|
++-&gt;LinearLayout{id=-1, visibility=VISIBLE, width=1080, height=2274, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}
+|
++--&gt;ViewStub{id=16908741, res-name=action_mode_bar_stub, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}
+|
++--&gt;FrameLayout{id=-1, visibility=VISIBLE, width=1080, height=2211, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=63.0, child-count=1}
+|
++---&gt;FitWindowsLinearLayout{id=2131230775, res-name=action_bar_root, visibility=VISIBLE, width=1080, height=2211, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}
+|
++----&gt;ViewStubCompat{id=2131230786, res-name=action_mode_bar_stub, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}
+|
++----&gt;ContentFrameLayout{id=16908290, res-name=content, visibility=VISIBLE, width=1080, height=2211, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=1}
+|
++-----&gt;LinearLayoutCompat{id=-1, visibility=VISIBLE, width=1080, height=2211, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=4}
+|
++------&gt;MaterialTextView{id=-1, visibility=VISIBLE, width=574, height=106, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.appcompat.widget.LinearLayoutCompat$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=253.0, y=263.0, text=ChessApp Login, input-type=0, ime-target=false, has-links=false}
+|
++------&gt;LinearLayout{id=-1, visibility=VISIBLE, width=726, height=131, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.appcompat.widget.LinearLayoutCompat$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=177.0, y=763.0, child-count=2}
+|
++-------&gt;MaterialTextView{id=-1, visibility=VISIBLE, width=260, height=71, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=26.0, text=username: , input-type=0, ime-target=false, has-links=false}
+|
++-------&gt;AppCompatEditText{id=2131230983, res-name=login_username_edt, visibility=VISIBLE, width=466, height=131, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=true, editor-info=[inputType=0x20001 imeOptions=0x48000005 privateImeOptions=null actionLabel=null actionId=0 initialSelStart=0 initialSelEnd=0 initialCapsMode=0x0 hintText=Enter Username Here label=null packageName=null autofillId=null fieldId=0 fieldName=null extras=null hintLocales=null contentMimeTypes=null ], x=260.0, y=0.0, text=, hint=Enter Username Here, input-type=131073, ime-target=false, has-links=false}
+|
++------&gt;LinearLayout{id=-1, visibility=VISIBLE, width=718, height=131, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.appcompat.widget.LinearLayoutCompat$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=181.0, y=973.0, child-count=2}
+|
++-------&gt;MaterialTextView{id=-1, visibility=VISIBLE, width=257, height=71, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=26.0, text=password: , input-type=0, ime-target=false, has-links=false}
+|
++-------&gt;AppCompatEditText{id=2131230981, res-name=login_password_edt, visibility=VISIBLE, width=461, height=131, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=true, editor-info=[inputType=0x81 imeOptions=0x4000006 privateImeOptions=null actionLabel=null actionId=0 initialSelStart=0 initialSelEnd=0 initialCapsMode=0x0 hintText=Enter Password Here label=null packageName=null autofillId=null fieldId=0 fieldName=null extras=null hintLocales=null contentMimeTypes=null ], x=257.0, y=0.0, text=, hint=Enter Password Here, input-type=129, ime-target=false, has-links=false}
+|
++------&gt;LinearLayout{id=-1, visibility=VISIBLE, width=840, height=126, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.appcompat.widget.LinearLayoutCompat$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=120.0, y=1367.0, child-count=2}
+|
++-------&gt;MaterialButton{id=2131230980, res-name=login_login_btn, visibility=VISIBLE, width=394, height=126, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, text=Login, input-type=0, ime-target=false, has-links=false, is-checked=false}
+|
++-------&gt;MaterialButton{id=2131230982, res-name=login_signup_btn, visibility=VISIBLE, width=394, height=126, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=446.0, y=0.0, text=Signup, input-type=0, ime-target=false, has-links=false, is-checked=false}
+|
++-&gt;View{id=16908336, res-name=navigationBarBackground, visibility=VISIBLE, width=1080, height=126, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=2274.0}
+|
++-&gt;View{id=16908335, res-name=statusBarBackground, visibility=VISIBLE, width=1080, height=63, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}
+The complete view hierarchy is available in artifact file 'view-hierarchy-5.txt'.
+at androidx.test.espresso.NoMatchingViewException$Builder.build(NoMatchingViewException.java:5)
+at androidx.test.espresso.base.DefaultFailureHandler.lambda$getNoMatchingViewExceptionTruncater$0(DefaultFailureHandler.java:5)
+at androidx.test.espresso.base.DefaultFailureHandler$$ExternalSyntheticLambda1.truncateExceptionMessage(Unknown Source:2)
+at androidx.test.espresso.base.ViewHierarchyExceptionHandler.handleSafely(ViewHierarchyExceptionHandler.java:5)
+at androidx.test.espresso.base.ViewHierarchyExceptionHandler.handleSafely(ViewHierarchyExceptionHandler.java:1)
+at androidx.test.espresso.base.DefaultFailureHandler$TypedFailureHandler.handle(DefaultFailureHandler.java:4)
+at androidx.test.espresso.base.DefaultFailureHandler.handle(DefaultFailureHandler.java:5)
+at androidx.test.espresso.ViewInteraction.waitForAndHandleInteractionResults(ViewInteraction.java:8)
+at androidx.test.espresso.ViewInteraction.check(ViewInteraction.java:12)
+at com.Chess2v2.app.PhillipSystemTest.testNavigateToGroupFinder(PhillipSystemTest.java:96)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="testNavigateToLeaderboard"></a>
+<h3 class="failures">testNavigateToLeaderboard</h3>
+<span class="code">
+<pre>androidx.test.espresso.NoMatchingViewException: No views in hierarchy found matching: view.getId() is &lt;2131231128/com.Chess2v2.app:id/recyclerViewLeaderboard&gt;
+
+View Hierarchy:
++&gt;DecorView{id=-1, visibility=VISIBLE, width=1080, height=2400, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params={(0,0)(fillxfill) ty=BASE_APPLICATION wanim=0x10302fd
+fl=LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+pfl=NO_MOVE_ANIMATION FORCE_DRAW_STATUS_BAR_BACKGROUND FIT_INSETS_CONTROLLED
+bhv=DEFAULT
+fitSides=}, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=3}
+|
++-&gt;LinearLayout{id=-1, visibility=VISIBLE, width=1080, height=2274, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}
+|
++--&gt;ViewStub{id=16908741, res-name=action_mode_bar_stub, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}
+|
++--&gt;FrameLayout{id=-1, visibility=VISIBLE, width=1080, height=2211, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=63.0, child-count=1}
+|
++---&gt;FitWindowsLinearLayout{id=2131230775, res-name=action_bar_root, visibility=VISIBLE, width=1080, height=2211, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}
+|
++----&gt;ViewStubCompat{id=2131230786, res-name=action_mode_bar_stub, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}
+|
++----&gt;ContentFrameLayout{id=16908290, res-name=content, visibility=VISIBLE, width=1080, height=2211, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=1}
+|
++-----&gt;LinearLayoutCompat{id=-1, visibility=VISIBLE, width=1080, height=2211, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=4}
+|
++------&gt;MaterialTextView{id=-1, visibility=VISIBLE, width=574, height=106, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.appcompat.widget.LinearLayoutCompat$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=253.0, y=263.0, text=ChessApp Login, input-type=0, ime-target=false, has-links=false}
+|
++------&gt;LinearLayout{id=-1, visibility=VISIBLE, width=726, height=131, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.appcompat.widget.LinearLayoutCompat$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=177.0, y=763.0, child-count=2}
+|
++-------&gt;MaterialTextView{id=-1, visibility=VISIBLE, width=260, height=71, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=26.0, text=username: , input-type=0, ime-target=false, has-links=false}
+|
++-------&gt;AppCompatEditText{id=2131230983, res-name=login_username_edt, visibility=VISIBLE, width=466, height=131, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=true, editor-info=[inputType=0x20001 imeOptions=0x48000005 privateImeOptions=null actionLabel=null actionId=0 initialSelStart=0 initialSelEnd=0 initialCapsMode=0x0 hintText=Enter Username Here label=null packageName=null autofillId=null fieldId=0 fieldName=null extras=null hintLocales=null contentMimeTypes=null ], x=260.0, y=0.0, text=, hint=Enter Username Here, input-type=131073, ime-target=false, has-links=false}
+|
++------&gt;LinearLayout{id=-1, visibility=VISIBLE, width=718, height=131, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.appcompat.widget.LinearLayoutCompat$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=181.0, y=973.0, child-count=2}
+|
++-------&gt;MaterialTextView{id=-1, visibility=VISIBLE, width=257, height=71, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=26.0, text=password: , input-type=0, ime-target=false, has-links=false}
+|
++-------&gt;AppCompatEditText{id=2131230981, res-name=login_password_edt, visibility=VISIBLE, width=461, height=131, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=true, editor-info=[inputType=0x81 imeOptions=0x4000006 privateImeOptions=null actionLabel=null actionId=0 initialSelStart=0 initialSelEnd=0 initialCapsMode=0x0 hintText=Enter Password Here label=null packageName=null autofillId=null fieldId=0 fieldName=null extras=null hintLocales=null contentMimeTypes=null ], x=257.0, y=0.0, text=, hint=Enter Password Here, input-type=129, ime-target=false, has-links=false}
+|
++------&gt;LinearLayout{id=-1, visibility=VISIBLE, width=840, height=126, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.appcompat.widget.LinearLayoutCompat$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=120.0, y=1367.0, child-count=2}
+|
++-------&gt;MaterialButton{id=2131230980, res-name=login_login_btn, visibility=VISIBLE, width=394, height=126, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, text=Login, input-type=0, ime-target=false, has-links=false, is-checked=false}
+|
++-------&gt;MaterialButton{id=2131230982, res-name=login_signup_btn, visibility=VISIBLE, width=394, height=126, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=446.0, y=0.0, text=Signup, input-type=0, ime-target=false, has-links=false, is-checked=false}
+|
++-&gt;View{id=16908336, res-name=navigationBarBackground, visibility=VISIBLE, width=1080, height=126, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=2274.0}
+|
++-&gt;View{id=16908335, res-name=statusBarBackground, visibility=VISIBLE, width=1080, height=63, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}
+The complete view hierarchy is available in artifact file 'view-hierarchy-2.txt'.
+at androidx.test.espresso.NoMatchingViewException$Builder.build(NoMatchingViewException.java:5)
+at androidx.test.espresso.base.DefaultFailureHandler.lambda$getNoMatchingViewExceptionTruncater$0(DefaultFailureHandler.java:5)
+at androidx.test.espresso.base.DefaultFailureHandler$$ExternalSyntheticLambda1.truncateExceptionMessage(Unknown Source:2)
+at androidx.test.espresso.base.ViewHierarchyExceptionHandler.handleSafely(ViewHierarchyExceptionHandler.java:5)
+at androidx.test.espresso.base.ViewHierarchyExceptionHandler.handleSafely(ViewHierarchyExceptionHandler.java:1)
+at androidx.test.espresso.base.DefaultFailureHandler$TypedFailureHandler.handle(DefaultFailureHandler.java:4)
+at androidx.test.espresso.base.DefaultFailureHandler.handle(DefaultFailureHandler.java:5)
+at androidx.test.espresso.ViewInteraction.waitForAndHandleInteractionResults(ViewInteraction.java:8)
+at androidx.test.espresso.ViewInteraction.check(ViewInteraction.java:12)
+at com.Chess2v2.app.PhillipSystemTest.testNavigateToLeaderboard(PhillipSystemTest.java:85)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="testNavigateToPlayNow"></a>
+<h3 class="failures">testNavigateToPlayNow</h3>
+<span class="code">
+<pre>androidx.test.espresso.NoMatchingViewException: No views in hierarchy found matching: view.getId() is &lt;2131230948/com.Chess2v2.app:id/home_play_now_btn&gt;
+
+View Hierarchy:
++&gt;DecorView{id=-1, visibility=VISIBLE, width=1080, height=2400, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params={(0,0)(fillxfill) ty=BASE_APPLICATION wanim=0x10302fd
+fl=LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+pfl=NO_MOVE_ANIMATION FORCE_DRAW_STATUS_BAR_BACKGROUND FIT_INSETS_CONTROLLED
+bhv=DEFAULT
+fitSides=}, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=3}
+|
++-&gt;LinearLayout{id=-1, visibility=VISIBLE, width=1080, height=2274, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}
+|
++--&gt;ViewStub{id=16908741, res-name=action_mode_bar_stub, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}
+|
++--&gt;FrameLayout{id=-1, visibility=VISIBLE, width=1080, height=2211, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=63.0, child-count=1}
+|
++---&gt;FitWindowsLinearLayout{id=2131230775, res-name=action_bar_root, visibility=VISIBLE, width=1080, height=2211, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}
+|
++----&gt;ViewStubCompat{id=2131230786, res-name=action_mode_bar_stub, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}
+|
++----&gt;ContentFrameLayout{id=16908290, res-name=content, visibility=VISIBLE, width=1080, height=2211, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=1}
+|
++-----&gt;LinearLayoutCompat{id=-1, visibility=VISIBLE, width=1080, height=2211, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=4}
+|
++------&gt;MaterialTextView{id=-1, visibility=VISIBLE, width=574, height=106, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.appcompat.widget.LinearLayoutCompat$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=253.0, y=263.0, text=ChessApp Login, input-type=0, ime-target=false, has-links=false}
+|
++------&gt;LinearLayout{id=-1, visibility=VISIBLE, width=726, height=131, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.appcompat.widget.LinearLayoutCompat$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=177.0, y=763.0, child-count=2}
+|
++-------&gt;MaterialTextView{id=-1, visibility=VISIBLE, width=260, height=71, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=26.0, text=username: , input-type=0, ime-target=false, has-links=false}
+|
++-------&gt;AppCompatEditText{id=2131230983, res-name=login_username_edt, visibility=VISIBLE, width=466, height=131, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=true, editor-info=[inputType=0x20001 imeOptions=0x48000005 privateImeOptions=null actionLabel=null actionId=0 initialSelStart=0 initialSelEnd=0 initialCapsMode=0x0 hintText=Enter Username Here label=null packageName=null autofillId=null fieldId=0 fieldName=null extras=null hintLocales=null contentMimeTypes=null ], x=260.0, y=0.0, text=, hint=Enter Username Here, input-type=131073, ime-target=false, has-links=false}
+|
++------&gt;LinearLayout{id=-1, visibility=VISIBLE, width=718, height=131, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.appcompat.widget.LinearLayoutCompat$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=181.0, y=973.0, child-count=2}
+|
++-------&gt;MaterialTextView{id=-1, visibility=VISIBLE, width=257, height=71, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=26.0, text=password: , input-type=0, ime-target=false, has-links=false}
+|
++-------&gt;AppCompatEditText{id=2131230981, res-name=login_password_edt, visibility=VISIBLE, width=461, height=131, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=true, editor-info=[inputType=0x81 imeOptions=0x4000006 privateImeOptions=null actionLabel=null actionId=0 initialSelStart=0 initialSelEnd=0 initialCapsMode=0x0 hintText=Enter Password Here label=null packageName=null autofillId=null fieldId=0 fieldName=null extras=null hintLocales=null contentMimeTypes=null ], x=257.0, y=0.0, text=, hint=Enter Password Here, input-type=129, ime-target=false, has-links=false}
+|
++------&gt;LinearLayout{id=-1, visibility=VISIBLE, width=840, height=126, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.appcompat.widget.LinearLayoutCompat$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=120.0, y=1367.0, child-count=2}
+|
++-------&gt;MaterialButton{id=2131230980, res-name=login_login_btn, visibility=VISIBLE, width=394, height=126, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, text=Login, input-type=0, ime-target=false, has-links=false, is-checked=false}
+|
++-------&gt;MaterialButton{id=2131230982, res-name=login_signup_btn, visibility=VISIBLE, width=394, height=126, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=446.0, y=0.0, text=Signup, input-type=0, ime-target=false, has-links=false, is-checked=false}
+|
++-&gt;View{id=16908336, res-name=navigationBarBackground, visibility=VISIBLE, width=1080, height=126, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=2274.0}
+|
++-&gt;View{id=16908335, res-name=statusBarBackground, visibility=VISIBLE, width=1080, height=63, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}
+The complete view hierarchy is available in artifact file 'view-hierarchy-3.txt'.
+at androidx.test.espresso.NoMatchingViewException$Builder.build(NoMatchingViewException.java:5)
+at androidx.test.espresso.base.DefaultFailureHandler.lambda$getNoMatchingViewExceptionTruncater$0(DefaultFailureHandler.java:5)
+at androidx.test.espresso.base.DefaultFailureHandler$$ExternalSyntheticLambda1.truncateExceptionMessage(Unknown Source:2)
+at androidx.test.espresso.base.ViewHierarchyExceptionHandler.handleSafely(ViewHierarchyExceptionHandler.java:5)
+at androidx.test.espresso.base.ViewHierarchyExceptionHandler.handleSafely(ViewHierarchyExceptionHandler.java:1)
+at androidx.test.espresso.base.DefaultFailureHandler$TypedFailureHandler.handle(DefaultFailureHandler.java:4)
+at androidx.test.espresso.base.DefaultFailureHandler.handle(DefaultFailureHandler.java:5)
+at androidx.test.espresso.ViewInteraction.waitForAndHandleInteractionResults(ViewInteraction.java:8)
+at androidx.test.espresso.ViewInteraction.desugaredPerform(ViewInteraction.java:11)
+at androidx.test.espresso.ViewInteraction.perform(ViewInteraction.java:8)
+at com.Chess2v2.app.PhillipSystemTest.testNavigateToPlayNow(PhillipSystemTest.java:72)
+</pre>
+</span>
+</div>
+<div class="test">
+<a name="testNavigateToProfile"></a>
+<h3 class="failures">testNavigateToProfile</h3>
+<span class="code">
+<pre>androidx.test.espresso.NoMatchingViewException: No views in hierarchy found matching: view.getId() is &lt;2131230949/com.Chess2v2.app:id/home_profile_btn&gt;
+
+View Hierarchy:
++&gt;DecorView{id=-1, visibility=VISIBLE, width=1080, height=2400, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params={(0,0)(fillxfill) ty=BASE_APPLICATION wanim=0x10302fd
+fl=LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+pfl=NO_MOVE_ANIMATION FORCE_DRAW_STATUS_BAR_BACKGROUND FIT_INSETS_CONTROLLED
+bhv=DEFAULT
+fitSides=}, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=3}
+|
++-&gt;LinearLayout{id=-1, visibility=VISIBLE, width=1080, height=2274, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}
+|
++--&gt;ViewStub{id=16908741, res-name=action_mode_bar_stub, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}
+|
++--&gt;FrameLayout{id=-1, visibility=VISIBLE, width=1080, height=2211, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=63.0, child-count=1}
+|
++---&gt;FitWindowsLinearLayout{id=2131230775, res-name=action_bar_root, visibility=VISIBLE, width=1080, height=2211, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}
+|
++----&gt;ViewStubCompat{id=2131230786, res-name=action_mode_bar_stub, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}
+|
++----&gt;ContentFrameLayout{id=16908290, res-name=content, visibility=VISIBLE, width=1080, height=2211, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=1}
+|
++-----&gt;LinearLayoutCompat{id=-1, visibility=VISIBLE, width=1080, height=2211, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=4}
+|
++------&gt;MaterialTextView{id=-1, visibility=VISIBLE, width=574, height=106, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.appcompat.widget.LinearLayoutCompat$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=253.0, y=263.0, text=ChessApp Login, input-type=0, ime-target=false, has-links=false}
+|
++------&gt;LinearLayout{id=-1, visibility=VISIBLE, width=726, height=131, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.appcompat.widget.LinearLayoutCompat$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=177.0, y=763.0, child-count=2}
+|
++-------&gt;MaterialTextView{id=-1, visibility=VISIBLE, width=260, height=71, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=26.0, text=username: , input-type=0, ime-target=false, has-links=false}
+|
++-------&gt;AppCompatEditText{id=2131230983, res-name=login_username_edt, visibility=VISIBLE, width=466, height=131, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=true, editor-info=[inputType=0x20001 imeOptions=0x48000005 privateImeOptions=null actionLabel=null actionId=0 initialSelStart=0 initialSelEnd=0 initialCapsMode=0x0 hintText=Enter Username Here label=null packageName=null autofillId=null fieldId=0 fieldName=null extras=null hintLocales=null contentMimeTypes=null ], x=260.0, y=0.0, text=, hint=Enter Username Here, input-type=131073, ime-target=false, has-links=false}
+|
++------&gt;LinearLayout{id=-1, visibility=VISIBLE, width=718, height=131, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.appcompat.widget.LinearLayoutCompat$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=181.0, y=973.0, child-count=2}
+|
++-------&gt;MaterialTextView{id=-1, visibility=VISIBLE, width=257, height=71, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=26.0, text=password: , input-type=0, ime-target=false, has-links=false}
+|
++-------&gt;AppCompatEditText{id=2131230981, res-name=login_password_edt, visibility=VISIBLE, width=461, height=131, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=true, editor-info=[inputType=0x81 imeOptions=0x4000006 privateImeOptions=null actionLabel=null actionId=0 initialSelStart=0 initialSelEnd=0 initialCapsMode=0x0 hintText=Enter Password Here label=null packageName=null autofillId=null fieldId=0 fieldName=null extras=null hintLocales=null contentMimeTypes=null ], x=257.0, y=0.0, text=, hint=Enter Password Here, input-type=129, ime-target=false, has-links=false}
+|
++------&gt;LinearLayout{id=-1, visibility=VISIBLE, width=840, height=126, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.appcompat.widget.LinearLayoutCompat$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=120.0, y=1367.0, child-count=2}
+|
++-------&gt;MaterialButton{id=2131230980, res-name=login_login_btn, visibility=VISIBLE, width=394, height=126, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, text=Login, input-type=0, ime-target=false, has-links=false, is-checked=false}
+|
++-------&gt;MaterialButton{id=2131230982, res-name=login_signup_btn, visibility=VISIBLE, width=394, height=126, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=446.0, y=0.0, text=Signup, input-type=0, ime-target=false, has-links=false, is-checked=false}
+|
++-&gt;View{id=16908336, res-name=navigationBarBackground, visibility=VISIBLE, width=1080, height=126, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=2274.0}
+|
++-&gt;View{id=16908335, res-name=statusBarBackground, visibility=VISIBLE, width=1080, height=63, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@YYYYYY, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}
+The complete view hierarchy is available in artifact file 'view-hierarchy-4.txt'.
+at androidx.test.espresso.NoMatchingViewException$Builder.build(NoMatchingViewException.java:5)
+at androidx.test.espresso.base.DefaultFailureHandler.lambda$getNoMatchingViewExceptionTruncater$0(DefaultFailureHandler.java:5)
+at androidx.test.espresso.base.DefaultFailureHandler$$ExternalSyntheticLambda1.truncateExceptionMessage(Unknown Source:2)
+at androidx.test.espresso.base.ViewHierarchyExceptionHandler.handleSafely(ViewHierarchyExceptionHandler.java:5)
+at androidx.test.espresso.base.ViewHierarchyExceptionHandler.handleSafely(ViewHierarchyExceptionHandler.java:1)
+at androidx.test.espresso.base.DefaultFailureHandler$TypedFailureHandler.handle(DefaultFailureHandler.java:4)
+at androidx.test.espresso.base.DefaultFailureHandler.handle(DefaultFailureHandler.java:5)
+at androidx.test.espresso.ViewInteraction.waitForAndHandleInteractionResults(ViewInteraction.java:8)
+at androidx.test.espresso.ViewInteraction.desugaredPerform(ViewInteraction.java:11)
+at androidx.test.espresso.ViewInteraction.perform(ViewInteraction.java:8)
+at com.Chess2v2.app.PhillipSystemTest.testNavigateToProfile(PhillipSystemTest.java:48)
+</pre>
+</span>
+</div>
+</div>
+<div id="tab1" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Medium_Phone_API_33(AVD) - 13</th>
+</tr>
+</thead>
+<tr>
+<td>testLogin</td>
+<td class="success">passed (4.257s)</td>
+</tr>
+<tr>
+<td>testNavigateToChat</td>
+<td class="failures">failed (1.922s)</td>
+</tr>
+<tr>
+<td>testNavigateToGroupFinder</td>
+<td class="failures">failed (1.421s)</td>
+</tr>
+<tr>
+<td>testNavigateToLeaderboard</td>
+<td class="failures">failed (1.433s)</td>
+</tr>
+<tr>
+<td>testNavigateToPlayNow</td>
+<td class="failures">failed (1.483s)</td>
+</tr>
+<tr>
+<td>testNavigateToProfile</td>
+<td class="failures">failed (1.333s)</td>
+</tr>
+</table>
+</div>
+</div>
+<div id="footer">
+<p>Generated by 
+<a href="http://www.gradle.org">Gradle 8.7</a> at Dec 4, 2024, 9:06:52 PM</p>
+</div>
+</div>
+</body>
