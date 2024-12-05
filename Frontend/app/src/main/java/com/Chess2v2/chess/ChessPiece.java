@@ -7,8 +7,7 @@ public class ChessPiece {
     private final int imageResource;
     private final boolean isWhite;
 
-    private final String name;
-    public ChessPiece(@DrawableRes int imageResource, String name, boolean isWhite) {
+    public ChessPiece(@DrawableRes int imageResource, String knight, boolean isWhite) {
         this.imageResource = imageResource;
         this.isWhite = isWhite;
         this.name = name;

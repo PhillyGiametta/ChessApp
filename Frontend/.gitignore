@@ -1,3 +1,5 @@
+!gradle/wrapper/gradle-wrapper.jar
+
 *.iml
 .gradle
 /local.properties
@@ -7,10 +9,13 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+
 .DS_Store
+
 /build
 /captures
 .externalNativeBuild
 .cxx
+
 local.properties
 !gradle/wrapper/gradle-wrapper.jar
