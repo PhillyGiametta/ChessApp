@@ -10,6 +10,7 @@ public class ChessPiece {
     public ChessPiece(@DrawableRes int imageResource, String knight, boolean isWhite) {
         this.imageResource = imageResource;
         this.isWhite = isWhite;
+        this.name = name;
     }
 
     public int getImageResource() {
@@ -18,5 +19,9 @@ public class ChessPiece {
 
     public boolean isWhitePiece() {
         return isWhite;
+    }
+
+    public String getName() {
+        return name;
     }
 }

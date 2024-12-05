@@ -1,6 +1,7 @@
 package com.Chess2v2.app;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +30,7 @@ public class HomeActivity extends AppCompatActivity {
         findGroupButton = findViewById(R.id.find_group_button); // Initialize the new button
 
         profileButton.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, WebSocketChatListener.ProfileActivity.class);
+            Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
             startActivity(intent);
         });
 
@@ -53,5 +54,6 @@ public class HomeActivity extends AppCompatActivity {
             Intent intent = new Intent(HomeActivity.this, Group_finder.class);
             startActivity(intent);
         });
+        //MediaPlayer mediaPlayer = new MediaPlayer(this, R.raw.music);
     }
 }

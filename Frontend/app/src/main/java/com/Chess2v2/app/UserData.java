@@ -4,12 +4,14 @@ public class UserData {
 
     String userEmail, userName, userPassword, userMadeDate, userLastLoginDate,
             activity, passwordResetToken, userId;
+    short settings;
 
     public UserData(String userEmail, String userName, String userPassword, String userid) {
         this.userEmail = userEmail;
         this.userName = userName;
         this.userPassword = userPassword;
         this.userId = userid;
+        settings = 1; //TODO
     }
 
     public String getUserEmail() {
@@ -75,4 +77,8 @@ public class UserData {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    public short getSettings() { return settings; }
+
+    public void setSettings(short newSettings) { this.settings = newSettings;}
 }

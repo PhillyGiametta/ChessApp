@@ -19,7 +19,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
+/**
+ * sets up the Leaderboard and fills its recycler view with a list
+ * of LeaderboardItem objects created from the database
+ */
 public class LeaderboardActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
@@ -29,6 +32,9 @@ public class LeaderboardActivity extends AppCompatActivity {
     private ApiService apiService;
 
     @Override
+    /**
+    @param sets up the RecyclerView, connects widgets to XML view
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
@@ -62,6 +68,9 @@ public class LeaderboardActivity extends AppCompatActivity {
         refreshButton.setOnClickListener(v -> loadLeaderboardData());
     }
 
+    /*
+    @Param testing testing 123
+     */
     private void loadLeaderboardData() {
         Call<List<LeaderboardEntry>> call = apiService.getLeaderboard();
 

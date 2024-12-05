@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.Chess2v2.app.R;
+import com.Chess2v2.app.UserData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.Ch
     private final List<Position> board;
     private final OnPositionSelectedListener onPositionSelectedListener;
     private int currentTurn = 0; // 0 for white, 1 for black
+    private UserData player = null;
 
     private List<Move> moves;
     private int previousAdapterPosition = -1;
