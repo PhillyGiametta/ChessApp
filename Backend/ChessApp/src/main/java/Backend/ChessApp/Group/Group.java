@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Entity
 @Table(name = "groups", schema = "DBChessApp")
@@ -38,6 +39,8 @@ public class Group {
     public Group(String groupName){
         this.groupName = groupName;
         this.users = new ArrayList<>();
+        joinCode = "";
+        generateJoinCode();
     }
 
     //Getters and Setters
@@ -119,5 +122,14 @@ public class Group {
 
     public void setJoinCode(String joinCode){
         this.joinCode = joinCode;
+    }
+
+    private void generateJoinCode(){
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        Random r = new Random();
+        while(joinCode.length() < 5){
+            int index = (int) (r.nextFloat() * chars.length());
+            joinCode += chars.charAt(index);
+        }
     }
 }
