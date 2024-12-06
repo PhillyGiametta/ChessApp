@@ -21,6 +21,7 @@ public class Group {
 
     private String groupName;
     private boolean isFull;
+    private String joinCode;
 
     @OneToMany(mappedBy = "group",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference
@@ -110,5 +111,13 @@ public class Group {
 
     public String getGroupName(){
         return groupName;
+    }
+
+    public String getJoinCode(){
+        return joinCode;
+    }
+
+    public void setJoinCode(String joinCode){
+        this.joinCode = joinCode;
     }
 }
