@@ -29,6 +29,12 @@ public class GroupController {
         return groupRepository.findBygroupName(groupName);
     }
 
+    //Get group by join code
+    @GetMapping(path = "/groups/{joinCode}")
+    Group getGroupByJoinCode(@PathVariable String joinCode){
+        return groupRepository.findByjoinCode(joinCode);
+    }
+
     //Create
     @Operation(summary = "Creates a group")
     @PostMapping(path = "/groups")
