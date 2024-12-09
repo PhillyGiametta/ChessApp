@@ -30,8 +30,7 @@ public class Admin {
 //    @JoinColumn(name = "game_id") // join with game_id
 //    ChessGame chessGame;
 
-    @OneToOne
-    @JoinColumn(name = "group_id")
+    @OneToOne(mappedBy = "admin", orphanRemoval = true)
     private Group group;
 
 

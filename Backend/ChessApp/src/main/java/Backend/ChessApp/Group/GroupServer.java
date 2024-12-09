@@ -1,5 +1,7 @@
 package Backend.ChessApp.Group;
 
+import Backend.ChessApp.AdminControl.Admin;
+import Backend.ChessApp.AdminControl.AdminRepo;
 import Backend.ChessApp.Users.User;
 import Backend.ChessApp.Users.UserRepository;
 import com.fasterxml.jackson.databind.util.JSONPObject;
@@ -36,6 +38,8 @@ public class GroupServer {
 
     private static GroupService groupService;
 
+    private static AdminRepo adminRepo;
+
     @Autowired
     public void setGroupService(GroupService serv) {
         groupService = serv;
@@ -49,6 +53,11 @@ public class GroupServer {
     @Autowired
     public void setGroupRepository(GroupRepository repo) {
         groupRepository = repo;
+    }
+
+    @Autowired
+    public void setAdminRepo(AdminRepo repo){
+        adminRepo = repo;
     }
 
     @OnOpen
@@ -73,13 +82,17 @@ public class GroupServer {
             return;
         }
 
-        if(group.addUser(user)){
+        if(groupService.addUserToGroup(group, user)){
             //add user to group
             groupSessions.get(groupName).put(session, username);
             sessionUsernameMap.put(session, username);
             usernameSessionMap.put(username, session);
 
+            //assign admin
+            Admin admin = group.getAdminId();
+
             //update repos
+            adminRepo.save(admin);
             groupRepository.save(group);
             userRepository.save(user);
         }else{

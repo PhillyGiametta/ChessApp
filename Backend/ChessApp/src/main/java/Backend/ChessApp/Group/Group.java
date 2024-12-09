@@ -2,6 +2,7 @@ package Backend.ChessApp.Group;
 
 import Backend.ChessApp.AdminControl.Admin;
 import Backend.ChessApp.Users.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
@@ -29,7 +30,8 @@ public class Group {
     @JsonManagedReference
     private List<User> users = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "admin_id")
     private Admin admin;
 
     public Group(){
@@ -93,8 +95,8 @@ public class Group {
 
         //Assign leader to first user who joins (the user who created the group)
         if(admin == null){
-            admin = new Admin();
-            admin.setUser(user);
+            admin = new Admin(user);
+            admin.setGroup(this);
         }
 
         if(users.size() >= 4){
@@ -109,6 +111,8 @@ public class Group {
         users.remove(user);
         user.setGroup(null);
         isFull = false;
+
+        if(this.isEmpty()) return;
 
         //Reassign leader if the leader leaves
         if(admin.getUser() == user && !users.isEmpty()){
