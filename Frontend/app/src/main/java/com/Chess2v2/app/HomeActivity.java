@@ -29,10 +29,12 @@ public class HomeActivity extends AppCompatActivity {
         leaderboardButton = findViewById(R.id.home_leaderboard_btn);
         findGroupButton = findViewById(R.id.find_group_button); // Initialize the new button
 
+
         profileButton.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
             startActivity(intent);
         });
+
 
         chatButton.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, ChatActivity.class);

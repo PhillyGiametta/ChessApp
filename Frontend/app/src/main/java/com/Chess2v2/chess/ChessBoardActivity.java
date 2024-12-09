@@ -72,10 +72,17 @@ public class ChessBoardActivity extends AppCompatActivity {
 
         WebSocketChessListener listener = new WebSocketChessListener(this);
         webSocketManager = new WebSocketManager(listener);
+        ChessApplication appInstance = ChessApplication.getInstance();
 
         // Construct and connect to WebSocket server
+        String groupName = appInstance.getGroupName();
+        String userName = appInstance.getUserName();
         String webSocketUrl = "ws://10.90.73.46:8080/game/lofe";
+
+
+//        String webSocketUrl = appInstance.getWebSocketBaseUrl() + groupName + "/" + userName;
         webSocketManager.connect(webSocketUrl);
+
     }
 
 

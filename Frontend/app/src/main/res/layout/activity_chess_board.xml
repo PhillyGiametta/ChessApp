@@ -6,6 +6,8 @@
 
     <!-- Back Button -->
     <Button
+        style="@style/CustomButtonStyle"
+
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,6 +17,8 @@
 
 
     <Button
+        style="@style/CustomButtonStyle"
+
         android:id="@+id/startButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
