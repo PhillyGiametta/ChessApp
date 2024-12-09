@@ -23,6 +23,7 @@ public class Group {
     private String groupName;
     private boolean isFull;
     private String joinCode;
+    private boolean isPrivate;
 
     @OneToMany(mappedBy = "group",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference
@@ -37,6 +38,15 @@ public class Group {
 
     //Constructor
     public Group(String groupName){
+        this.groupName = groupName;
+        this.isPrivate = false;
+        this.users = new ArrayList<>();
+        joinCode = "";
+        generateJoinCode();
+    }
+
+    public Group(String groupName, boolean isPrivate){
+        this.isPrivate = isPrivate;
         this.groupName = groupName;
         this.users = new ArrayList<>();
         joinCode = "";
@@ -122,6 +132,14 @@ public class Group {
 
     public void setJoinCode(String joinCode){
         this.joinCode = joinCode;
+    }
+
+    public boolean isPrivate(){
+        return isPrivate;
+    }
+
+    public void setPrivate(boolean isPrivate){
+        this.isPrivate = isPrivate;
     }
 
     private void generateJoinCode(){

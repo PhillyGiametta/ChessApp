@@ -52,7 +52,7 @@ public class GroupServer {
     }
 
     @OnOpen
-    public void onOpen(Session session, @PathParam("groupName") String groupName, @PathParam("username") String username) throws IOException {
+    public void onOpen(Session session, @PathParam("groupName") String groupName, @PathParam("username") String username, @PathParam("joinCode") String joinCode) throws IOException {
         // server side log
         logger.info("[onOpen] User {} joined group {}", username, groupName);
 
@@ -67,6 +67,11 @@ public class GroupServer {
 
         //init group if it doesnt exist
         groupSessions.computeIfAbsent(groupName, k -> new Hashtable<>());
+
+        if(group.isPrivate() && !joinCode.equals(group.getJoinCode())){
+            session.close();
+            return;
+        }
 
         if(group.addUser(user)){
             //add user to group
