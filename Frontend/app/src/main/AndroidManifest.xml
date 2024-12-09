@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
+        android:name="com.Chess2v2.ChessApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -51,7 +52,7 @@
             android:exported="true" />
 
         <activity
-            android:name="com.Chess2v2.app.WebSocketChatListener$ProfileActivity"
+            android:name="com.Chess2v2.app.ProfileActivity"
             android:exported="true" />
 
         <activity

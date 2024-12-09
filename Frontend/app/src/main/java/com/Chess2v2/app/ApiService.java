@@ -12,6 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
 
@@ -31,6 +32,10 @@ public interface ApiService {
     // Update a profile by username
     @PUT("/users/{userName}")
     Call<UserResponse> updateProfile(@Path("userName") String userName, @Body UserRequest user);
+
+    @PUT("/users/userEmail/{userEmail}")
+    Call<UserResponse> updateUserByUserEmail(@Path("userEmail") String userEmail,
+                                             @Query("userPassword") String userPassword);
 
     // Delete profile by userId
     @DELETE("/users/{userId}")

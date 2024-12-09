@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <TextView
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ChessApp Signup"
@@ -15,7 +16,8 @@
         android:layout_marginTop="100dp"
         android:layout_marginBottom="80dp"
         android:textSize="30dp"
-        android:textColor="#fc0303">
+        style="@style/HeadingTextStyle">
+
     </TextView>
 
     <LinearLayout
@@ -98,6 +100,8 @@
         android:orientation="horizontal">
 
         <Button
+            style="@style/CustomButtonStyle"
+
             android:id="@+id/signup_login_btn"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
@@ -108,6 +112,8 @@
         </Button>
 
         <Button
+            style="@style/CustomButtonStyle"
+
             android:id="@+id/signup_signup_btn"
             android:layout_width="150dp"
             android:layout_height="wrap_content"

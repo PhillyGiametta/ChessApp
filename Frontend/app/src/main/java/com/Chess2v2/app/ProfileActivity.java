@@ -17,6 +17,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -62,7 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Button click listeners
         createButton.setOnClickListener(v -> createProfile());
-        updateButton.setOnClickListener(v -> updateProfile());
+        //updateButton.setOnClickListener(v -> updateProfile());
         deleteButton.setOnClickListener(v -> deleteProfile());
         listButton.setOnClickListener(v -> listProfiles());
 
@@ -138,17 +139,17 @@ public class ProfileActivity extends AppCompatActivity {
             return;
         }
 
+
+        Toast.makeText(this, "Update Clicked", Toast.LENGTH_SHORT).show();
         UserRequest updatedUser = new UserRequest(username, email, password);
 
-        apiService.updateProfile(ChessApplication.getInstance().getUserName(), updatedUser).enqueue(new Callback<UserResponse>() {
+        apiService.updateUserByUserEmail(email,password).enqueue(new Callback<UserResponse>() {
             @Override
-            public void onResponse(Call<UserResponse> call, retrofit2.Response<UserResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    ChessApplication.getInstance().setUserName(response.body().getUsername());
-                    ChessApplication.getInstance().setEmail(response.body().getEmail());
-                    Toast.makeText(ProfileActivity.this, "Profile updated!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(ProfileActivity.this, "Update failed: " + response.message(), Toast.LENGTH_SHORT).show();
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                if(response.isSuccessful() && response.body() != null){
+                    Toast.makeText(ProfileActivity.this, "Updated profile successfully", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(ProfileActivity.this, "Failed to update", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -157,6 +158,24 @@ public class ProfileActivity extends AppCompatActivity {
                 Toast.makeText(ProfileActivity.this, "Network Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        /*apiService.updateProfile(ChessApplication.getInstance().getUserName(), updatedUser).enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, retrofit2.Response<UserResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ChessApplication.getInstance().setUserName(response.body().getUsername());
+                    ChessApplication.getInstance().setEmail(response.body().getEmail());
+                    Toast.makeText(ProfileActivity.this, "Profile updated!", Toast.LENGTH_SHORT).show();
+             i   } else {
+                    Toast.makeText(ProfileActivity.this, "Update failed: " + response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                Toast.makeText(ProfileActivity.this, "Network Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });*/
     }
 
     // Delete profile function

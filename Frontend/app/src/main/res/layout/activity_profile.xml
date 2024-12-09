@@ -30,6 +30,8 @@
 
     <!-- Create Button -->
     <Button
+        style="@style/CustomButtonStyle"
+
         android:id="@+id/profile_create_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,6 +39,8 @@
 
     <!-- Update Button -->
     <Button
+        style="@style/CustomButtonStyle"
+
         android:id="@+id/profile_update_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,31 +48,29 @@
 
     <!-- Delete Button -->
     <Button
+        style="@style/CustomButtonStyle"
+
         android:id="@+id/profile_delete_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Delete Profile"
-        android:layout_marginTop="16dp"
-        android:background="#FF0000"
-        android:textColor="#FFFFFF" />
+        android:text="Delete Profile" />
 
     <!-- List Button -->
     <Button
+        style="@style/CustomButtonStyle"
+
         android:id="@+id/profile_list_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="List Profiles"
         android:layout_marginTop="16dp" />
+
     <Button
         android:id="@+id/back_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:text="Back"
-        android:layout_marginTop="20dp"
-        android:textSize="18sp"
-        android:backgroundTint="#D32F2F"
-        android:textColor="#FFFFFF" />
+        style="@style/CustomButtonStyle"
+        android:layout_width="154dp"
+        android:layout_marginStart="16dp"
+        android:text="Back" />
 
 
 </LinearLayout>
