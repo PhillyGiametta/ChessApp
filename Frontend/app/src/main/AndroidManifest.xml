@@ -19,6 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ChessApp"
+
         tools:targetApi="31"
         android:usesCleartextTraffic="true">
 
@@ -43,7 +44,7 @@
             android:exported="true" />
 
         <activity
-            android:name="com.Chess2v2.groups.Group_finder"
+            android:name="com.Chess2v2.groups.GroupActivity"
             android:exported="true" />
 
 

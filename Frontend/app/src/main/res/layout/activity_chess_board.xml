@@ -1,47 +1,68 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="8dp">
 
-    <!-- Back Button -->
-    <Button
-        style="@style/CustomButtonStyle"
-
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
+    <!-- Top Controls: Back and Start Button -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Back"
-        android:layout_gravity="start"
-        android:layout_marginBottom="16dp" />
+        android:orientation="horizontal"
+        android:padding="8dp">
 
+        <!-- Back Button -->
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginBottom="16dp"
+            android:text="Back"
+            tools:ignore="HardcodedText" />
 
-    <Button
-        style="@style/CustomButtonStyle"
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-        android:id="@+id/startButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start Game"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp" />
+        <!-- Start Button -->
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:text="Start Game"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
 
+    <!-- Player 1 Section -->
+    <com.Chess2v2.chess.PlayerInfoView
+        android:id="@+id/player1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-    <!-- Player Turn TextView -->
+    <!-- Player Turn Text -->
     <TextView
         android:id="@+id/playerTurnTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="White's Turn"
-        android:textSize="20sp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp"
+        android:textSize="20sp" />
 
     <!-- Chess Board RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chessBoardRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:padding="4dp" />
+
+    <!-- Player 2 Section -->
+    <com.Chess2v2.chess.PlayerInfoView
+        android:id="@+id/player2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

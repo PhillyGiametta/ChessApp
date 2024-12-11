@@ -4,6 +4,7 @@ import com.Chess2v2.app.UserData;
 
 public class Group {
     String groupName;
+    int id;
 
     UserData[] users;
 
@@ -16,6 +17,21 @@ public class Group {
         this.users = users;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public UserData[] getUsers() {
+        return users;
+    }
+
+    public void setUsers(UserData[] users) {
+        this.users = users;
+    }
 
     public String getGroupName() {
         return groupName;

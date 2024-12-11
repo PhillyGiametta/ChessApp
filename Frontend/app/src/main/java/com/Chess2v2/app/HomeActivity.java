@@ -1,14 +1,13 @@
 package com.Chess2v2.app;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.Chess2v2.leaderboard.LeaderboardActivity;
 import com.Chess2v2.chess.ChessBoardActivity;
-import com.Chess2v2.groups.Group_finder; // Import the GroupFinder activity
+import com.Chess2v2.groups.GroupActivity; // Import the GroupFinder activity
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -53,7 +52,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // Set OnClickListener for the new Find Group button
         findGroupButton.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, Group_finder.class);
+            Intent intent = new Intent(HomeActivity.this, GroupActivity.class);
             startActivity(intent);
         });
         //MediaPlayer mediaPlayer = new MediaPlayer(this, R.raw.music);
