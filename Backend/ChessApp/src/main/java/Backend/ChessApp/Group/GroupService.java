@@ -23,7 +23,7 @@ public class GroupService {
     private EntityManager em;
 
     @Transactional
-    public void removeUserFromGroupAndDeleteIfEmpty(String groupName, String username) {
+    public boolean removeUserFromGroupAndDeleteIfEmpty(String groupName, String username) {
         Group group = groupRepository.findBygroupName(groupName);
         User user = userRepository.findByUserName(username);
         group.removeUser(user);
@@ -38,6 +38,7 @@ public class GroupService {
                 adminRepo.delete(group.getAdminId());
             }
             groupRepository.delete(group);
+            return true;
         }else{
             throw new IllegalStateException("Group is not empty");
         }

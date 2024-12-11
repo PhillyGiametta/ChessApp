@@ -106,6 +106,7 @@ public class ChessGameServer {
         sessionUserMap.put(session, user);
         userSessionMap.put(user, session);
         userGameMap.put(user, chessGame);
+        gameSessionMap.put(chessGame, Arrays.asList(session));
         logger.info("[onOpen] User {} joined", userName);
         // Set the first user as the Admin
         if (adminUser == null) {
@@ -170,10 +171,10 @@ public class ChessGameServer {
             return;
         }
         if(chessGame.getCurrentPlayerColor()){
-            chessGame.blackTimer.start();
+//            chessGame.blackTimer.start();
         }
         else{
-            chessGame.whiteTimer.start();
+//            chessGame.whiteTimer.start();
         }
         JSONObject json = new JSONObject(message);
         int row = json.getInt("rowStart");

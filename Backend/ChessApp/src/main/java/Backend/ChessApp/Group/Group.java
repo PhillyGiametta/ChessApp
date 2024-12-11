@@ -2,7 +2,6 @@ package Backend.ChessApp.Group;
 
 import Backend.ChessApp.AdminControl.Admin;
 import Backend.ChessApp.Users.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
@@ -32,10 +31,13 @@ public class Group {
 
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "admin_id")
+    @JsonManagedReference
     private Admin admin;
 
     public Group(){
         //NULL Group
+        this.isFull = false;
+        this.joinCode = generateJoinCode();
     }
 
     //Constructor
@@ -43,16 +45,14 @@ public class Group {
         this.groupName = groupName;
         this.isPrivate = false;
         this.users = new ArrayList<>();
-        joinCode = "";
-        generateJoinCode();
+        this.joinCode = generateJoinCode();
     }
 
     public Group(String groupName, boolean isPrivate){
         this.isPrivate = isPrivate;
         this.groupName = groupName;
         this.users = new ArrayList<>();
-        joinCode = "";
-        generateJoinCode();
+        joinCode = generateJoinCode();
     }
 
     //Getters and Setters
@@ -146,12 +146,14 @@ public class Group {
         this.isPrivate = isPrivate;
     }
 
-    private void generateJoinCode(){
+    private String generateJoinCode(){
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         Random r = new Random();
-        while(joinCode.length() < 5){
+        String jc = "";
+        while(jc.length() < 5){
             int index = (int) (r.nextFloat() * chars.length());
-            joinCode += chars.charAt(index);
+            jc += chars.charAt(index);
         }
+        return jc;
     }
 }

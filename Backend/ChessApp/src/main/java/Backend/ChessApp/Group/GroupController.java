@@ -2,11 +2,11 @@ package Backend.ChessApp.Group;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.transaction.Transactional;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,8 +18,15 @@ public class GroupController {
     //Get all groups
     @Operation(summary = "Fetches all groups")
     @GetMapping(path = "/groups")
+    @ResponseBody
     public List<Group> getAllGroups() {
-        return groupRepository.findAll();
+        JSONObject json = new JSONObject();
+        List<Group> groups = new ArrayList<>();
+        Iterable<Group> groupsAll = groupRepository.findAll();
+        for(Group group : groupsAll) {
+            groups.add(group);
+        }
+        return groups;
     }
 
     //Get specific group

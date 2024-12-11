@@ -4,15 +4,12 @@ import Backend.ChessApp.AdminControl.Admin;
 import Backend.ChessApp.AdminControl.AdminRepo;
 import Backend.ChessApp.Users.User;
 import Backend.ChessApp.Users.UserRepository;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import jakarta.transaction.Transactional;
 import jakarta.websocket.*;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.stereotype.Controller;
 import java.io.IOException;
 import java.util.Hashtable;
@@ -21,7 +18,7 @@ import java.util.Map;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@ServerEndpoint("/group/{groupName}/{username}")
+@ServerEndpoint("/group/{groupName}/{username}/{joinCode}")
 @Controller
 public class GroupServer {
 
@@ -77,7 +74,7 @@ public class GroupServer {
         //init group if it doesnt exist
         groupSessions.computeIfAbsent(groupName, k -> new Hashtable<>());
 
-        if(group.isPrivate() && !joinCode.equals(group.getJoinCode())){
+        if(group.isPrivate() && !group.getJoinCode().equals(joinCode)){
             session.close();
             return;
         }
@@ -130,13 +127,15 @@ public class GroupServer {
         logger.info("[onClose] " + username);
 
         // Remove user from mappings
-        groupSessions.get(groupName).remove(session);
+        groupSessions.remove(session);
         sessionUsernameMap.remove(session);
         usernameSessionMap.remove(username);
         session.close();
 
         // Remove the user from the group and delete the group if empty
-        groupService.removeUserFromGroupAndDeleteIfEmpty(groupName, username);
+        if(groupService.removeUserFromGroupAndDeleteIfEmpty(groupName, username)){
+            return;
+        }
         broadcastPlayerList(groupName);
         broadcastToGroup(groupName, "User " + username + " has left the group.");
     }
