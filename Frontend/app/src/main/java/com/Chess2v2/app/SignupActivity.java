@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.Chess2v2.ChessApplication;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -50,7 +51,7 @@ public class SignupActivity extends AppCompatActivity {
 
         // Initialize Retrofit with the backend API URL and Gson converter
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.90.73.46:8080/")
+                .baseUrl(ChessApplication.getInstance().getBaseUrl())
                 .addConverterFactory(GsonConverterFactory.create(gson)) // Use lenient Gson
                 .build();
 
@@ -68,66 +69,114 @@ public class SignupActivity extends AppCompatActivity {
         });
 
         // Set click listener on signup button
-        signupButton.setOnClickListener(new View.OnClickListener() {
+        signupButton.setOnClickListener(v -> {
+            loginButton.setEnabled(false);
+            signupButton.setEnabled(false);
+            SignupCallback callback = new SignupCallback();
+            doSignup(callback);
+        });
+    }
+
+    protected void doSignup(SignupCallback callback) {
+        // Grab strings from user inputs
+        String username = usernameEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+        String confirm = confirmEditText.getText().toString();
+
+        // Validate input fields are not empty and passwords match
+        if (username.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
+            Toast.makeText(SignupActivity.this, "Please fill all fields.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (!password.equals(confirm)) {
+            Toast.makeText(SignupActivity.this, "Passwords don't match", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Toast.makeText(getApplicationContext(), "Signing up...", Toast.LENGTH_LONG).show();
+
+        // Create the request body (UserRequest object)
+        UserRequest userRequest = new UserRequest(username, password);
+        Log.d("SignupActivity", "Sending JSON: " + new Gson().toJson(userRequest));
+
+        // API call for signup using Retrofit
+        apiService.signupUser(userRequest).enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onClick(View v) {
-                // Grab strings from user inputs
-                String username = usernameEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
-                String confirm = confirmEditText.getText().toString();
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    try {
+                        String responseMessage = response.body().string();
+                        Toast.makeText(SignupActivity.this, responseMessage, Toast.LENGTH_LONG).show();
 
-                // Validate input fields are not empty and passwords match
-                if (username.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
-                    Toast.makeText(SignupActivity.this, "Please fill all fields.", Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                if (!password.equals(confirm)) {
-                    Toast.makeText(SignupActivity.this, "Passwords don't match", Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                Toast.makeText(getApplicationContext(), "Signing up...", Toast.LENGTH_LONG).show();
-
-                // Create the request body (UserRequest object)
-                UserRequest userRequest = new UserRequest(username, password);
-                Log.d("LoginActivity", "Sending JSON: " + new Gson().toJson(userRequest));
-
-                // API call for signup using Retrofit
-                apiService.signupUser(userRequest).enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            try {
-                                String responseMessage = response.body().string();
-                                Toast.makeText(SignupActivity.this, responseMessage, Toast.LENGTH_LONG).show();
-
-                                // Navigate to the next activity if signup is successful
-                                if (responseMessage.equals("signup successful")) {
-                                    Intent intent = new Intent(SignupActivity.this, HomeActivity.class);
-                                    intent.putExtra("USERNAME", username); // Pass the username
-                                    startActivity(intent);
-                                    finish(); // Close SignupActivity
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                Toast.makeText(SignupActivity.this, "Error reading response", Toast.LENGTH_LONG).show();
-                            }
-                        } else {
-                            Toast.makeText(SignupActivity.this, "Signup failed: " + response.message(), Toast.LENGTH_LONG).show();
-                            Log.e("SignupError", "Response failure: " + response.message());
+                        // Navigate to the next activity if signup is successful
+                        if (responseMessage.equals("Successfully signed up")) {
+                            fetchUserProfile(username, callback);
                         }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(SignupActivity.this, "Error reading response", Toast.LENGTH_LONG).show();
+                        callback.onFail();
                     }
+                } else {
+                    Toast.makeText(SignupActivity.this, "Signup failed: " + response.message(), Toast.LENGTH_LONG).show();
+                    Log.e("SignupError", "Response failure: " + response.message());
+                    callback.onFail();
+                }
+            }
 
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        // Handle network or parsing failure
-                        Toast.makeText(SignupActivity.this, "Network Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                        Log.e("NetworkError", t.toString());
-                        t.printStackTrace(); // Optional: prints the stack trace for more details
-                    }
-                });
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                // Handle network or parsing failure
+                Toast.makeText(SignupActivity.this, "Network Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e("NetworkError", t.toString());
+                t.printStackTrace(); // Optional: prints the stack trace for more details
+                callback.onFail();
             }
         });
+    }
+
+    protected void fetchUserProfile(String username, SignupCallback callback) {
+
+        Log.d("SignupActivity", "Sending Get Profile");
+
+        // API call for Signup using Retrofit
+        apiService.getProfile(username).enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                // This is where you should replace the code
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onComplete(response.body().getId(), response.body().getEmail(), response.body().getUsername());
+                } else {
+                    Toast.makeText(SignupActivity.this, "Fetching user profile: " + response.message(), Toast.LENGTH_LONG).show();
+                    Log.e("SignupError", "Response failure: " + response.message());
+                    callback.onFail();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                // Network error or JSON parsing issue
+                Toast.makeText(SignupActivity.this, "Network Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e("NetworkError", "Error during signup", t);
+                callback.onFail();
+            }
+        });
+    }
+
+    protected class SignupCallback {
+        public void onComplete(int userId, String email, String userName) {
+            ChessApplication.getInstance().setUserId(userId);
+            ChessApplication.getInstance().setEmail(email);
+            ChessApplication.getInstance().setUserName(userName);
+
+            Intent intent = new Intent(SignupActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish(); // Close SignupActivity to prevent going back
+        }
+        public void onFail() {
+            loginButton.setEnabled(true);
+            signupButton.setEnabled(true);
+        }
     }
 }

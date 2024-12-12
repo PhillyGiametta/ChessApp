@@ -2,6 +2,7 @@ package Backend.ChessApp.Game;
 
 import Backend.ChessApp.AdminControl.AdminRepo;
 import Backend.ChessApp.Game.Board.Board;
+import Backend.ChessApp.Game.Board.BoardSnapshotRepo;
 import Backend.ChessApp.Game.Board.Position;
 import Backend.ChessApp.Game.Pieces.PieceColor;
 import Backend.ChessApp.Leaderboard.LeaderboardEntry;
@@ -33,6 +34,7 @@ public class ChessGameServer {
     private static UserRepository userRepository;
     private static ChessGameRepository chessGameRepository;
     private static AdminRepo adminRepo;
+    private static BoardSnapshotRepo boardSnapshotRepo;
     private static SettingsRepo settingsRepo;
 
     private static GameSettingsService gameSettingsService;
@@ -61,6 +63,11 @@ public class ChessGameServer {
     @Autowired
     public void setGameSettingsService(GameSettingsService service) {
         gameSettingsService = service;
+    }
+
+    @Autowired
+    public void setBoardSnapshotRepo(BoardSnapshotRepo repo){
+        boardSnapshotRepo = repo;
     }
 
     @Autowired
@@ -100,8 +107,8 @@ public class ChessGameServer {
             session.close();
             return;
         }
-
-
+        //put user into the game
+        sessionGameMap.put(session, chessGame);
         sessionUserMap.put(session, user);
         userSessionMap.put(user, session);
         logger.info("[onOpen] User {} joined", userName);

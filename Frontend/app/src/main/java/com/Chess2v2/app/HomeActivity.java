@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.Chess2v2.leaderboard.LeaderboardActivity;
 import com.Chess2v2.chess.ChessBoardActivity;
-import com.Chess2v2.groups.Group_finder; // Import the GroupFinder activity
+import com.Chess2v2.groups.GroupActivity; // Import the GroupFinder activity
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -28,10 +28,12 @@ public class HomeActivity extends AppCompatActivity {
         leaderboardButton = findViewById(R.id.home_leaderboard_btn);
         findGroupButton = findViewById(R.id.find_group_button); // Initialize the new button
 
+
         profileButton.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, WebSocketChatListener.ProfileActivity.class);
+            Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
             startActivity(intent);
         });
+
 
         chatButton.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, ChatActivity.class);
@@ -50,8 +52,9 @@ public class HomeActivity extends AppCompatActivity {
 
         // Set OnClickListener for the new Find Group button
         findGroupButton.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, Group_finder.class);
+            Intent intent = new Intent(HomeActivity.this, GroupActivity.class);
             startActivity(intent);
         });
+        //MediaPlayer mediaPlayer = new MediaPlayer(this, R.raw.music);
     }
 }

@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Entity
 @Table(name = "groups", schema = "DBChessApp")
@@ -21,22 +22,37 @@ public class Group {
 
     private String groupName;
     private boolean isFull;
+    private String joinCode;
+    private boolean isPrivate;
 
     @OneToMany(mappedBy = "group",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<User> users = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "admin_id")
+    @JsonManagedReference
     private Admin admin;
 
     public Group(){
         //NULL Group
+        this.isFull = false;
+        this.joinCode = generateJoinCode();
     }
 
     //Constructor
     public Group(String groupName){
         this.groupName = groupName;
+        this.isPrivate = false;
         this.users = new ArrayList<>();
+        this.joinCode = generateJoinCode();
+    }
+
+    public Group(String groupName, boolean isPrivate){
+        this.isPrivate = isPrivate;
+        this.groupName = groupName;
+        this.users = new ArrayList<>();
+        joinCode = generateJoinCode();
     }
 
     //Getters and Setters
@@ -79,8 +95,8 @@ public class Group {
 
         //Assign leader to first user who joins (the user who created the group)
         if(admin == null){
-            admin = new Admin();
-            admin.setUser(user);
+            admin = new Admin(user);
+            admin.setGroup(this);
         }
 
         if(users.size() >= 4){
@@ -96,6 +112,8 @@ public class Group {
         user.setGroup(null);
         isFull = false;
 
+        if(this.isEmpty()) return;
+
         //Reassign leader if the leader leaves
         if(admin.getUser() == user && !users.isEmpty()){
             admin.setUser(users.get(0));
@@ -110,5 +128,32 @@ public class Group {
 
     public String getGroupName(){
         return groupName;
+    }
+
+    public String getJoinCode(){
+        return joinCode;
+    }
+
+    public void setJoinCode(String joinCode){
+        this.joinCode = joinCode;
+    }
+
+    public boolean isPrivate(){
+        return isPrivate;
+    }
+
+    public void setPrivate(boolean isPrivate){
+        this.isPrivate = isPrivate;
+    }
+
+    private String generateJoinCode(){
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        Random r = new Random();
+        String jc = "";
+        while(jc.length() < 5){
+            int index = (int) (r.nextFloat() * chars.length());
+            jc += chars.charAt(index);
+        }
+        return jc;
     }
 }

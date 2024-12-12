@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
+        android:name="com.Chess2v2.ChessApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -18,6 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ChessApp"
+
         tools:targetApi="31"
         android:usesCleartextTraffic="true">
 
@@ -42,7 +44,7 @@
             android:exported="true" />
 
         <activity
-            android:name="com.Chess2v2.groups.Group_finder"
+            android:name="com.Chess2v2.groups.GroupActivity"
             android:exported="true" />
 
 
@@ -51,7 +53,7 @@
             android:exported="true" />
 
         <activity
-            android:name="com.Chess2v2.app.WebSocketChatListener$ProfileActivity"
+            android:name="com.Chess2v2.app.ProfileActivity"
             android:exported="true" />
 
         <activity

@@ -32,14 +32,15 @@ public class User {
     private String passwordResetToken;
     private LocalDateTime passwordResetTokenCreationDate;
 
+    @Lob
+    @Column(name = "profile_picture", columnDefinition = "BLOB")
+    private byte[] profilePicture;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private SettingsUserStates settings;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user")
     private Admin admin;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private SettingsUserStates settingsUserStates;
 
     @ManyToOne
     @JoinColumn(name = "chess_game_id")
@@ -136,7 +137,15 @@ public class User {
         this.team = team;
     }
 
-    public void setSettingsUserStates(SettingsUserStates settings) {this.settingsUserStates = settings;}
+    public void setSettingsUserStates(SettingsUserStates settings) {this.settings = settings;}
 
-    public SettingsUserStates getSettingsUserStates(){return settingsUserStates;}
+    public SettingsUserStates getSettingsUserStates(){return settings;}
+
+    public byte[] getProfilePicture(){
+        return profilePicture;
+    }
+
+    public void setProfilePicture(byte[] profilePicture) {
+        this.profilePicture = profilePicture;
+    }
 }
