@@ -137,9 +137,9 @@ public class User {
         this.team = team;
     }
 
-    public void setSettingsUserStates(SettingsUserStates settings) {this.settingsUserStates = settings;}
+    public void setSettingsUserStates(SettingsUserStates settings) {this.settings = settings;}
 
-    public SettingsUserStates getSettingsUserStates(){return settingsUserStates;}
+    public SettingsUserStates getSettingsUserStates(){return settings;}
 
     public byte[] getProfilePicture(){
         return profilePicture;
