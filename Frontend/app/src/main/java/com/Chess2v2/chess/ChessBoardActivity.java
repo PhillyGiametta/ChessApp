@@ -42,7 +42,6 @@ public class ChessBoardActivity extends AppCompatActivity {
     private TextView playerTurnTextView;
     private boolean isBoardInverted;
     private boolean isCurrentUserWhite;
-    private boolean hasGameStarted = false;
 
     public PlayerInfoView getWhiteInfoView() {
         return whiteInfoView;
@@ -111,6 +110,9 @@ public class ChessBoardActivity extends AppCompatActivity {
                 new Clock(
                         new Handler(msg -> {
                             String time = (String) msg.obj;
+                            if (time.equals("00:00") && chessBoardAdapter.isGameStarted()) {
+                                getOver("Timeout: Black wins");
+                            }
                             whiteInfoView.setClockTime(time);
                             return true;
                         })
@@ -121,6 +123,9 @@ public class ChessBoardActivity extends AppCompatActivity {
                         new Handler(msg -> {
                             String time = (String) msg.obj;
                             blackInfoView.setClockTime(time);
+                            if (time.equals("00:00") && chessBoardAdapter.isGameStarted()) {
+                                getOver("Timeout: White wins");
+                            }
                             return true;
                         })
                 )
@@ -146,22 +151,23 @@ public class ChessBoardActivity extends AppCompatActivity {
         Button startButton = findViewById(R.id.startButton);
         startButton.setOnClickListener(v -> {
             chessBoardAdapter.startGame();
-            hasGameStarted = true;
 
             Clock g = whitePlayer.getClock();
             g.setTime(10, 0);
             g.start();
             whiteInfoView.setClockActive(true);
+            blackInfoView.setClockActive(false);
 
             g = blackPlayer.getClock();
             g.pause();
             g.setTime(10, 0);
             sendStartMessage();
+            playerTurnTextView.setText("White's Turn");
 
         });
 
 
-        playerTurnTextView.setText("White's Turn");
+        playerTurnTextView.setText("Click start");
 
         WebSocketChessListener listener = new WebSocketChessListener(this);
         webSocketManager = new WebSocketManager(listener);
@@ -208,6 +214,8 @@ public class ChessBoardActivity extends AppCompatActivity {
 
     private void moveCompleted() {
         playerTurnTextView.setText(chessBoardAdapter.getWhiteTurn() ? "White's Turn" : "Black's Turn");
+        ChessBoard chessBoard = chessBoardAdapter.getBoard();
+
 
         if (chessBoardAdapter.getWhiteTurn()) {
             whitePlayer.getClock().start();
@@ -220,9 +228,13 @@ public class ChessBoardActivity extends AppCompatActivity {
             blackInfoView.setClockActive(true);
             whiteInfoView.setClockActive(false);
         }
+        if ((chessBoard.isBlackKingChecked() || chessBoard.isWhiteKingChecked()) && chessBoard.getOutOffCheckMoves().isEmpty()) {
+            getOver("CheckMate: " + (chessBoardAdapter.getWhiteTurn() ? "Black wins" : "White wins"));
+        }
         BoardAnalyzer.Result analyzer = BoardAnalyzer.calculatePieceDifferences(chessBoardAdapter.getBoard());
         blackInfoView.setPieceDifference(analyzer.black);
         whiteInfoView.setPieceDifference(analyzer.white);
+
     }
 
     /**
@@ -279,7 +291,6 @@ public class ChessBoardActivity extends AppCompatActivity {
                 || !chessBoardAdapter.getWhiteTurn() && !piece.isWhitePiece())) {
 
             chessBoardAdapter.movePiece(fromX, fromY, toX, toY);
-            playerTurnTextView.setText(chessBoardAdapter.getWhiteTurn() ? "White's Turn" : "Black's Turn");
 
             notifyMove(fromX, fromY, toX, toY);
         } else {
@@ -287,8 +298,9 @@ public class ChessBoardActivity extends AppCompatActivity {
         }
     }
 
-    private void getOver(String message) {
+    public void getOver(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         playerTurnTextView.setText(message);
+        chessBoardAdapter.gameOver();
     }
 }

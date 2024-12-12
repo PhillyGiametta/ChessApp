@@ -1,12 +1,8 @@
 package com.Chess2v2.chess;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Utility class for analyzing a chess board and calculating the piece differences
@@ -58,53 +54,34 @@ public class BoardAnalyzer {
      * @param board The list of positions representing the chess board.
      * @return A result containing strings for white and black piece differences.
      */
-    public static Result calculatePieceDifferences(List<Position> board) {
+    public static Result calculatePieceDifferences(ChessBoard board) {
         // Count pieces for white and black
-        Map<String, Integer> whitePieces = countPieces(board, true);
-        Map<String, Integer> blackPieces = countPieces(board, false);
+        Map<String, Integer> whiteCaptures = board.getWhiteCaptures();
+        Map<String, Integer> blackCaptures = board.getBlackCaptures();
 
         StringBuilder whiteDifference = new StringBuilder();
         StringBuilder blackDifference = new StringBuilder();
 
         // Combine all piece types from both sides
-        Set<String> allPieces = new HashSet<>();
-        allPieces.addAll(whitePieces.keySet());
-        allPieces.addAll(blackPieces.keySet());
+        List<String> allPieces = List.of(
+                "Pawn", "Knight", "Bishop", "Rook", "Queen", "King"
+        );
+
 
         // Append differences for each piece type
         for (String piece : allPieces) {
-            if (Objects.equals(piece, "X") || Objects.equals(piece, "King")) {
-                continue; // Skip empty positions or kings (no capture possible)
+            if (whiteCaptures.containsKey(piece)) {
+                whiteDifference.append(getUnicode(piece, false).repeat(whiteCaptures.get(piece)));
+            }
+            if (blackCaptures.containsKey(piece)) {
+                blackDifference.append(getUnicode(piece, true).repeat(blackCaptures.get(piece)));
             }
 
-            int whiteCount = whitePieces.getOrDefault(piece, 0);
-            int blackCount = blackPieces.getOrDefault(piece, 0);
-
-            int whiteMissing = PIECE_COUNT.get(piece) - whiteCount;
-            int blackMissing = PIECE_COUNT.get(piece) - blackCount;
-
-            whiteDifference.append(getUnicode(piece, true).repeat(Math.max(0, blackMissing)));
-            blackDifference.append(getUnicode(piece, false).repeat(Math.max(0, whiteMissing)));
         }
 
         return new Result(whiteDifference.toString(), blackDifference.toString());
     }
 
-    /**
-     * Counts the pieces for the specified color.
-     *
-     * @param board   The list of positions representing the chess board.
-     * @param isWhite True to count white pieces, false for black pieces.
-     * @return A map of piece types to their counts.
-     */
-    private static Map<String, Integer> countPieces(List<Position> board, boolean isWhite) {
-        return board.stream()
-                .filter(position -> position.piece != null && position.getPiece().isWhitePiece() == isWhite)
-                .collect(Collectors.groupingBy(
-                        position -> position.piece.getName(),
-                        Collectors.summingInt(e -> 1)
-                ));
-    }
 
     public static class Result {
         String white;

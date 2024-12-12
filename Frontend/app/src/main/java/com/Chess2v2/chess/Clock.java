@@ -67,7 +67,8 @@ public class Clock {
 
         @SuppressLint("DefaultLocale") String time = String.format("%02d:%02d", minutes, seconds);
         Message msg = handler.obtainMessage();
-        msg.obj = time; // Send the formatted time to the UI
+        // Send the formatted time to the UI
+        msg.obj = time;
         handler.sendMessage(msg);
     }
 

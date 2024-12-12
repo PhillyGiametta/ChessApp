@@ -15,6 +15,8 @@ import com.Chess2v2.app.UserData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.ChessViewHolder> {
 
@@ -28,10 +30,9 @@ public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.Ch
             'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',
             'R', 'H', 'B', 'Q', 'K', 'B', 'H', 'R',
     };
-    private final List<Position> board;
+    private final ChessBoard board;
     private final OnPositionSelectedListener onPositionSelectedListener;
     private final MoveValidator validator;
-    private final List<Move> moves;
     private final OnMoveCompletionListener moveCompletionListener;
     private boolean whiteTurn; // 0 for white, 1 for black
     private UserData player = null;
@@ -48,21 +49,30 @@ public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.Ch
                              OnMoveCompletionListener moveCompletionListener
     ) {
         this.onPositionSelectedListener = listener;
-        this.board = new ArrayList<>();
+        this.castlingState = new MoveValidator.Castling();
+        this.board = new ChessBoard(isBoardInverted, this.castlingState);
         this.player = player;
         this.isBoardInverted = isBoardInverted;
-        this.validator = new MoveValidator(board, isBoardInverted);
+        this.validator = board.getValidator();
         this.moveCompletionListener = moveCompletionListener;
-        this.castlingState = new MoveValidator.Castling();
 
         this.whiteTurn = currentTurn;
         this.markers = new ArrayList<>();
-        moves = new ArrayList<>();
         initializeBoard();
     }
 
-    public List<Position> getBoard() {
+    public boolean isGameStarted() {
+        return hasGameStarted;
+    }
+
+    public ChessBoard getBoard() {
         return board;
+    }
+
+    private void setBoard(char[] pieces) {
+        for (int i = 0; i < INITIAL_PIECES.length; i++) {
+            board.set(i, getPiecePosition(i, pieces));
+        }
     }
 
     public boolean getWhiteTurn() {
@@ -76,14 +86,11 @@ public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.Ch
     public void addMarkers(List<Integer> positions, List<Marker.MarkerType> markerTypes) {
         for (int i = 0; i < positions.size(); i++) {
             markers.add(new Marker(positions.get(i), markerTypes.get(i)));
-
         }
         for (int position : positions
         ) {
             notifyItemChanged(position);
         }
-
-
     }
 
     private Marker.MarkerType getMarkerTypeAtPosition(int positionIndex) {
@@ -201,16 +208,31 @@ public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.Ch
         ChessPiece piece = board.get(from).getPiece();
 
         // test for pawn promotion
-        if(piece.getName().equals("Pawn") && (toY==0 || toY==7)){
-           piece = new ChessPiece(piece.isWhitePiece() ? R.drawable.queen_white : R.drawable.queen_black, "Queen", piece.isWhitePiece());
-           board.get(from).setPiece(piece);
+        if (piece.getName().equals("Pawn") && (toY == 0 || toY == 7)) {
+            piece = new ChessPiece(piece.isWhitePiece() ? R.drawable.queen_white : R.drawable.queen_black, "Queen", piece.isWhitePiece());
+            board.get(from).setPiece(piece);
         }
 
-        movePiece(from, to);
+        board.move(from, to);
+        notifyItemChanged(from);
+        notifyItemChanged(to);
         removeAllMarker();
-        addMarkers(List.of(from, to), List.of(Marker.MarkerType.SQUARE, Marker.MarkerType.SQUARE));
+        //
+        List<Integer> _markersPosition = new ArrayList<>(List.of(from, to));
+        List<Marker.MarkerType> _markerTypes = new ArrayList<>(List.of(Marker.MarkerType.SQUARE, Marker.MarkerType.SQUARE));
 
+        // mark the king if it's checked
+        if (board.isBlackKingChecked()) {
+            _markersPosition.add(board.blackKingPosition().getIndex());
+            _markerTypes.add(Marker.MarkerType.ERROR_SQUARE);
+        } else if (
+                board.isWhiteKingChecked()
+        ) {
+            _markersPosition.add(board.whiteKingPosition().getIndex());
+            _markerTypes.add(Marker.MarkerType.ERROR_SQUARE);
+        }
 
+        addMarkers(_markersPosition, _markerTypes);
         if (piece.getName().equals("King")) {
             if (piece.isWhitePiece()) {
                 this.castlingState.whiteKingMoved = true;
@@ -237,35 +259,18 @@ public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.Ch
 
         this.whiteTurn = !whiteTurn;
         moveCompletionListener.onMoveCompletion(board, from, to);
-
     }
 
-
     public void undoInvalidMove() {
-        if (moves.isEmpty())
+        if (board.getMoves().isEmpty())
             return;
 
-        Move move = moves.remove(moves.size() - 1);
-        board.get(move.fromIndex).setPiece(board.get(move.toIndex).getPiece());
-        board.get(move.toIndex).setPiece(move.capturedPiece);
+        Move move = board.undoMove();
 
         notifyItemChanged(move.fromIndex);
         notifyItemChanged(move.toIndex);
         this.whiteTurn = !whiteTurn;
         moveCompletionListener.onMoveCompletion(board, move.fromIndex, move.toIndex);
-    }
-
-    public void movePiece(int fromIndex, int toIndex) {
-        ChessPiece pieceToMove = board.get(fromIndex).getPiece();
-        Move move = new Move(fromIndex, toIndex, board.get(toIndex).getPiece());
-
-        board.get(toIndex).setPiece(pieceToMove);
-        board.get(fromIndex).setPiece(null);
-
-
-        moves.add(move);
-        notifyItemChanged(toIndex);
-        notifyItemChanged(toIndex);
     }
 
     public boolean isValidMove(int fromX, int fromY, int toX, int toY) {
@@ -289,14 +294,8 @@ public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.Ch
         for (int i = 0; i < INITIAL_PIECES.length; i++) {
             board.set(i, getPiecePosition(i, INITIAL_PIECES));
         }
-        this.moves.clear();
+        this.board.getMoves().clear();
         notifyDataSetChanged();
-    }
-
-    private void setBoard(char[] pieces){
-        for (int i = 0; i < INITIAL_PIECES.length; i++) {
-            board.set(i, getPiecePosition(i, pieces));
-        }
     }
 
     private boolean isValidCastlingMove(int from, int to) {
@@ -314,12 +313,38 @@ public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.Ch
         return false;
     }
 
+    private boolean isOutOfCheckMove(ChessPiece clickedPiece, int position) {
+        if (clickedPiece == null) {
+            previousAdapterPosition = -1;
+            return false;
+        }
+
+
+        boolean isOutOfCheckMove = false;
+
+        // Iterate through all moves that can resolve the check
+        for (Move move : board.getOutOffCheckMoves()) {
+            // Check if the current clicked position is valid for moving out of check
+            if ((previousAdapterPosition == -1 && move.fromIndex == position
+                    && Objects.equals(move.pieceToMove.getName(), clickedPiece.getName()))
+                    || (move.fromIndex == previousAdapterPosition && move.toIndex == position)) {
+                isOutOfCheckMove = true;
+                break;
+            }
+        }
+        return isOutOfCheckMove;
+    }
+
+    public void gameOver() {
+        this.hasGameStarted = false;
+    }
+
     public interface OnPositionSelectedListener {
         void onPositionSelected(ChessPiece piece, int fromX, int fromY, int toX, int toY);
     }
 
     public interface OnMoveCompletionListener {
-        void onMoveCompletion(List<Position> board, int from, int to);
+        void onMoveCompletion(ChessBoard board, int from, int to);
     }
 
     public class ChessViewHolder extends RecyclerView.ViewHolder {
@@ -344,18 +369,36 @@ public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.Ch
                 }
                 Log.v("Clicked", "Position: " + position);
 
-
+                removeAllMarker();
                 // If clicking the same position again, reset the selection
                 if (position == previousAdapterPosition) {
-                    removeAllMarker();
                     previousAdapterPosition = -1;
                     return;
                 }
-
-                // Remove previous markers
-                removeAllMarker();
+                if (previousAdapterPosition == -1) {
+                    validMoves = validator.getValidMoves(position, castlingState);
+                }
 
                 ChessPiece clickedPiece = board.get(position).getPiece();
+
+                // verify if the move cancels check
+                if ((board.isWhiteKingChecked() || board.isBlackKingChecked()) && previousAdapterPosition == -1) {
+                    Position kingPosition = board.isBlackKingChecked() ? board.blackKingPosition() : board.whiteKingPosition();
+
+                    if (!isOutOfCheckMove(clickedPiece, position)) {
+                        addMarkers(List.of(kingPosition.getIndex()), List.of(Marker.MarkerType.ERROR_SQUARE));
+                        previousAdapterPosition = -1;
+                        return;
+                    }
+
+                    Log.v("Piece Clicked", board.isWhiteKingChecked() ? "White in check" : "Black in check");
+
+                    // filter valid moves that will take the user out of check
+                    validMoves = board.getOutOffCheckMoves().stream().filter(move -> validMoves.contains(move.toIndex)
+                                    && Objects.equals(move.pieceToMove.getName(), clickedPiece.getName()
+                            )
+                    ).map(move -> move.toIndex).collect(Collectors.toList());
+                }
 
                 // If no piece is selected yet
                 if (previousAdapterPosition == -1) {
@@ -369,7 +412,6 @@ public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.Ch
                             List<Marker.MarkerType> markerTypes = new ArrayList<>();
                             markerTypes.add(Marker.MarkerType.SQUARE);
                             markerPosition.add(position);
-                            validMoves = validator.getValidMoves(position, castlingState);
                             for (Integer move : validMoves) {
                                 markerTypes.add(Marker.MarkerType.DOT);
                                 markerPosition.add(move);
@@ -389,7 +431,6 @@ public class ChessBoardAdapter extends RecyclerView.Adapter<ChessBoardAdapter.Ch
                     }
 
                     // Validate the move
-                    System.out.println(validMoves);
                     if (!validMoves.contains(position)) {
                         Log.v("Click", "Invalid move.");
                         previousAdapterPosition = -1;

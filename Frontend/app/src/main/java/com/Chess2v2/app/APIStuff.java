@@ -24,4 +24,13 @@ public interface  APIStuff {
 
     @POST("/groups/{groupId}/join")
     Call<Void> joinGroup(@Path("groupId") String groupId);
+
+    @GET("/groups/{joinCode}")
+    Call<Group> searchGroupByJoinCode(@Path("joinCode") String joinCode);
+
+    @POST("/groups/{joinCode}/join")
+    Call<Void> joinGroupByJoinCode(@Path("joinCode") String joinCode, @Body UserData user); // New method
 }
+
+
+

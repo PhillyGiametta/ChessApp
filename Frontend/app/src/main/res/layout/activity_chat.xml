@@ -25,17 +25,29 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="Type a message" />
+
         <Button
-            style="@style/CustomButtonStyle"
             android:id="@+id/send_button"
+            style="@style/CustomButtonStyle"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:text="Send" />
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/back_button"
+            style="@style/CustomButtonStyle"
 
-    <Button
-        android:id="@+id/back_button"
-        style="@style/CustomButtonStyle"
-        android:layout_marginStart="16dp"
-        android:text="Back" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:text="Back"
+            android:layout_marginTop="20dp"
+            android:textSize="18sp"
+            android:backgroundTint="#D32F2F"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
 
 </LinearLayout>

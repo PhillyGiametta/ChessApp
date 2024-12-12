@@ -27,16 +27,6 @@ public class MoveValidator {
         ChessPiece piece = board.get(fromIndex).getPiece();
         if (piece == null) return false;
 
-        // Check if the destination position contains the enemy king
-        ChessPiece targetPiece = board.get(toIndex).getPiece();
-        if (targetPiece != null && targetPiece.getName().equals("King")) {
-            // Allow the move to take the king
-            System.out.println(targetPiece.isWhitePiece()
-                    ? "Game over! Black wins. The white king has been captured."
-                    : "Game over! White wins. The black king has been captured.");
-            return true; // Allow the move to capture the king
-        }
-
         if (isOwnPieceAtDestination(toIndex, piece)) {
             return false;
         }
@@ -66,20 +56,19 @@ public class MoveValidator {
         return isValid;
     }
 
-
     private boolean isValidKingMove(int fromIndex, int toIndex, Castling castling) {
+        // Castling logic
+        ChessPiece king = board.get(fromIndex).getPiece();
+        if (king == null || !king.getName().equals("King")) return false;
+
         Coord fromCord = Position.toCoord(fromIndex);
         Coord toCord = Position.toCoord(toIndex);
 
         int dx = Math.abs(fromCord.x - toCord.x);
         int dy = Math.abs(fromCord.y - toCord.y);
 
-        // Regular King move (1 square in any direction)
-        if (dx <= 1 && dy <= 1) {
-            return true;
-        }
-
-        return false;
+        // Regular King move (1 square in any direction), and the destination square is not attacked by the opponent
+        return !isSquareAttacked(toIndex, !king.isWhitePiece(), castling) && dx <= 1 && dy <= 1;
     }
 
     private boolean isValidPawnMove(int fromIndex, int toIndex, boolean isWhite) {
@@ -172,6 +161,29 @@ public class MoveValidator {
             }
         }
         return validMoves;
+    }
+
+    public boolean isSquareAttacked(int index, boolean isAttackerWhite, Castling castling) {
+        Coord to = Position.toCoord(index);
+        int direction = isAttackerWhite ? (isBoardFlipped ? -1 : 1) : (isBoardFlipped ? 1 : -1);
+
+        for (Position position : board) {
+            if (position.getPiece() != null && position.getPiece().isWhitePiece() == isAttackerWhite) {
+                Coord attackedSquareCoordinates = position.coord;
+                if (position.getPiece().getName().equals("King")) {
+                    return (Math.abs(to.x - attackedSquareCoordinates.x) == 1) || (Math.abs(to.y - attackedSquareCoordinates.y) == 1);
+                } else if (position.getPiece().getName().equals("Pawn")) {
+                    // diagonal pawn capture
+                    return to.y == attackedSquareCoordinates.y + direction && (attackedSquareCoordinates.x + 1 == to.x || attackedSquareCoordinates.x - 1 == to.x);
+                } else {
+                    List<Integer> attackerMoves = this.getValidMoves(position.getIndex(), castling);
+                    if (attackerMoves.contains(index)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public static class Castling {
