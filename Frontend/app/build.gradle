@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace "com.Chess2v2.app"
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.Chess2v2.app"
@@ -18,35 +18,32 @@ android {
     }
 
     buildTypes {
-        debug {
-            testCoverageEnabled true
-        }
 
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            enableUnitTestCoverage true
+            enableAndroidTestCoverage true
+        }
     }
 
-    // Enable view binding
-    buildFeatures {
-        viewBinding true
-    }
 
-    // Compile options for Java 8
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    dependenciesInfo {
+        includeInApk false
+        includeInBundle false
+    }
+    buildToolsVersion '30.0.3'
 
     // Prevent unnecessary file processing
-    aaptOptions {
-        cruncherEnabled = false
-    }
 }
 
 dependencies {
-    // AndroidX dependencies
     implementation libs.appcompat
     implementation libs.material
     implementation libs.activity
@@ -64,6 +61,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.1'
     androidTestImplementation 'androidx.test.espresso:espresso-intents:3.4.0'
     androidTestImplementation 'androidx.test:rules:1.5.0'

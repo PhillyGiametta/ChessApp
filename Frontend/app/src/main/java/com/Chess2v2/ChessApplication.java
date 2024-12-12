@@ -12,8 +12,7 @@ public class ChessApplication extends Application {
     protected String groupName;
     protected String baseUrl = "http://10.90.73.46:8080/";
     protected String webSocketBaseUrl = "ws://10.90.73.46:8080/";
-    //protected String baseUrl = "http://192.168.71.175:8080/";
-   // protected String webSocketBaseUrl = "ws://192.168.71.175:8080/";
+
     @Override
     public void onCreate()
     {
