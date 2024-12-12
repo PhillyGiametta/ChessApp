@@ -29,6 +29,10 @@ public class User {
     private String passwordResetToken;
     private LocalDateTime passwordResetTokenCreationDate;
 
+    @Lob
+    @Column(name = "profile_picture", columnDefinition = "BLOB")
+    private byte[] profilePicture;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private SettingsUserStates settings;
 
@@ -128,5 +132,13 @@ public class User {
 
     public void setTeam(String team) {
         this.team = team;
+    }
+
+    public byte[] getProfilePicture(){
+        return profilePicture;
+    }
+
+    public void setProfilePicture(byte[] profilePicture) {
+        this.profilePicture = profilePicture;
     }
 }
