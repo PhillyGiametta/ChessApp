@@ -7,7 +7,10 @@ import Backend.ChessApp.Settings.SettingsUserStates;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -111,7 +114,7 @@ public class User {
     public LocalDateTime getPasswordResetTokenCreationDate(){return this.passwordResetTokenCreationDate;}
 
     public void setPasswordResetTokenCreationDate(LocalDateTime tokenCreationDate){this.passwordResetTokenCreationDate = tokenCreationDate;}
-    
+
     public Group getGroup(){return group;}
 
     public void setGroup(Group group){this.group = group;}
@@ -133,6 +136,10 @@ public class User {
     public void setTeam(String team) {
         this.team = team;
     }
+
+    public void setSettingsUserStates(SettingsUserStates settings) {this.settings = settings;}
+
+    public SettingsUserStates getSettingsUserStates(){return settings;}
 
     public byte[] getProfilePicture(){
         return profilePicture;

@@ -17,6 +17,7 @@ public class SettingsUserStates {
     boolean appTheme; //dark->true or light->false
     boolean sounds;
     boolean moveHighlighting;
+    boolean menuMusic;
 
     @Id
     @Column(name="settings_id")
@@ -37,14 +38,16 @@ public class SettingsUserStates {
         this.pieceTheme = 0;
         this.sounds = true;
         this.moveHighlighting = true;
+        this.menuMusic = true;
     }
 
-    public SettingsUserStates(short boardTheme, short pieceTheme, boolean appTheme, boolean sounds, boolean moveHighlighting) {
+    public SettingsUserStates(short boardTheme, short pieceTheme, boolean appTheme, boolean sounds, boolean moveHighlighting, boolean menuMusic) {
         this.appTheme = appTheme;
         this.boardTheme = boardTheme;
         this.pieceTheme = pieceTheme;
         this.sounds = sounds;
         this.moveHighlighting = moveHighlighting;
+        this.menuMusic = menuMusic;
     }
 
 
@@ -87,4 +90,8 @@ public class SettingsUserStates {
     public void setSounds(boolean sounds) {
         this.sounds = sounds;
     }
+
+    public boolean isMenuMusic(){return this.menuMusic;}
+
+    public void setMenuMusic(boolean menuMusic) { this.menuMusic = menuMusic;}
 }

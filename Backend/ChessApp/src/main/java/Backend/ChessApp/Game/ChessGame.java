@@ -1,10 +1,7 @@
 package Backend.ChessApp.Game;
 
 import Backend.ChessApp.AdminControl.Admin;
-import Backend.ChessApp.Game.Board.Board;
-import Backend.ChessApp.Game.Board.BoardSnapshot;
-import Backend.ChessApp.Game.Board.BoardSquare;
-import Backend.ChessApp.Game.Board.Position;
+import Backend.ChessApp.Game.Board.*;
 import Backend.ChessApp.Game.Pieces.King;
 import Backend.ChessApp.Game.Pieces.PieceColor;
 import Backend.ChessApp.Game.Pieces.Piece;
@@ -12,6 +9,8 @@ import Backend.ChessApp.Group.Group;
 import Backend.ChessApp.Settings.SettingGameStates;
 import Backend.ChessApp.Users.User;
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -136,9 +135,21 @@ public class ChessGame {
     }
 
     public void recordMove(){
+        moveNumber++;
         BoardSnapshot history = new BoardSnapshot(this.board, this, moveNumber);
         boardHistory.add(history);
-        moveNumber++;
+    }
+
+    public void undo(){
+        //idea: undo moves back to undoers previous turn;
+        //black does undo, still blacks turn from 2 ago, can only undo on your turn to avoid odd logic;
+        moveNumber -=2;
+        boardHistory.remove(boardHistory.get(boardHistory.size() -1));
+        boardHistory.remove(boardHistory.get(boardHistory.size() -1)); //twice to remove two turns
+        board = boardHistory.get(boardHistory.size()-1).getBoard(); //set playing board
+        //nothing should need changed since we are just clean slating the turn.
+
+
     }
 
 
@@ -338,6 +349,14 @@ public class ChessGame {
         return this.board;
     }
 
+    public int getMoveNumber(){
+        return moveNumber;
+    }
+
+    public List<BoardSnapshot> getBoardHistory(){
+        return boardHistory;
+    }
+
     /**
      * This is a main class to ensure that the game is working as intended before going to the server.
      * Will be deleted before production
@@ -352,7 +371,7 @@ public class ChessGame {
 
         // 1. White pawn moves e2 to e4 (Position (6, 4) to (4, 4))
         Position whitePawnStart = new Position(6, 4);
-        Position whitePawnEnd = new Position(4, 4);
+        Position whitePawnEnd = new Position(5, 4);
         String result = chessGame.makeMove(whitePawnStart, whitePawnEnd) ? "yes" : "no";
         System.out.println(result);
         System.out.println(chessGame.getBoard().toString());
