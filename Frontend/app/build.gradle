@@ -18,17 +18,19 @@ android {
     }
 
     buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
 
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        debug {
-            enableUnitTestCoverage true
-            enableAndroidTestCoverage true
-        }
     }
 
+    aaptOptions {
+        cruncherEnabled = false
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -41,6 +43,9 @@ android {
     buildToolsVersion '30.0.3'
 
     // Prevent unnecessary file processing
+    aaptOptions {
+        cruncherEnabled = false
+    }
 }
 
 dependencies {

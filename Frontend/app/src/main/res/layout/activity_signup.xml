@@ -15,7 +15,7 @@
         android:layout_marginTop="100dp"
         android:layout_marginBottom="80dp"
         android:textSize="30dp"
-        android:textColor="#4B0082">
+        android:textColor="#fc0303">
     </TextView>
 
     <LinearLayout
@@ -99,8 +99,6 @@
 
         <Button
             android:id="@+id/signup_login_btn"
-            style="@style/CustomButtonStyle"
-
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
@@ -111,8 +109,6 @@
 
         <Button
             android:id="@+id/signup_signup_btn"
-            style="@style/CustomButtonStyle"
-
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"

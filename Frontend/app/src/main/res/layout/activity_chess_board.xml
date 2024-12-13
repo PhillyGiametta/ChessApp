@@ -18,8 +18,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            style="@style/CustomButtonStyle"
-
             android:layout_marginBottom="16dp"
             android:text="Back"
             tools:ignore="HardcodedText" />
@@ -32,8 +30,6 @@
         <!-- Start Button -->
         <Button
             android:id="@+id/startButton"
-            style="@style/CustomButtonStyle"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

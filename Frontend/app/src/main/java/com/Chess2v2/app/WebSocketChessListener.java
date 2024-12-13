@@ -44,8 +44,8 @@ public class WebSocketChessListener extends WebSocketListener {
                         Log.d("WebSocketChessListener", "Received invalid move message");
                         chessBoardActivity.undoInvalidMove();
                     }
-                    // TODO: set the clocke based on the server message
-                    //if("server clocke message"){
+                    // TODO: set the clock based on the server message
+                    //if("server clock message"){
                     //chessBoardActivity.getWhitePlayer().getClock().setTime(whitePlayerTime);
                     //chessBoardActivity.getWhitePlayer().getClock().setTime(blackPlayerTime);
                     //}

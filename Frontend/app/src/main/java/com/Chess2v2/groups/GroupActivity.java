@@ -36,11 +36,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * generates a list of all the groups available to join and puts them in a Recyclerview
- * each available group in the Recyclerview has a join button that connects the user to
- * the websocket and sends data to the database saying the group has been joined
- */
 public class GroupActivity extends AppCompatActivity {
 
     private EditText groupNameInput;
@@ -87,9 +82,7 @@ public class GroupActivity extends AppCompatActivity {
 
         loadGroups();
     }
-/*
-connects to the websocket when the joinGroup button is pressed
- */
+
     private void createGroup(String groupName) {
         api.createGroup(new Group(groupName)).enqueue(new Callback<Group>() {
             @SuppressLint("NotifyDataSetChanged")
@@ -180,7 +173,7 @@ connects to the websocket when the joinGroup button is pressed
 //                    Toast.makeText(context, "Network Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
 //                }
 //            });
-            joinGroup(group.groupName, ChessApplication.getInstance().getUserName());
+             joinGroup(group.groupName, ChessApplication.getInstance().getUserName());
         }
 
         private void joinGroup(String groupName, String username) {
